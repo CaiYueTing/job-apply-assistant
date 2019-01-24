@@ -20,6 +20,52 @@ class helperCard {
         $("body").prepend(el)
     }
     
+    listener() {
+        const template = this.getTemplate()
+        const el = $(template)
+
+        let start = false
+        let elStartPoint = {
+            x: 0,
+            y: 0
+        }
+        let pStartPoint = {
+            x: 0,
+            y: 0
+        }
+        
+        el.mousedown(function(e) {
+            elStartPoint.x = el.offset().left
+            elStartPoint.y = el.offset().top
+            pStartPoint.x = e.pageX
+            pStartPoint.y = e.pageY
+            start = true
+        })
+
+        $(window).mouseup(function() {
+            start = false
+        }).mousemove(function(e) {
+            if (!start) {
+                return
+            }
+
+            let offsetX = e.pageX - pStartPoint.x 
+            let offsetY = e.pageY - pStartPoint.y - $(window).scrollTop()
+            el.css({
+                transform: 'none',
+                transition: 'unset',
+                right: 'unset',
+                left: elStartPoint.x + offsetX,
+                top: elStartPoint.y + offsetY
+            })
+        })
+
+        el.find(".translate-result-container").mousemove(function(e) {
+            e.stopPropagation()
+        })
+
+    }
+    
 
     getTemplate() {
         return `
@@ -41,3 +87,4 @@ class helperCard {
 
 var card = new helperCard("apple", "999", "87", "9", "8")
 card.init()
+card.listener()
