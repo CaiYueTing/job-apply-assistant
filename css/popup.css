@@ -1,0 +1,18 @@
+/* * {
+    border: solid 1px black
+} */
+
+body, html {
+    background-color: #333;
+}
+
+.container {
+    width: 400px;
+    height: 200px;    
+}
+
+
+h1, h2 {
+    color: #eee;
+    padding: 10px;
+}

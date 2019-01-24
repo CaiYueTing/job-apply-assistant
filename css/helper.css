@@ -1,0 +1,11 @@
+#applicant-helper {
+    width: 300px;
+    z-index: 99999;
+    background-color: #C5FFD5;
+    color: #333;
+    font-weight: 600;
+    position: fixed;
+    text-align: center;
+    padding: 10px;
+    border-radius: 15px
+}
