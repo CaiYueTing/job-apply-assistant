@@ -19,11 +19,15 @@ class helperCard {
         const el = $(template)
         $("body").prepend(el)
     }
+
+    getEl() {
+        return $(`#${this.data.domId}`)
+    }
     
     listener() {
-        const template = this.getTemplate()
-        const el = $(template)
-
+        
+        const el = this.getEl()
+        
         let start = false
         let elStartPoint = {
             x: 0,
@@ -60,7 +64,7 @@ class helperCard {
             })
         })
 
-        el.find(".translate-result-container").mousemove(function(e) {
+        el.find(".helper-cantentiner").mousemove(function(e) {
             e.stopPropagation()
         })
 
@@ -72,7 +76,7 @@ class helperCard {
             <div id="${this.data.domId}">
                 <div class="helper-container">
                     <div class="helper-title">職位資訊</div>
-                    <div class="helper-content">
+                    <hr>
                         <div class="helper-cantentiner">
                             <div class="helper-law">${this.data.cname}違反${this.data.lawcount}筆勞基法</div>
                             <div class="helper-welfare">${this.data.welfare}</div>

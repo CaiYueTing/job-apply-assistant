@@ -16,5 +16,18 @@
     box-shadow: 0px 3px 15px rgba(0, 0, 0, 0.6);
     transition: 600ms;
     right: 0%;
-    top: 80%;
+    top: 60%;
+}
+
+#applicant-helper .helper-title {
+    cursor: move;
+}
+
+.helper-title {
+    font-size: 22px;
+    padding: 10px
+}
+
+.helper-cantentiner {
+    padding-top: 10px;
 }
