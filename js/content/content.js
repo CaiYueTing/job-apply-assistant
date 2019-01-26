@@ -88,7 +88,3 @@ class helperCard {
             </div>`
     }
 }
-
-var card = new helperCard("apple", "999", "87", "9", "8")
-card.init()
-card.listener()

@@ -17,6 +17,7 @@
     transition: 600ms;
     right: 0%;
     top: 60%;
+    transition: 0.8s
 }
 
 #applicant-helper .helper-title {

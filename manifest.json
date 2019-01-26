@@ -14,7 +14,8 @@
             "matches":["*://www.104.com.tw/job/*"],
             "js":[
                 "./js/lib/jquery-3.3.1.min.js",
-                "./js/content.js"
+                "./js/content/content.js",
+                "./js/content/catchEl.js"
             ],
             "css":[
                 "./css/helper.css"
@@ -22,10 +23,11 @@
         }
     ],
     "background": {
-        "scripts": ["./js/background.js"]
+        "scripts": ["./js/background/background.js"]
     },
     "permissions":[
         "tabs",
-        "storage"
+        "storage",
+        "http://localhost:8080/*"
     ]
 }
