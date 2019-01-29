@@ -15,7 +15,10 @@ function getlawcount() {
 
 function getWelfare() {
     content = document.getElementsByClassName('content')[2].innerText
-    reqStr = `http://localhost:8080/welfare/${content}`
+    var reg = new RegExp("/", "g")
+    c = content.replace(reg, "")
+    console.log(c)
+    reqStr = `http://localhost:8080/welfare/${c}`
     return new Promise((resolve, reject)=> {
         data = $.getJSON(reqStr)
         resolve(data)
@@ -34,16 +37,22 @@ function caculate(text) {
 
 }
 
-Promise.all([getCname(), getlawcount(), getWelfare()]).then(
+company = getCname()
+
+Promise.all([getlawcount(), getWelfare()]).then(
     function(para){
-        card = new helperCard(para[0], para[1].message, para[2].message, "9", "8")
+        records = para[0].records.length
+        welfare = para[1].message
+        card = new helperCard(company, records , welfare, "9", "8")
         card.init()
         card.listener() 
+        console.log("ok")
     }
 ).catch(
     function(para){  
-        card = new helperCard(para[0], "?", "?", "9", "8")
+        card = new helperCard(company, "?", "?", "9", "8")
         card.init()
         card.listener() 
+        console.log("fail")
     }
 )

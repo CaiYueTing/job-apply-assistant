@@ -78,7 +78,7 @@ class helperCard {
                     <div class="helper-title">職位資訊</div>
                     <hr>
                         <div class="helper-cantentiner">
-                            <div class="helper-law">${this.data.cname}違反${this.data.lawcount}筆勞基法</div>
+                            <div class="helper-law">${this.data.cname}曾經違反${this.data.lawcount}筆勞基法</div>
                             <div class="helper-welfare">${this.data.welfare}</div>
                             <div class="helper-law">${this.data.salary}</div>
                             <div class="helper-law">${this.data.workhour}</div>
