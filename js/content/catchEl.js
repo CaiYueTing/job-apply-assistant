@@ -15,9 +15,7 @@ function getlawcount() {
 
 function getWelfare() {
     content = document.getElementsByClassName('content')[2].innerText
-    var reg = new RegExp("/", "g")
-    c = content.replace(reg, "")
-    console.log(c)
+    c = content.replace(/[&\/\\#,+()$~%.'":*?<>{}]/g, "")
     reqStr = `http://localhost:8080/welfare/${c}`
     return new Promise((resolve, reject)=> {
         data = $.getJSON(reqStr)
