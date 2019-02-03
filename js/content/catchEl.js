@@ -50,9 +50,12 @@ function getSalary() {
     }
     
     salary = salary.replace(/\,/g,"")
-    reqStr = `http://localhost:8080/welfare/`
+    reqStr = `http://localhost:8080/salary/${salary}`
 
-    return salary
+    return new Promise((resolve, reject)=> {
+        data = $.getJSON(reqStr)
+        resolve(data)
+    })
 }
 
 function getJobcategory() {
@@ -64,12 +67,13 @@ function caculate(text) {
 }
 
 company = getCname()
-salary = getSalary()
 
-Promise.all([getlawcount(), getWelfare()]).then(
+
+Promise.all([getlawcount(), getWelfare(),getSalary()]).then(
     function(para){
         records = para[0].records.length
         welfare = para[1].message
+        salary = para[2].salary
         card = new helperCard(company, records , welfare, salary, "8")
         card.init()
         card.listener() 
