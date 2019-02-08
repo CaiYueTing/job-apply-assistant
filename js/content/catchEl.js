@@ -66,6 +66,16 @@ function caculate(text) {
 
 }
 
+function checkdivid(arr, welfare) {
+    result = 0
+    for (let i=0;i<arr.length;i++){
+        if(arr[i]<=welfare){
+            result = i+1
+        }
+    }
+    return result
+}
+
 company = getCname()
 
 
@@ -74,7 +84,9 @@ Promise.all([getlawcount(), getWelfare(),getSalary()]).then(
         records = para[0].records.length
         welfare = para[1].message
         salary = para[2].salary
-        card = new helperCard(company, records , welfare, salary, "8")
+        dd = para[1].dd
+        result = checkdivid(dd,welfare)
+        card = new helperCard(company, records , welfare, salary, result)
         card.init()
         card.listener() 
         console.log("ok")
