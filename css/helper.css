@@ -32,3 +32,57 @@
 .helper-cantentiner {
     padding-top: 10px;
 }
+
+#lawlist {
+    width: 1024px;
+    z-index: 99999;
+    background-color: var(--main-bg-color);
+    color: var(--min-text-color);
+    font-weight: 600;
+    position: fixed;
+    padding: 10px;
+    top: 50%;
+    left: 50%;
+    transform: translateX(-50%) translateY(-50%);
+    border-radius: 15px;
+    box-shadow: 0px 3px 15px rgba(0, 0, 0, 0.6);
+}
+
+.lawlist_close {
+    display: inline-block;
+}
+.lawtable_text {
+    display: inline-block;
+    left: 300px;
+}
+
+#lawlist hr {
+    background-color: rgb(0, 0, 0);
+    color: #000;
+}
+
+.lawtable_location {
+    padding-left: 20px;
+    padding-right: 20px;
+}
+
+.lawtable_publicdate {
+    padding-right: 20px;
+}
+
+.lawtable_dealdate {
+    padding-right: 20px;
+}
+
+.lawtable_govnumber {
+    padding-right: 20px;
+}
+
+.lawtable_law {
+    padding-right: 20px;
+}
+
+.lawtable_description {
+    padding-right: 20px;
+}
+

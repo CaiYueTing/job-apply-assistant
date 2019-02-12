@@ -81,7 +81,7 @@ company = getCname()
 
 Promise.all([getlawcount(), getWelfare(),getSalary()]).then(
     function(para){
-        records = para[0].records.length
+        records = para[0].records
         welfare = para[1].message
         salary = para[2].salary
         dd = para[1].dd
@@ -89,12 +89,13 @@ Promise.all([getlawcount(), getWelfare(),getSalary()]).then(
         card = new helperCard(company, records , welfare, salary, result)
         card.init()
         card.listener() 
+        card.showLaw()
         console.log("ok")
     }
 ).catch(
     function(para){  
         card = new helperCard(company, "?", "?", "9", "8")
-        card.init()
+        card.failCard()
         card.listener() 
         console.log("fail")
     }
