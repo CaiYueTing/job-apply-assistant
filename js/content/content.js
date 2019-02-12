@@ -127,7 +127,8 @@ class helperCard {
             var law = this.data.lawcount[i].law
             var description = this.data.lawcount[i].description
             var ps = this.data.lawcount[i].ps
-
+            law = law.replace(/\;/g, "<br>")
+            description = description.replace(/\;/g, "<br>")
             var current_html = 
                 tr_html.replace("{{id}}", id)
                        .replace("{{location}}", location)
