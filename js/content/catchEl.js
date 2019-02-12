@@ -89,7 +89,8 @@ Promise.all([getlawcount(), getWelfare(),getSalary()]).then(
         card = new helperCard(company, records , welfare, salary, result)
         card.init()
         card.listener() 
-        card.showLaw()
+        card.showLawList()
+        card.closeLawList()
         console.log("ok")
     }
 ).catch(

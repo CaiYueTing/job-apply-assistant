@@ -72,32 +72,49 @@ class helperCard {
             })
         })
 
-        el.find(".helper-cantentiner").mousemove(function(e) {
+        el.find(".card-cantentiner").mousemove(function(e) {
             e.stopPropagation()
         })
 
         if (this.data.lawcount.length > 0){
-            $(".helper-law").css({
+            $(".card-law").css({
                 color: '#B20000'
             })
         }
 
     }
     
-    showLaw() {
-        
+    showLawList() {
+        $(".card-law").click(function () { 
+            $("#lawlist").css({
+                right: "",
+                left: "50%",
+                transform: "translateX(-50%) translateY(-50%)"
+            });            
+        });
+    }
+
+    closeLawList() {
+        $(".lawlist_close").click(function () { 
+            $("#lawlist").css({
+                left: "110%",
+                right: "",
+                transform: "",
+
+            })
+        });
     }
 
     getLawItem() {
         var tr_html = `
             <tr id ="{{id}}">
-                <th class="lawtable_location">{{location}}</th>
-                <th class="lawtable_publicdate">{{publicdate}}</th>
-                <th class="lawtable_dealdate">{{dealdate}}</th>
-                <th class="lawtable_govnumber">{{govnumber}}</th>
-                <th class="lawtable_law">{{law}}</th>
-                <th class="lawtable_description">{{description}}</th>
-                <th class="lawtable_ps">{{ps}}</th>
+                <th class="lawlist_location">{{location}}</th>
+                <th class="lawlist_publicdate">{{publicdate}}</th>
+                <th class="lawlist_dealdate">{{dealdate}}</th>
+                <th class="lawlist_govnumber">{{govnumber}}</th>
+                <th class="lawlist_law">{{law}}</th>
+                <th class="lawlist_description">{{description}}</th>
+                <th class="lawlist_ps">{{ps}}</th>
             </tr>
         `
 
@@ -127,16 +144,16 @@ class helperCard {
     getTemplate() {
         return `
             <div id="${this.data.domId}">
-                <div class="helper-container">
-                    <div class="helper-title">職位資訊</div>
+                <div class="card-container">
+                    <div class="card-title">職位資訊</div>
                     <hr>
-                        <div class="helper-cantentiner">
-                            <div class="helper-company">${this.data.cname}</div>
-                            <div class="helper-law">曾經違反 ${this.data.lawcount.length} 筆勞基法</div>
-                            <div class="helper-welfare">本系統福利推薦分數：${this.data.welfare}</div>
-                            <div class="helper-welfaredd">佔整體第${this.data.ddp}分位</div>
-                            <div class="helper-salary">薪水為：${this.data.salary}</div>
-                            <div class="helper-hour">本職位業界平均工時為：${this.data.workhour}小時</div>
+                        <div class="card-cantentiner">
+                            <div class="card-company">${this.data.cname}</div>
+                            <div class="card-law">曾經違反 ${this.data.lawcount.length} 筆勞基法</div>
+                            <div class="card-welfare">本系統福利推薦分數：${this.data.welfare}</div>
+                            <div class="card-welfaredd">佔整體第${this.data.ddp}分位</div>
+                            <div class="card-salary">薪水為：${this.data.salary}</div>
+                            <div class="card-hour">本職位業界平均工時為：${this.data.workhour}小時</div>
                         </div>
                     </div>
                 </div>
@@ -144,18 +161,18 @@ class helperCard {
             <div id="lawlist">
                 <div class="lawlist_header">
                     <div class="lawlist_close">X</div>
-                    <div class="lawtable_text">違法法律資訊</div>
+                    <div class="lawlist_text">違法法律資訊</div>
                 </div>
                 <hr>
                 <table div class="law_item">
                     <tr>
-                        <th class="lawtable_location">主管機關</th>
-                        <th class="lawtable_publicdate">公告日期</th>
-                        <th class="lawtable_dealdate">處分日期</th>
-                        <th class="lawtable_govnumber">處份字號</th>
-                        <th class="lawtable_law">違反法規法條</th>
-                        <th class="lawtable_description">違反法規內容</th>
-                        <th class="lawtable_ps">備註</th>
+                        <th class="lawlist_location">主管機關</th>
+                        <th class="lawlist_publicdate">公告日期</th>
+                        <th class="lawlist_dealdate">處分日期</th>
+                        <th class="lawlist_govnumber">處份字號</th>
+                        <th class="lawlist_law">違反法規法條</th>
+                        <th class="lawlist_description">違反法規內容</th>
+                        <th class="lawlist_ps">備註</th>
                     </tr>
                 </table>
             </div>
@@ -164,10 +181,10 @@ class helperCard {
 
     getFailTemp() {
         return `<div id="${this.data.domId}">
-        <div class="helper-container">
-            <div class="helper-title">職位資訊</div>
+        <div class="card-container">
+            <div class="card-title">職位資訊</div>
             <hr>
-                <div class="helper-cantentiner">
+                <div class="card-cantentiner">
                     抱歉，伺服器沒有反應!
                 </div>
             </div>
