@@ -7,7 +7,7 @@ function getCname() {
 function getlawcount() {
     company = getCname()
     company = company.replace(/\//g,"")
-    reqStr = `http://localhost:8080/law/${company}`
+    reqStr = `http://localhost:8080/card/law/${company}`
     return new Promise((resolve,reject)=> {
         lowcount = $.getJSON(reqStr)
         resolve(lowcount)
@@ -50,10 +50,19 @@ function getSalary() {
     }
     
     salary = salary.replace(/\,/g,"")
-    reqStr = `http://localhost:8080/salary/${salary}`
+    reqStr = `http://localhost:8080/card/salary/${salary}`
 
     return new Promise((resolve, reject)=> {
         data = $.getJSON(reqStr)
+        resolve(data)
+    })
+}
+
+function postWelfare() {
+    content = document.getElementsByClassName('content')[2].innerText
+    url = `http://localhost:8080/card/welfare`
+    return new Promise((resolve,reject)=>{
+        data = $.post(url, { wdata : content })
         resolve(data)
     })
 }
@@ -79,7 +88,7 @@ function checkdivid(arr, welfare) {
 company = getCname()
 
 
-Promise.all([getlawcount(), getWelfare(),getSalary()]).then(
+Promise.all([getlawcount(), postWelfare(), getSalary()]).then(
     function(para){
         records = para[0].records
         welfare = para[1].message
@@ -94,8 +103,8 @@ Promise.all([getlawcount(), getWelfare(),getSalary()]).then(
         console.log("ok")
     }
 ).catch(
-    function(para){  
-        card = new helperCard(company, "?", "?", "9", "8")
+    function(){  
+        card = new helperCard()
         card.failCard()
         card.listener() 
         console.log("fail")
