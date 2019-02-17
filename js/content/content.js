@@ -76,7 +76,7 @@ class helperCard {
             e.stopPropagation()
         })
 
-        if (this.data.lawcount.length != undefined && this.data.lawcount.length > 0){
+        if (this.data.lawcount != null && this.data.lawcount.length > 0){
             $(".card-law").css({
                 color: '#B20000'
             })

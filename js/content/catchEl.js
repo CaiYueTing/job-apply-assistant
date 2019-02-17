@@ -68,7 +68,16 @@ function postWelfare() {
 }
 
 function getJobcategory() {
-
+    dlc = document.getElementsByClassName("cate")
+    for (let i=0;i<dlc.length;i++){
+        s = dlc[0].getElementsByTagName('span')
+        for (let j=0;j<s.length;j++){
+            if (s[j]!= ''){
+                console.log(s[j].innerText)
+            }
+            
+        }
+    }
 }
 
 function caculate(text) {
@@ -86,7 +95,7 @@ function checkdivid(arr, welfare) {
 }
 
 company = getCname()
-
+getJobcategory()
 
 Promise.all([getlawcount(), postWelfare(), getSalary()]).then(
     function(para){
