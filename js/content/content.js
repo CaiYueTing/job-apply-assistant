@@ -36,6 +36,10 @@ class helperCard {
     getLaw() {
         return $(`.card-law`)
     }
+    
+    getChart() {
+        return $(`.card-salary`)
+    }
 
     listener() {
         
@@ -88,59 +92,6 @@ class helperCard {
         }
 
     }
-    
-    // showLawList() {
-    //     $(".card-law").click(function () { 
-    //         $("#lawlist").slideDown(500)       
-    //     });
-    // }
-
-    // closeLawList() {
-    //     $(".lawlist_close").click(function () { 
-    //         $("#lawlist").slideUp(500)
-    //     });
-    // }
-
-    // getAnalyItem() {
-        
-    // }
-
-    // getLawItem() {
-    //     var tr_html = `
-    //         <tr id ="{{id}}">
-    //             <th class="lawlist_location">{{location}}</th>
-    //             <th class="lawlist_publicdate">{{publicdate}}</th>
-    //             <th class="lawlist_dealdate">{{dealdate}}</th>
-    //             <th class="lawlist_govnumber">{{govnumber}}</th>
-    //             <th class="lawlist_law">{{law}}</th>
-    //             <th class="lawlist_description">{{description}}</th>
-    //             <th class="lawlist_ps">{{ps}}</th>
-    //         </tr>
-    //     `
-
-    //     for (let i=0;i<this.data.lawcount.length;i++){
-    //         var id = "law_list_"+i
-    //         var location = this.data.lawcount[i].location
-    //         var publicdate = this.data.lawcount[i].publicdate
-    //         var dealdate = this.data.lawcount[i].dealdate
-    //         var govnumber = this.data.lawcount[i].govnumber
-    //         var law = this.data.lawcount[i].law
-    //         var description = this.data.lawcount[i].description
-    //         var ps = this.data.lawcount[i].ps
-    //         law = law.replace(/\;/g, "<br>")
-    //         description = description.replace(/\;/g, "<br>")
-    //         var current_html = 
-    //             tr_html.replace("{{id}}", id)
-    //                    .replace("{{location}}", location)
-    //                    .replace("{{publicdate}}", publicdate)
-    //                    .replace("{{dealdate}}", dealdate)
-    //                    .replace("{{govnumber}}", govnumber)
-    //                    .replace("{{law}}", law)
-    //                    .replace("{{description}}", description)
-    //                    .replace("{{ps}}", ps)
-    //         $(".law_item").append(current_html)
-    //     }        
-    // }
 
     getTemplate() {
         return `

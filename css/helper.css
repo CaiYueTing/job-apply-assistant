@@ -98,3 +98,9 @@
     padding-right: 20px;
 }
 
+#salarychart {
+    width: 1024px;
+    z-index: 99999;
+    display: none
+}
+

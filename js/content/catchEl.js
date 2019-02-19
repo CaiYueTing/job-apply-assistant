@@ -78,10 +78,6 @@ function getJobcategory() {
 
 }
 
-function caculate(text) {
-
-}
-
 function checkdivid(arr, welfare) {
     result = 0
     for (let i=0;i<arr.length;i++){
