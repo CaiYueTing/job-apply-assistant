@@ -1,5 +1,5 @@
 class helperCard {
-    constructor(cname, lawcount, welfare, salary, ddp, workhour){
+    constructor(cname, lawcount, welfare, salary, ddp, category, workhour){
         this.data = {
             domId: "applicant-helper",
             cname: cname,
@@ -7,6 +7,7 @@ class helperCard {
             welfare: welfare,
             salary: salary,
             ddp: ddp,
+            category: category,
             workhour: workhour
         }
     }
@@ -19,7 +20,7 @@ class helperCard {
         const template = this.getTemplate()
         const el = $(template)
         $("body").prepend(el)
-        this.getLawItem()
+        // this.getLawItem()
     }
 
     failCard() {
@@ -32,6 +33,10 @@ class helperCard {
         return $(`#${this.data.domId}`)
     }
     
+    getLaw() {
+        return $(`.card-law`)
+    }
+
     listener() {
         
         const el = this.getEl()
@@ -84,63 +89,58 @@ class helperCard {
 
     }
     
-    showLawList() {
-        $(".card-law").click(function () { 
-            $("#lawlist").css({
-                right: "",
-                left: "50%",
-                transform: "translateX(-50%) translateY(-50%)"
-            });            
-        });
-    }
+    // showLawList() {
+    //     $(".card-law").click(function () { 
+    //         $("#lawlist").slideDown(500)       
+    //     });
+    // }
 
-    closeLawList() {
-        $(".lawlist_close").click(function () { 
-            $("#lawlist").css({
-                left: "110%",
-                right: "",
-                transform: "",
+    // closeLawList() {
+    //     $(".lawlist_close").click(function () { 
+    //         $("#lawlist").slideUp(500)
+    //     });
+    // }
 
-            })
-        });
-    }
+    // getAnalyItem() {
+        
+    // }
 
-    getLawItem() {
-        var tr_html = `
-            <tr id ="{{id}}">
-                <th class="lawlist_location">{{location}}</th>
-                <th class="lawlist_publicdate">{{publicdate}}</th>
-                <th class="lawlist_dealdate">{{dealdate}}</th>
-                <th class="lawlist_govnumber">{{govnumber}}</th>
-                <th class="lawlist_law">{{law}}</th>
-                <th class="lawlist_description">{{description}}</th>
-                <th class="lawlist_ps">{{ps}}</th>
-            </tr>
-        `
+    // getLawItem() {
+    //     var tr_html = `
+    //         <tr id ="{{id}}">
+    //             <th class="lawlist_location">{{location}}</th>
+    //             <th class="lawlist_publicdate">{{publicdate}}</th>
+    //             <th class="lawlist_dealdate">{{dealdate}}</th>
+    //             <th class="lawlist_govnumber">{{govnumber}}</th>
+    //             <th class="lawlist_law">{{law}}</th>
+    //             <th class="lawlist_description">{{description}}</th>
+    //             <th class="lawlist_ps">{{ps}}</th>
+    //         </tr>
+    //     `
 
-        for (let i=0;i<this.data.lawcount.length;i++){
-            var id = "law_list_"+i
-            var location = this.data.lawcount[i].location
-            var publicdate = this.data.lawcount[i].publicdate
-            var dealdate = this.data.lawcount[i].dealdate
-            var govnumber = this.data.lawcount[i].govnumber
-            var law = this.data.lawcount[i].law
-            var description = this.data.lawcount[i].description
-            var ps = this.data.lawcount[i].ps
-            law = law.replace(/\;/g, "<br>")
-            description = description.replace(/\;/g, "<br>")
-            var current_html = 
-                tr_html.replace("{{id}}", id)
-                       .replace("{{location}}", location)
-                       .replace("{{publicdate}}", publicdate)
-                       .replace("{{dealdate}}", dealdate)
-                       .replace("{{govnumber}}", govnumber)
-                       .replace("{{law}}", law)
-                       .replace("{{description}}", description)
-                       .replace("{{ps}}", ps)
-            $(".law_item").append(current_html)
-        }        
-    }
+    //     for (let i=0;i<this.data.lawcount.length;i++){
+    //         var id = "law_list_"+i
+    //         var location = this.data.lawcount[i].location
+    //         var publicdate = this.data.lawcount[i].publicdate
+    //         var dealdate = this.data.lawcount[i].dealdate
+    //         var govnumber = this.data.lawcount[i].govnumber
+    //         var law = this.data.lawcount[i].law
+    //         var description = this.data.lawcount[i].description
+    //         var ps = this.data.lawcount[i].ps
+    //         law = law.replace(/\;/g, "<br>")
+    //         description = description.replace(/\;/g, "<br>")
+    //         var current_html = 
+    //             tr_html.replace("{{id}}", id)
+    //                    .replace("{{location}}", location)
+    //                    .replace("{{publicdate}}", publicdate)
+    //                    .replace("{{dealdate}}", dealdate)
+    //                    .replace("{{govnumber}}", govnumber)
+    //                    .replace("{{law}}", law)
+    //                    .replace("{{description}}", description)
+    //                    .replace("{{ps}}", ps)
+    //         $(".law_item").append(current_html)
+    //     }        
+    // }
 
     getTemplate() {
         return `
@@ -158,24 +158,6 @@ class helperCard {
                         </div>
                     </div>
                 </div>
-            </div>
-            <div id="lawlist">
-                <div class="lawlist_header">
-                    <div class="lawlist_close">X</div>
-                    <div class="lawlist_text">違法法律資訊</div>
-                </div>
-                <hr>
-                <table div class="law_item">
-                    <tr>
-                        <th class="lawlist_location">主管機關</th>
-                        <th class="lawlist_publicdate">公告日期</th>
-                        <th class="lawlist_dealdate">處分日期</th>
-                        <th class="lawlist_govnumber">處份字號</th>
-                        <th class="lawlist_law">違反法規法條</th>
-                        <th class="lawlist_description">違反法規內容</th>
-                        <th class="lawlist_ps">備註</th>
-                    </tr>
-                </table>
             </div>
         `
     }
