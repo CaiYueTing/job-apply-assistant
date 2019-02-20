@@ -4,7 +4,7 @@ function getCname() {
     return cname.innerText
 }
 
-async function getlawcount() {
+function getlawcount() {
     company = getCname()
     company = company.replace(/\//g,"")
     reqStr = `http://localhost:8080/card/law/${company}`
@@ -88,8 +88,8 @@ function checkdivid(arr, welfare) {
     return result
 }
 
-function card(company, records, welfare, salary, result) {
-    card = new helperCard(company, records , welfare, salary, result)
+function card(company, records, welfare, salary, result, category) {
+    card = new helperCard(company, records , welfare, salary, result, category)
     card.init()
     card.listener()
     return card
@@ -111,11 +111,120 @@ Promise.all([getlawcount(), postWelfare(), getSalary(), getJobcategory()]).then(
         result = checkdivid(dd,welfare)
         category = para[3].message
 
-        card = card(company, records, welfare, salary, result)
+        card = card(company, records, welfare, salary, result, category)
         list = list(records)
+        var chart = new Salarychart(category)
+        chart.init()
+        el = chart.getElName()
+        
+        const backgroundColor = chart.getBackgroundColor()
+        const borderColor = chart.getBorderColor()
+        
+        var IndDataset = []
+        var ExpDataset = []
+        var DistrictDataset = []
+        var cateId = []
+        var open = [false, false, false]
+
+        for (let i=0; i<category.length; i++) {
+            let ind = chart.getIndustryDataset(i)
+            let exp = chart.getExpDataset(i)
+            let dis = chart.getDistrictDataset(i)
+            let id = "catagory_id_"+i
+            IndDataset.push(ind)
+            ExpDataset.push(exp)
+            DistrictDataset.push(dis)
+            cateId.push(id)
+        }
+        var indexData = 0
+        defaultData = IndDataset[indexData]
+
+        var ctx = document.querySelector(`#${el}myChart`).getContext('2d')
+        var mychart = new Chart(ctx, {
+            type: 'horizontalBar',
+            data: {
+                labels: defaultData.labels,
+                datasets: [
+                    {
+                        label: "最高薪資",
+                        data: defaultData.right,
+                        backgroundColor: backgroundColor,
+                        borderColor: borderColor
+                    },{
+                        label: "最低薪資",
+                        data: defaultData.left,
+                        backgroundColor: backgroundColor,
+                        borderColor: borderColor
+                    },{
+                        label: "中位數薪資",
+                        data: defaultData.middle,
+                        backgroundColor: backgroundColor,
+                        borderColor: borderColor
+                    },{
+                        label:"平均薪資",
+                        data: defaultData.average,
+                        backgroundColor: backgroundColor,
+                        borderColor: borderColor
+                    },
+                ]},
+            options: {
+                scales: {
+                    xAxes : [{   
+                        ticks: {
+                        max: 80000,
+                        min: 20000,
+                        stepSize: 5000
+                        
+                        }
+                    }]
+                }
+            }
+        });
+        
+        $("#category_id_0").click(()=>{
+            indexData =0 
+            let flag = open.includes(true)
+            if (flag){
+                open[1] =false
+                open[2] =false
+                mychart.update()
+            }
+            $(chart.getEl()).slideDown(500)
+            $(list.getEl()).slideUp(500)
+            open[0] = true
+        })
+        $("#category_id_1").click(()=>{
+            indexData =1 
+            let flag = open.includes(true)
+            if (flag){
+                open[0] =false
+                open[2] =false
+                mychart.update()
+            }
+            $(chart.getEl()).slideDown(500)
+            $(list.getEl()).slideUp(500)
+            open[1] = true
+        })
+        $("#category_id_2").click(()=>{
+            indexData =2
+            let flag = open.includes(true)
+            if (flag){
+                open[1] =false
+                open[0] =false
+                mychart.update()
+            }
+            $(chart.getEl()).slideDown(500)
+            $(list.getEl()).slideUp(500)
+            open[2] = true
+        })
 
         $(card.getLaw()).click(()=>{
-            $(list.getEl()).slideDown(500)  
+            let flag = open.includes(true)
+            if (flag){
+                open.forEach((el)=> {el = false})
+                $(chart.getEl()).slideUp(500)
+            }
+            $(list.getEl()).slideDown(500)
         })
         $(list.getCloseEl()).click(()=>{
             $(list.getEl()).slideUp(500)
@@ -132,42 +241,3 @@ Promise.all([getlawcount(), postWelfare(), getSalary(), getJobcategory()]).then(
         console.log("fail")
     }
 )
-
-// const ready = document.readyState
-// if (ready) {
-//     const el = chart.getElName()
-        
-//         var ctx = document.querySelector(`#${el}myChart`).getContext('2d')
-//         const indDataset = chart.getIndustryDataset(0)
-        
-//         var mychart = new Chart(crx, {
-//             type: 'horizontalBar',
-//             data: {
-//                 labels: indDataset.labels,
-//                 datasets: [
-//                     {
-//                         label: "最高薪資",
-//                         data: indDataset.right,
-//                         // backgroundColor: this.backgroundColor,
-//                         // borderColor: this.borderColor
-//                     },{
-//                         label: "最低薪資",
-//                         data: indDataset.left,
-//                         // backgroundColor: this.backgroundColor,
-//                         // borderColor: this.borderColor
-//                     },{
-//                         label: "中位數薪資",
-//                         data: indDataset.middle,
-//                         // backgroundColor: this.backgroundColor,
-//                         // borderColor: this.borderColor
-//                     },{
-//                         label:"平均薪資",
-//                         data: indDataset.average,
-//                         // backgroundColor: this.backgroundColor,
-//                         // borderColor: this.borderColor
-//                     },
-//                 ]
-//             }
-//         })
-
-// }

@@ -1,5 +1,5 @@
 class helperCard {
-    constructor(cname, lawcount, welfare, salary, ddp, workhour){
+    constructor(cname, lawcount, welfare, salary, ddp, category, workhour){
         this.data = {
             domId: "applicant-helper",
             cname: cname,
@@ -7,6 +7,7 @@ class helperCard {
             welfare: welfare,
             salary: salary,
             ddp: ddp,
+            category: category,
             workhour: workhour
         }
     }
@@ -93,6 +94,21 @@ class helperCard {
     }
 
     getTemplate() {
+        const len = this.data.category.length
+        
+        var temp = ``
+
+        for (let i=0; i<len; i++){
+            let id = "category_id_"+i
+            let t = `<span id="${id}" class="category_list">{{data}}、<span>`
+            let category = this.data.category[i]
+            t = t.replace("{{data}}", category.category)
+            if (i == len-1){
+                t = t.replace("、","")
+            }
+            temp = temp + t    
+        }
+
         return `
             <div id="${this.data.domId}">
                 <div class="card-container">
@@ -103,7 +119,8 @@ class helperCard {
                             <div class="card-law">曾經違反 ${this.data.lawcount.length} 筆勞基法</div>
                             <div class="card-welfare">本系統福利推薦分數：${this.data.welfare}</div>
                             <div class="card-welfaredd">佔整體第${this.data.ddp}分位</div>
-                            <div class="card-salary">薪水為：${this.data.salary}</div>
+                            <span class="card-salary">職務薪水參考：</span>
+                            ${temp}
                             <div class="card-hour">本職位業界平均工時為：${this.data.workhour}小時</div>
                         </div>
                     </div>

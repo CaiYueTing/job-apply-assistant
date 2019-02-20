@@ -6,12 +6,12 @@ class Salarychart {
             len: category.length
         }
         this.backgroundColor = [
-            'rgba(255, 99, 132, 0.2)',
-            'rgba(54, 162, 235, 0.2)',
-            'rgba(255, 206, 86, 0.2)',
-            'rgba(75, 192, 192, 0.2)',
-            'rgba(153, 102, 255, 0.2)',
-            'rgba(255, 159, 64, 0.2)'
+            'rgba(255, 99, 132, 0.6)',
+            'rgba(54, 162, 235, 0.6)',
+            'rgba(255, 206, 86, 0.6)',
+            'rgba(75, 192, 192, 0.6)',
+            'rgba(153, 102, 255, 0.6)',
+            'rgba(255, 159, 64, 0.6)'
         ]
         this.borderColor= [
             'rgba(255,99,132,1)',
@@ -36,58 +36,21 @@ class Salarychart {
     }
 
     getEl() {
-        return $(`${this.data.domId}`)
+        return $(`#${this.data.domId}`)
     }
 
     getElName() {
         return this.data.domId
     }
     
-    
-
-
-    getChart(index) {
-        // const cate = this.data.category[index]
-        // const industry = cate.target.industry
-        // console.log(industry)
-        // console.log(indDataset)
-        const indDataset = this.getIndustryDataset(index)
-        
-        console.log(indDataset)
-        // var ctx = document.querySelector(`#${this.data.domId}mychart`).getContext('2d')
-        console.log(ctx)
-        // const salarychart = new Chart(ctx, {
-        //     type: 'horizontalBar',
-        //     data: {
-        //         labels: indDataset.labels,
-        //         datasets: [
-        //             {
-        //                 label: "最高薪資",
-        //                 data: indDataset.right,
-        //                 // backgroundColor: this.backgroundColor,
-        //                 // borderColor: this.borderColor
-        //             },{
-        //                 label: "最低薪資",
-        //                 data: indDataset.left,
-        //                 // backgroundColor: this.backgroundColor,
-        //                 // borderColor: this.borderColor
-        //             },{
-        //                 label: "中位數薪資",
-        //                 data: indDataset.middle,
-        //                 // backgroundColor: this.backgroundColor,
-        //                 // borderColor: this.borderColor
-        //             },{
-        //                 label:"平均薪資",
-        //                 data: indDataset.average,
-        //                 // backgroundColor: this.backgroundColor,
-        //                 // borderColor: this.borderColor
-        //             },
-        //         ]
-        //     }
-        // })
-    
+    getBackgroundColor() {
+        return this.backgroundColor
     }
 
+    getBorderColor() {
+        return this.borderColor
+    }
+    
     getIndustryDataset(index) {
         const  industry  =  this.getAtTarget(index).target.industry
         const labels = this.initiallabel(industry)
@@ -105,6 +68,40 @@ class Salarychart {
         }
     }
     
+    getExpDataset(index) {
+        const  exp  =  this.getAtTarget(index).target.exp
+        const labels = this.initiallabel(exp)
+        const right = this.initialright(exp)
+        const left = this.initialleft(exp)
+        const middle = this.initialmiddle(exp)
+        const average = this.initialaverage(exp)
+
+        return {
+            labels,
+            right,
+            left,
+            middle,
+            average
+        }
+    }
+
+    getDistrictDataset(index) {
+        const  district  =  this.getAtTarget(index).target.district
+        const labels = this.initiallabel(district)
+        const right = this.initialright(district)
+        const left = this.initialleft(district)
+        const middle = this.initialmiddle(district)
+        const average = this.initialaverage(district)
+
+        return {
+            labels,
+            right,
+            left,
+            middle,
+            average
+        }
+    }
+
     getAtTarget(index) {
         if (index > this.len){
             return 
@@ -149,21 +146,11 @@ class Salarychart {
         }
         return result
     }
-    
-
-    
-
-    
-
-
 
     getTemplate() {
         return `
             <div id="${this.data.domId}">
                 <canvas id="${this.data.domId}myChart">
-                <button id="industrybtn">Industry</button>
-                <button id="expbtn">Exp</button>
-                <button id="districtbtn">District</button>
             </div>
         `
     }

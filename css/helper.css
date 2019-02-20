@@ -99,16 +99,21 @@
 }
 
 #salarychart {
-    /* width: 1024px;
-    height: 500px; */
+    width: 1024px;
+    height: 512px;
     /* background-color: #000; */
-    z-index: 99;
-    top: 0%;
+    z-index: 99999;
+    background-color: #ccc;
+    position: fixed;
+    top: 50%;
+    left: 50%;
     /* right: 100%; */
-    /* left: 50%; */
-    /* transform: translateX(-50%) translateY(-50%); */
+    transform: translateX(-50%) translateY(-50%);
     border-radius: 15px;
     box-shadow: 0px 3px 15px rgba(0, 0, 0, 0.6);
-    /* display: none */
+    display: none
 }
 
+.category_list {
+    cursor: pointer;
+}
