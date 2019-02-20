@@ -4,7 +4,7 @@ function getCname() {
     return cname.innerText
 }
 
-function getlawcount() {
+async function getlawcount() {
     company = getCname()
     company = company.replace(/\//g,"")
     reqStr = `http://localhost:8080/card/law/${company}`
@@ -88,9 +88,20 @@ function checkdivid(arr, welfare) {
     return result
 }
 
+function card(company, records, welfare, salary, result) {
+    card = new helperCard(company, records , welfare, salary, result)
+    card.init()
+    card.listener()
+    return card
+}
+
+function list(records) {
+    list = new lawlist(records)
+    list.init()
+    return list
+}
+
 company = getCname()
-
-
 Promise.all([getlawcount(), postWelfare(), getSalary(), getJobcategory()]).then(
     function(para){
         records = para[0].records
@@ -99,22 +110,18 @@ Promise.all([getlawcount(), postWelfare(), getSalary(), getJobcategory()]).then(
         dd = para[1].dd
         result = checkdivid(dd,welfare)
         category = para[3].message
-        card = new helperCard(company, records , welfare, salary, result, category)
-        card.init()
-        card.listener() 
-        // card.showLawList()
-        // card.closeLawList()
-        lawlist = new lawlist(records)
-        lawlist.init()
-        
+
+        card = card(company, records, welfare, salary, result)
+        list = list(records)
+
         $(card.getLaw()).click(()=>{
-            $(lawlist.getEl()).slideDown(500)  
+            $(list.getEl()).slideDown(500)  
         })
-        $(lawlist.getCloseEl()).click(()=>{
-            $(lawlist.getEl()).slideUp(500)
+        $(list.getCloseEl()).click(()=>{
+            $(list.getEl()).slideUp(500)
         })
 
-
+        
         console.log("ok")
     }
 ).catch(
@@ -125,3 +132,42 @@ Promise.all([getlawcount(), postWelfare(), getSalary(), getJobcategory()]).then(
         console.log("fail")
     }
 )
+
+// const ready = document.readyState
+// if (ready) {
+//     const el = chart.getElName()
+        
+//         var ctx = document.querySelector(`#${el}myChart`).getContext('2d')
+//         const indDataset = chart.getIndustryDataset(0)
+        
+//         var mychart = new Chart(crx, {
+//             type: 'horizontalBar',
+//             data: {
+//                 labels: indDataset.labels,
+//                 datasets: [
+//                     {
+//                         label: "最高薪資",
+//                         data: indDataset.right,
+//                         // backgroundColor: this.backgroundColor,
+//                         // borderColor: this.borderColor
+//                     },{
+//                         label: "最低薪資",
+//                         data: indDataset.left,
+//                         // backgroundColor: this.backgroundColor,
+//                         // borderColor: this.borderColor
+//                     },{
+//                         label: "中位數薪資",
+//                         data: indDataset.middle,
+//                         // backgroundColor: this.backgroundColor,
+//                         // borderColor: this.borderColor
+//                     },{
+//                         label:"平均薪資",
+//                         data: indDataset.average,
+//                         // backgroundColor: this.backgroundColor,
+//                         // borderColor: this.borderColor
+//                     },
+//                 ]
+//             }
+//         })
+
+// }

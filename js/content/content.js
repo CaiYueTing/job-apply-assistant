@@ -1,5 +1,5 @@
 class helperCard {
-    constructor(cname, lawcount, welfare, salary, ddp, category, workhour){
+    constructor(cname, lawcount, welfare, salary, ddp, workhour){
         this.data = {
             domId: "applicant-helper",
             cname: cname,
@@ -7,7 +7,6 @@ class helperCard {
             welfare: welfare,
             salary: salary,
             ddp: ddp,
-            category: category,
             workhour: workhour
         }
     }
