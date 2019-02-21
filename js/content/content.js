@@ -100,7 +100,7 @@ class helperCard {
 
         for (let i=0; i<len; i++){
             let id = "category_id_"+i
-            let t = `<span id="${id}" class="category_list">{{data}}、<span>`
+            let t = `<span id="${id}" class="category_list">{{data}}、</span>`
             let category = this.data.category[i]
             t = t.replace("{{data}}", category.category)
             if (i == len-1){
@@ -108,6 +108,7 @@ class helperCard {
             }
             temp = temp + t    
         }
+        console.log(temp)
 
         return `
             <div id="${this.data.domId}">

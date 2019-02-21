@@ -42,6 +42,10 @@ class Salarychart {
     getElName() {
         return this.data.domId
     }
+
+    getClose() {
+        return  $(`#${this.data.domId}_close`)
+    }
     
     getBackgroundColor() {
         return this.backgroundColor
@@ -150,7 +154,14 @@ class Salarychart {
     getTemplate() {
         return `
             <div id="${this.data.domId}">
-                <canvas id="${this.data.domId}myChart">
+                <span id="${this.data.domId}_close">X</span>
+                <span id="${this.data.domId}_industry">職位-產業比較</span>
+                <span id="${this.data.domId}_exp">職位-經驗比較</span>
+                <span id="${this.data.domId}_district">職位-地區比較</span>
+                <canvas id="${this.data.domId}myChart" class="salary_chart">
+                <button class="salary_btn">1</button>
+                <button class="salary_btn">2</button>
+                <button class="salary_btn">3</button>
             </div>
         `
     }

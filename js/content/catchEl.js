@@ -101,6 +101,23 @@ function list(records) {
     return list
 }
 
+function chart(category) {
+    var chart = new Salarychart(category)
+    chart.init()
+    return chart
+}
+
+function chartUpdata(chart, dataset, i) {
+    chart.data.labels = dataset[i].labels
+    chart.data.datasets[0].data = dataset[i].right
+    chart.data.datasets[1].data = dataset[i].left
+    chart.data.datasets[2].data = dataset[i].middle
+    chart.data.datasets[3].data = dataset[i].average
+    chart.update()
+    return chart
+}
+
+
 company = getCname()
 Promise.all([getlawcount(), postWelfare(), getSalary(), getJobcategory()]).then(
     function(para){
@@ -113,8 +130,7 @@ Promise.all([getlawcount(), postWelfare(), getSalary(), getJobcategory()]).then(
 
         card = card(company, records, welfare, salary, result, category)
         list = list(records)
-        var chart = new Salarychart(category)
-        chart.init()
+        chart = chart(category)
         el = chart.getElName()
         
         const backgroundColor = chart.getBackgroundColor()
@@ -125,7 +141,7 @@ Promise.all([getlawcount(), postWelfare(), getSalary(), getJobcategory()]).then(
         var DistrictDataset = []
         var cateId = []
         var open = [false, false, false]
-
+        var chooseCate = 0
         for (let i=0; i<category.length; i++) {
             let ind = chart.getIndustryDataset(i)
             let exp = chart.getExpDataset(i)
@@ -136,43 +152,49 @@ Promise.all([getlawcount(), postWelfare(), getSalary(), getJobcategory()]).then(
             DistrictDataset.push(dis)
             cateId.push(id)
         }
-        var indexData = 0
-        defaultData = IndDataset[indexData]
+        
+
+        
 
         var ctx = document.querySelector(`#${el}myChart`).getContext('2d')
         var mychart = new Chart(ctx, {
             type: 'horizontalBar',
             data: {
-                labels: defaultData.labels,
+                labels: [0,1,2,3],
                 datasets: [
                     {
                         label: "最高薪資",
-                        data: defaultData.right,
+                        data: 0,
                         backgroundColor: backgroundColor,
                         borderColor: borderColor
                     },{
                         label: "最低薪資",
-                        data: defaultData.left,
+                        data: 0,
                         backgroundColor: backgroundColor,
                         borderColor: borderColor
                     },{
                         label: "中位數薪資",
-                        data: defaultData.middle,
+                        data: 0,
                         backgroundColor: backgroundColor,
                         borderColor: borderColor
                     },{
                         label:"平均薪資",
-                        data: defaultData.average,
+                        data: 0,
                         backgroundColor: backgroundColor,
                         borderColor: borderColor
                     },
                 ]},
             options: {
+                layout: {
+                    padding: {
+                        bottom:30
+                    }
+                },
                 scales: {
                     xAxes : [{   
                         ticks: {
-                        max: 80000,
-                        min: 20000,
+                        suggestedMax: 80000,
+                        suggestedMin: 20000,
                         stepSize: 5000
                         
                         }
@@ -182,46 +204,44 @@ Promise.all([getlawcount(), postWelfare(), getSalary(), getJobcategory()]).then(
         });
         
         $("#category_id_0").click(()=>{
-            indexData =0 
-            let flag = open.includes(true)
-            if (flag){
-                open[1] =false
-                open[2] =false
-                mychart.update()
-            }
+            chooseCate = 0
+            open = [true, false, false]
+            mychart = chartUpdata(mychart, IndDataset, chooseCate)
             $(chart.getEl()).slideDown(500)
             $(list.getEl()).slideUp(500)
-            open[0] = true
         })
         $("#category_id_1").click(()=>{
-            indexData =1 
-            let flag = open.includes(true)
-            if (flag){
-                open[0] =false
-                open[2] =false
-                mychart.update()
-            }
+            chooseCate = 1
+            open = [false, true, false]
+            mychart = chartUpdata(mychart, IndDataset, chooseCate)
             $(chart.getEl()).slideDown(500)
             $(list.getEl()).slideUp(500)
-            open[1] = true
         })
         $("#category_id_2").click(()=>{
-            indexData =2
-            let flag = open.includes(true)
-            if (flag){
-                open[1] =false
-                open[0] =false
-                mychart.update()
-            }
+            chooseCate = 2
+            open = [false, false, true]
+            mychart = chartUpdata(mychart, IndDataset, chooseCate)
             $(chart.getEl()).slideDown(500)
             $(list.getEl()).slideUp(500)
             open[2] = true
         })
 
+        $("#salarychart_industry").click(()=> {
+            mychart = chartUpdata(mychart, IndDataset, chooseCate)
+        })
+
+        $("#salarychart_exp").click(()=> {
+            mychart = chartUpdata(mychart, ExpDataset, chooseCate)
+        })
+
+        $("#salarychart_district").click(()=> {
+            mychart = chartUpdata(mychart, DistrictDataset, chooseCate)
+        })
+
         $(card.getLaw()).click(()=>{
             let flag = open.includes(true)
             if (flag){
-                open.forEach((el)=> {el = false})
+                open = [false, false, false]
                 $(chart.getEl()).slideUp(500)
             }
             $(list.getEl()).slideDown(500)
@@ -230,7 +250,14 @@ Promise.all([getlawcount(), postWelfare(), getSalary(), getJobcategory()]).then(
             $(list.getEl()).slideUp(500)
         })
 
+        $(chart.getClose()).click(()=>{
+            open = [false, false, false]
+            $(chart.getEl()).slideUp(500)
+        })
+
         
+
+
         console.log("ok")
     }
 ).catch(
