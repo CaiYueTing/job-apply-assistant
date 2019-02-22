@@ -108,7 +108,7 @@ class helperCard {
             }
             temp = temp + t    
         }
-        console.log(temp)
+        
 
         return `
             <div id="${this.data.domId}">

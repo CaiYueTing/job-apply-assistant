@@ -83,11 +83,19 @@ class Salarychart {
     
     getIndustryDataset(index) {
         const  industry  =  this.getAtTarget(index).target.industry
-        const labels = this.initiallabel(industry)
-        const right = this.initialright(industry)
-        const left = this.initialleft(industry)
-        const middle = this.initialmiddle(industry)
-        const average = this.initialaverage(industry)
+        let labels = ["資料不足"]
+        let right = [0] 
+        let left = [0]
+        let middle = [0]
+        let average = [0]
+
+        if (industry != null) {
+            labels = this.initiallabel(industry)
+            right = this.initialright(industry)
+            left = this.initialleft(industry)
+            middle = this.initialmiddle(industry)
+            average = this.initialaverage(industry)
+        }
 
         return {
             labels,
@@ -100,11 +108,19 @@ class Salarychart {
     
     getExpDataset(index) {
         const  exp  =  this.getAtTarget(index).target.exp
-        const labels = this.initiallabel(exp)
-        const right = this.initialright(exp)
-        const left = this.initialleft(exp)
-        const middle = this.initialmiddle(exp)
-        const average = this.initialaverage(exp)
+        let labels = ["資料不足"]
+        let right = [0] 
+        let left = [0]
+        let middle = [0]
+        let average = [0]
+
+        if (exp != null) {
+            labels = this.initiallabel(exp)
+            right = this.initialright(exp)
+            left = this.initialleft(exp)
+            middle = this.initialmiddle(exp)
+            average = this.initialaverage(exp)
+        }
 
         return {
             labels,
@@ -117,12 +133,19 @@ class Salarychart {
 
     getDistrictDataset(index) {
         const  district  =  this.getAtTarget(index).target.district
-        const labels = this.initiallabel(district)
-        const right = this.initialright(district)
-        const left = this.initialleft(district)
-        const middle = this.initialmiddle(district)
-        const average = this.initialaverage(district)
+        let labels = ["資料不足"]
+        let right = [0] 
+        let left = [0]
+        let middle = [0]
+        let average = [0]
 
+        if (district != null) {
+            labels = this.initiallabel(district)
+            right = this.initialright(district)
+            left = this.initialleft(district)
+            middle = this.initialmiddle(district)
+            average = this.initialaverage(district)
+        }
         return {
             labels,
             right,
@@ -138,7 +161,6 @@ class Salarychart {
         }
         return this.data.category[index]
     }
-
 
     initiallabel(tjson) {
         let result = []
@@ -185,9 +207,6 @@ class Salarychart {
                 <span id="${this.data.domId}_exp">職位-經驗比較</span>
                 <span id="${this.data.domId}_district">職位-地區比較</span>
                 <canvas id="${this.data.domId}myChart" class="salary_chart">
-                <button class="salary_btn">1</button>
-                <button class="salary_btn">2</button>
-                <button class="salary_btn">3</button>
             </div>
         `
     }
