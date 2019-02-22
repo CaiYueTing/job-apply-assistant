@@ -135,7 +135,7 @@ Promise.all([getlawcount(), postWelfare(), getSalary(), getJobcategory()]).then(
         
         const backgroundColor = chart.getBackgroundColor()
         const borderColor = chart.getBorderColor()
-        
+        const option = chart.getOptionSetting()
         var IndDataset = []
         var ExpDataset = []
         var DistrictDataset = []
@@ -153,9 +153,6 @@ Promise.all([getlawcount(), postWelfare(), getSalary(), getJobcategory()]).then(
             cateId.push(id)
         }
         
-
-        
-
         var ctx = document.querySelector(`#${el}myChart`).getContext('2d')
         var mychart = new Chart(ctx, {
             type: 'horizontalBar',
@@ -184,23 +181,7 @@ Promise.all([getlawcount(), postWelfare(), getSalary(), getJobcategory()]).then(
                         borderColor: borderColor
                     },
                 ]},
-            options: {
-                layout: {
-                    padding: {
-                        bottom:30
-                    }
-                },
-                scales: {
-                    xAxes : [{   
-                        ticks: {
-                        suggestedMax: 80000,
-                        suggestedMin: 20000,
-                        stepSize: 5000
-                        
-                        }
-                    }]
-                }
-            }
+            options: option
         });
         
         $("#category_id_0").click(()=>{
