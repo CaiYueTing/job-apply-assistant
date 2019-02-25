@@ -1,16 +1,42 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta content="text/html; charset=UTF-8" http-equiv="content-type">
     <link rel="stylesheet" href="../css/popup.css">
 </head>
 <body>
     <div class="container">
-        <h1>Job Seeker Helper</h1>
-        <h2>Author: YTC</h2>
-        <h2>Github: YTC@Github.com</h2>
+        <div class="selector_text">選擇福利重要程度</div>
+        <br>
+        <div class="selector">
+            <div class="range-slider">
+                <input type="range" id="range_slider_money" value="0" min="0" max="100">
+                <span class="class">經濟類</span>
+                <span class="moneyscore score">0</span>
+            </div>
+            <div class="range-slider">
+                    <input type="range" id="range_slider_time" value="0" min="0" max="100">
+                    <span class="class">時間類</span>
+                    <span class="timescore score">0</span>
+            </div>
+            <div class="range-slider">
+                    <input type="range" id="range_slider_infra" value="0" min="0" max="100">
+                    <span class="class">設施類</span>
+                    <span class="infrascore score">0</span>
+            </div>
+            <div class="range-slider">
+                    <input type="range" id="range_slider_entertain" value="0" min="0" max="100">
+                    <span class="class">娛樂類</span>
+                    <span class="entertainscore score">0</span>
+            </div>
+            <div class="range-slider">
+                    <input type="range" id="range_slider_grow" value="0" min="0" max="100">
+                    <span class="class">成長類</span>
+                    <span class="growscore score">0</span>
+            </div>
+        </div>
     </div>
 </body>
+<script type="text/javascript" src="../js/lib/jquery-3.3.1.min.js"></script>
+<script type="text/javascript" src="../js/popup/popup.js"></script>
 </html>

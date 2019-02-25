@@ -117,8 +117,21 @@ function chartUpdata(chart, dataset, i) {
     return chart
 }
 
+function getWelfareSetting() {
+    const memory = ["money", "time", "infra", "entertain", "grow"]
+    let result = []
+    for (let i=0;i<memory.length;i++){
+        chrome.storage.sync.get(memory[i], function(el){
+            result.push(el)
+        })
+    }
+    return result
+}
+
 
 company = getCname()
+welfaresetting = getWelfareSetting()
+
 Promise.all([getlawcount(), postWelfare(), getSalary(), getJobcategory()]).then(
     function(para){
         records = para[0].records
@@ -132,7 +145,6 @@ Promise.all([getlawcount(), postWelfare(), getSalary(), getJobcategory()]).then(
         list = list(records)
         chart = chart(category)
         el = chart.getElName()
-        
         const backgroundColor = chart.getBackgroundColor()
         const borderColor = chart.getBorderColor()
         const option = chart.getOptionSetting()
@@ -204,7 +216,6 @@ Promise.all([getlawcount(), postWelfare(), getSalary(), getJobcategory()]).then(
             mychart = chartUpdata(mychart, IndDataset, chooseCate)
             $(chart.getEl()).slideDown(500)
             $(list.getEl()).slideUp(500)
-            open[2] = true
         })
 
         $("#salarychart_industry").click(()=> {

@@ -122,7 +122,6 @@ class helperCard {
                             <div class="card-welfaredd">佔整體第${this.data.ddp}分位</div>
                             <span class="card-salary">職務薪水參考：</span>
                             ${temp}
-                            <div class="card-hour">本職位業界平均工時為：${this.data.workhour}小時</div>
                         </div>
                     </div>
                 </div>
