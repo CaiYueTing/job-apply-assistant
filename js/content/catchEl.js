@@ -107,6 +107,11 @@ function chart(category) {
     return chart
 }
 
+function donut(obj) {
+    var d = new Donut(obj)
+    return d 
+}
+
 function chartUpdata(chart, dataset, i) {
     chart.data.labels = dataset[i].labels
     chart.data.datasets[0].data = dataset[i].right
@@ -138,12 +143,14 @@ Promise.all([getlawcount(), postWelfare(), getSalary(), getJobcategory()]).then(
         welfare = para[1].message
         salary = para[2].salary
         dd = para[1].dd
+        donutObj = para[1].r
         result = checkdivid(dd,welfare)
         category = para[3].message
 
         card = card(company, records, welfare, salary, result, category)
         list = list(records)
         chart = chart(category)
+        donut = donut(donutObj)
         el = chart.getElName()
         const backgroundColor = chart.getBackgroundColor()
         const borderColor = chart.getBorderColor()
