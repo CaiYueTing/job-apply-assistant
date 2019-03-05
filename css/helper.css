@@ -37,6 +37,10 @@
     cursor: pointer;
 }
 
+.card-welfare {
+    cursor: pointer;
+}
+
 #lawlist {
     width: 1024px;
     z-index: 99999;
@@ -208,6 +212,7 @@
     transform: translateX(-50%) translateY(-50%);
     border-radius: 15px;
     box-shadow: 0px 3px 15px rgba(0, 0, 0, 0.6);
+    display: none;
 }
 #donutborder {
     height: 512px;

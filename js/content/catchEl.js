@@ -95,19 +95,19 @@ function card(company, records, welfare, salary, result, category) {
     return card
 }
 
-function list(records) {
+function makelist(records) {
     list = new lawlist(records)
     list.init()
     return list
 }
 
-function chart(category) {
+function makechart(category) {
     var chart = new Salarychart(category)
     chart.init()
     return chart
 }
 
-function donut(obj) {
+function makedonut(obj) {
     var d = new Donut(obj)
     d.init()
     return d 
@@ -148,10 +148,25 @@ Promise.all([getlawcount(), postWelfare(), getSalary(), getJobcategory()]).then(
         result = checkdivid(dd,welfare)
         category = para[3].message
 
+        if (donutObj.economic == null){
+            donutObj.economic =[]
+        }
+        if (donutObj.time == null){
+            donutObj.time =[]
+        }
+        if (donutObj.entertain == null){
+            donutObj.entertain =[]
+        }
+        if (donutObj.infra == null){
+            donutObj.infra =[]
+        }
+        if (donutObj.person == null){
+            donutObj.person =[]
+        }
         card = card(company, records, welfare, salary, result, category)
-        list = list(records)
-        chart = chart(category)
-        donut = donut(donutObj)
+        list = makelist(records)
+        chart = makechart(category)
+        donut = makedonut(donutObj)
         donutel = donut.getElName()
         el = chart.getElName()
         
@@ -235,6 +250,7 @@ Promise.all([getlawcount(), postWelfare(), getSalary(), getJobcategory()]).then(
             mychart = chartUpdata(mychart, IndDataset, chooseCate)
             $(chart.getEl()).slideDown(500)
             $(list.getEl()).slideUp(500)
+            $(donut.getEl()).slideUp(500)
         })
         $("#category_id_1").click(()=>{
             chooseCate = 1
@@ -242,6 +258,7 @@ Promise.all([getlawcount(), postWelfare(), getSalary(), getJobcategory()]).then(
             mychart = chartUpdata(mychart, IndDataset, chooseCate)
             $(chart.getEl()).slideDown(500)
             $(list.getEl()).slideUp(500)
+            $(donut.getEl()).slideUp(500)
         })
         $("#category_id_2").click(()=>{
             chooseCate = 2
@@ -249,6 +266,7 @@ Promise.all([getlawcount(), postWelfare(), getSalary(), getJobcategory()]).then(
             mychart = chartUpdata(mychart, IndDataset, chooseCate)
             $(chart.getEl()).slideDown(500)
             $(list.getEl()).slideUp(500)
+            $(donut.getEl()).slideUp(500)
         })
 
         $("#salarychart_industry").click(()=> {
@@ -263,12 +281,17 @@ Promise.all([getlawcount(), postWelfare(), getSalary(), getJobcategory()]).then(
             mychart = chartUpdata(mychart, DistrictDataset, chooseCate)
         })
 
+        $(card.getWelfare()).click(()=> {
+            
+            $(chart.getEl()).slideUp(500)
+            $(list.getEl()).slideUp(500)
+            $(donut.getEl()).slideDown(500)
+        })
+
         $(card.getLaw()).click(()=>{
-            let flag = open.includes(true)
-            if (flag){
-                open = [false, false, false]
-                $(chart.getEl()).slideUp(500)
-            }
+            
+            $(chart.getEl()).slideUp(500)
+            $(donut.getEl()).slideUp(500)
             $(list.getEl()).slideDown(500)
         })
         $(list.getCloseEl()).click(()=>{
@@ -280,6 +303,10 @@ Promise.all([getlawcount(), postWelfare(), getSalary(), getJobcategory()]).then(
             $(chart.getEl()).slideUp(500)
         })
 
+        $(donut.getClose()).click(()=>{
+            open = [false, false, false]
+            $(donut.getEl()).slideUp(500)
+        })
         
 
 
