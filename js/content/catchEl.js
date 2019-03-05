@@ -109,6 +109,7 @@ function chart(category) {
 
 function donut(obj) {
     var d = new Donut(obj)
+    d.init()
     return d 
 }
 
@@ -151,7 +152,9 @@ Promise.all([getlawcount(), postWelfare(), getSalary(), getJobcategory()]).then(
         list = list(records)
         chart = chart(category)
         donut = donut(donutObj)
+        donutel = donut.getElName()
         el = chart.getElName()
+        
         const backgroundColor = chart.getBackgroundColor()
         const borderColor = chart.getBorderColor()
         const option = chart.getOptionSetting()
@@ -171,6 +174,29 @@ Promise.all([getlawcount(), postWelfare(), getSalary(), getJobcategory()]).then(
             DistrictDataset.push(dis)
             cateId.push(id)
         }
+
+        var dtx = document.querySelector(`#${donutel}myChart`).getContext('2d')
+        var donutchart = new Chart(dtx, {
+            type: 'doughnut',
+            data: {
+                labels: ["經濟類","休假類","設施類","娛樂類","個人喜好類"],
+                datasets: [
+                    {
+                        data: [
+                            donutObj.economic.length, 
+                            donutObj.entertain.length, 
+                            donutObj.infra.length, 
+                            donutObj.time.length, 
+                            donutObj.person.length
+                        ],
+                        backgroundColor:backgroundColor
+                    }
+                ]
+            },
+            options: {
+                legend: {position: "top"}
+            }
+        })
         
         var ctx = document.querySelector(`#${el}myChart`).getContext('2d')
         var mychart = new Chart(ctx, {

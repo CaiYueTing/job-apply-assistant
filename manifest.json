@@ -18,7 +18,8 @@
                 "./js/content/content.js",
                 "./js/content/lawlist.js",
                 "./js/content/catchEl.js",
-                "./js/content/salary.js"
+                "./js/content/salary.js",
+                "./js/content/donut.js"
                 
             ],
             "css":[
