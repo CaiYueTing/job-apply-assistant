@@ -44,8 +44,8 @@
 #lawlist {
     width: 1024px;
     z-index: 99999;
-    background-color: var(--main-bg-color);
-    color: var(--main-text-color);
+    background-color: #ccc;
+    color: #666666;
     font-weight: 600;
     position: fixed;
     padding: 10px;
@@ -73,7 +73,7 @@
 }
 
 .style_hr {   
-    border:solid 0.2px white;
+    border:solid 0.2px #666666;
     height: 0.2px;
 }
 
@@ -219,7 +219,7 @@
     width: 512px;
 }
 #donutchartmyChart {
-    margin-left: 256px;
+    margin-left: 128px;
 }
 
 #donutchart_close {
@@ -230,4 +230,10 @@
     position: absolute;
     left: 20px;
     top: 8px
+}
+
+.welfareList {
+    position: absolute;
+    top: 180px;
+    left: 640px;
 }

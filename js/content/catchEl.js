@@ -209,6 +209,11 @@ Promise.all([getlawcount(), postWelfare(), getSalary(), getJobcategory()]).then(
                 ]
             },
             options: {
+                layout: {
+                    padding: {
+                        bottom:0
+                    }
+                },
                 legend: {position: "top"}
             }
         })

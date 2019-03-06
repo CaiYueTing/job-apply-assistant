@@ -29,14 +29,43 @@ class Donut {
         return $(`#${this.domId}_close`)
     }
 
+    getListItem(arr) {
+        s = "無"
+        if (arr.length != 0){
+            s = ""
+            for (let i=0;i<arr.length;i++){
+                if (i == arr.length-1){
+                    s += `<span>${arr[i]}。</span>`
+                }else{
+                    s += `<span>${arr[i]}、</span>`
+                }
+            }
+        }
+        return s
+    }
+
     getTemplate() {
-        return `
+        var e = this.getListItem(this.economic)
+        var t = this.getListItem(this.time)
+        var i = this.getListItem(this.infra)
+        var en = this.getListItem(this.entertain)
+        var p = this.getListItem(this.person)
+
+        s = `
             <div id="${this.domId}">
                 <div id="donutborder">
                     <span id="${this.domId}_close">X</span>
+                    <span class="welfareList">
+                        <span class="class-economic">經濟類：${e}</span>
+                        <br><span class="class-time">休假工時類：${t}</span>
+                        <br><span class="class-infra">設施類：${i}</span>
+                        <br><span class="class-entertain">娛樂類：${en}</span>
+                        <br><span class="class-person">個人喜好類：${p}</span>
+                    </span>
                     <canvas id="${this.domId}myChart" class="donut_chart">
                 </div>
             </div>
         `
+        return s
     }
 }
