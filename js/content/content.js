@@ -122,8 +122,8 @@ class helperCard {
                         <div class="card-cantentiner">
                             <div class="card-company">${this.data.cname}</div>
                             <div class="card-law">曾經違反 ${this.data.lawcount.length} 筆勞基法</div>
-                            <div class="card-welfare">本系統福利推薦分數：${this.data.welfare}</div>
-                            <div class="card-welfare">佔整體第${this.data.ddp}分位</div>
+                            <div class="card-welfare">福利分析在整體福利第${this.data.ddp}分位(前${10-this.data.ddp}0%)</div>
+                            <div class="card-welfare">福利摘要分析</div>
                             <span class="card-salary">職務薪水參考：</span>
                             ${temp}
                         </div>

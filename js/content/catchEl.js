@@ -113,12 +113,29 @@ function makedonut(obj) {
     return d 
 }
 
-function chartUpdata(chart, dataset, i) {
-    chart.data.labels = dataset[i].labels
-    chart.data.datasets[0].data = dataset[i].right
-    chart.data.datasets[1].data = dataset[i].left
-    chart.data.datasets[2].data = dataset[i].middle
-    chart.data.datasets[3].data = dataset[i].average
+function chartUpdata(chart, dataset, i, backgroundColor, borderColor) {
+    chart.data.datasets = []
+    let d = dataset[i]
+    a = d.average
+    r = d.right
+    l = d.left
+    m = d.middle
+    for (let j=0;j<d.labels.length;j++) {
+        let = obj = {
+            label: d.labels[j],
+            data: [r[j],l[j],m[j],a[j]],
+            backgroundColor: backgroundColor,
+            borderColor:borderColor
+        }
+        chart.data.datasets.push(obj)
+    }
+
+    // console.log(chart.data)
+    // chart.data.labels = dataset[i].labels
+    // chart.data.datasets[0].data = dataset[i].right
+    // chart.data.datasets[1].data = dataset[i].left
+    // chart.data.datasets[2].data = dataset[i].middle
+    // chart.data.datasets[3].data = dataset[i].average
     chart.update()
     return chart
 }
@@ -132,6 +149,18 @@ function getWelfareSetting() {
         })
     }
     return result
+}
+
+function testchart(ctx, backgroundColor, borderColor, option) {
+    return new Chart(ctx, {
+        type: 'horizontalBar',
+        data: {
+            labels: ["最高薪資","最低薪資","中位數薪資","平均薪資"],
+            datasets: [
+                
+            ]},
+        options: option
+    })
 }
 
 function initialSalaryChart(ctx, backgroundColor, borderColor, option) {
@@ -249,47 +278,48 @@ Promise.all([getlawcount(), postWelfare(), getSalary(), getJobcategory()]).then(
             DistrictDataset.push(dis)
             cateId.push(id)
         }
+    
 
         var dtx = document.querySelector(`#${donutel}myChart`).getContext('2d')
         var donutchart = initialDonutChart(dtx, backgroundColor, donutObj)
         
         var ctx = document.querySelector(`#${el}myChart`).getContext('2d')
-        var mychart = initialSalaryChart(ctx, backgroundColor, borderColor, option)
+        var mychart = testchart(ctx, backgroundColor, borderColor, option)
         
 
         //operation logic
         $("#category_id_0").click(()=>{
             chooseCate = 0
-            mychart = chartUpdata(mychart, IndDataset, chooseCate)
+            mychart = chartUpdata(mychart, IndDataset, chooseCate, backgroundColor, borderColor )
             $(chart.getEl()).slideDown(500)
             $(list.getEl()).slideUp(500)
             $(donut.getEl()).slideUp(500)
         })
         $("#category_id_1").click(()=>{
             chooseCate = 1
-            mychart = chartUpdata(mychart, IndDataset, chooseCate)
+            mychart = chartUpdata(mychart, IndDataset, chooseCate, backgroundColor, borderColor )
             $(chart.getEl()).slideDown(500)
             $(list.getEl()).slideUp(500)
             $(donut.getEl()).slideUp(500)
         })
         $("#category_id_2").click(()=>{
             chooseCate = 2
-            mychart = chartUpdata(mychart, IndDataset, chooseCate)
+            mychart = chartUpdata(mychart, IndDataset, chooseCate, backgroundColor, borderColor )
             $(chart.getEl()).slideDown(500)
             $(list.getEl()).slideUp(500)
             $(donut.getEl()).slideUp(500)
         })
 
         $("#salarychart_industry").click(()=> {
-            mychart = chartUpdata(mychart, IndDataset, chooseCate)
+            mychart = chartUpdata(mychart, IndDataset, chooseCate, backgroundColor, borderColor )
         })
 
         $("#salarychart_exp").click(()=> {
-            mychart = chartUpdata(mychart, ExpDataset, chooseCate)
+            mychart = chartUpdata(mychart, ExpDataset, chooseCate, backgroundColor, borderColor )
         })
 
         $("#salarychart_district").click(()=> {
-            mychart = chartUpdata(mychart, DistrictDataset, chooseCate)
+            mychart = chartUpdata(mychart, DistrictDataset, chooseCate, backgroundColor, borderColor )
         })
 
         $(card.getWelfare()).click(()=> {
