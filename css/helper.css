@@ -41,6 +41,11 @@
     cursor: pointer;
 }
 
+a .card-qollie {
+    cursor: pointer;
+    text-decoration: none;
+}
+
 #lawlist {
     width: 1024px;
     z-index: 99999;

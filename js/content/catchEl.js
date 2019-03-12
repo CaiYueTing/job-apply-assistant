@@ -7,7 +7,7 @@ function getCname() {
 function getlawcount() {
     company = getCname()
     company = company.replace(/\//g,"")
-    reqStr = `https://welfaredetector.tk/card/law/${company}`
+    reqStr = `http://localhost/card/law/${company}`
     return new Promise((resolve,reject)=> {
         lowcount = $.getJSON(reqStr)
         resolve(lowcount)
@@ -17,7 +17,7 @@ function getlawcount() {
 function getWelfare() {
     content = document.getElementsByClassName('content')[2].innerText
     c = content.replace(/[&\/\\#,+()$~%.'":*?<>{}]/g, "")
-    reqStr = `https://welfaredetector.tk/welfare/${c}`
+    reqStr = `http://localhost/welfare/${c}`
     return new Promise((resolve, reject)=> {
         data = $.getJSON(reqStr)
         resolve(data)
@@ -50,7 +50,7 @@ function getSalary() {
     }
     
     salary = salary.replace(/\,/g,"")
-    reqStr = `https://welfaredetector.tk/card/salary/${salary}`
+    reqStr = `http://localhost/card/salary/${salary}`
 
     return new Promise((resolve, reject)=> {
         data = $.getJSON(reqStr)
@@ -60,7 +60,7 @@ function getSalary() {
 
 function postWelfare() {
     content = document.getElementsByClassName('content')[2].innerText
-    url = `https://welfaredetector.tk/card/welfare`
+    url = `http://localhost/card/welfare`
     return new Promise((resolve,reject)=>{
         data = $.post(url, { wdata : content })
         resolve(data)
@@ -70,7 +70,7 @@ function postWelfare() {
 function getJobcategory() {
     dlc = document.getElementsByClassName("cate")[0].innerText
     
-    url = `https://welfaredetector.tk/card/category`
+    url = `http://localhost/card/category`
     return new Promise((resolve, reject)=> {
         data = $.post(url, { cdata : dlc })
         resolve(data)
@@ -88,8 +88,8 @@ function checkdivid(arr, welfare) {
     return result
 }
 
-function card(company, records, welfare, salary, result, category) {
-    card = new helperCard(company, records , welfare, salary, result, category)
+function card(company, records, welfare, salary, result, category, qollie) {
+    card = new helperCard(company, records , welfare, salary, result, category, qollie)
     card.init()
     card.listener()
     return card
@@ -113,29 +113,29 @@ function makedonut(obj) {
     return d 
 }
 
-function chartUpdata(chart, dataset, i, backgroundColor, borderColor) {
-    chart.data.datasets = []
-    let d = dataset[i]
-    a = d.average
-    r = d.right
-    l = d.left
-    m = d.middle
-    for (let j=0;j<d.labels.length;j++) {
-        let = obj = {
-            label: d.labels[j],
-            data: [r[j],l[j],m[j],a[j]],
-            backgroundColor: backgroundColor,
-            borderColor:borderColor
-        }
-        chart.data.datasets.push(obj)
-    }
+function chartUpdata(chart, dataset, i) {
+    // chart.data.datasets = []
+    // let d = dataset[i]
+    // a = d.average
+    // r = d.right
+    // l = d.left
+    // m = d.middle
+    // for (let j=0;j<d.labels.length;j++) {
+    //     let = obj = {
+    //         label: d.labels[j],
+    //         data: [r[j],l[j],m[j],a[j]],
+    //         backgroundColor: backgroundColor,
+    //         borderColor:borderColor
+    //     }
+    //     chart.data.datasets.push(obj)
+    // }
 
     // console.log(chart.data)
-    // chart.data.labels = dataset[i].labels
-    // chart.data.datasets[0].data = dataset[i].right
-    // chart.data.datasets[1].data = dataset[i].left
-    // chart.data.datasets[2].data = dataset[i].middle
-    // chart.data.datasets[3].data = dataset[i].average
+    chart.data.labels = dataset[i].labels
+    chart.data.datasets[0].data = dataset[i].right
+    chart.data.datasets[1].data = dataset[i].left
+    chart.data.datasets[2].data = dataset[i].middle
+    chart.data.datasets[3].data = dataset[i].average
     chart.update()
     return chart
 }
@@ -231,6 +231,7 @@ welfaresetting = getWelfareSetting()
 Promise.all([getlawcount(), postWelfare(), getSalary(), getJobcategory()]).then(
     function(para){
         records = para[0].records
+        qollie = para[0].qollie
         welfare = para[1].message
         salary = para[2].salary
         dd = para[1].dd
@@ -253,7 +254,7 @@ Promise.all([getlawcount(), postWelfare(), getSalary(), getJobcategory()]).then(
         if (donutObj.person == null){
             donutObj.person =[]
         }
-        card = card(company, records, welfare, salary, result, category)
+        card = card(company, records, welfare, salary, result, category, qollie)
         list = makelist(records)
         chart = makechart(category)
         donut = makedonut(donutObj)
@@ -284,42 +285,42 @@ Promise.all([getlawcount(), postWelfare(), getSalary(), getJobcategory()]).then(
         var donutchart = initialDonutChart(dtx, backgroundColor, donutObj)
         
         var ctx = document.querySelector(`#${el}myChart`).getContext('2d')
-        var mychart = testchart(ctx, backgroundColor, borderColor, option)
+        var mychart = initialSalaryChart(ctx, backgroundColor, borderColor, option)
         
 
         //operation logic
         $("#category_id_0").click(()=>{
             chooseCate = 0
-            mychart = chartUpdata(mychart, IndDataset, chooseCate, backgroundColor, borderColor )
+            mychart = chartUpdata(mychart, IndDataset, chooseCate )
             $(chart.getEl()).slideDown(500)
             $(list.getEl()).slideUp(500)
             $(donut.getEl()).slideUp(500)
         })
         $("#category_id_1").click(()=>{
             chooseCate = 1
-            mychart = chartUpdata(mychart, IndDataset, chooseCate, backgroundColor, borderColor )
+            mychart = chartUpdata(mychart, IndDataset, chooseCate )
             $(chart.getEl()).slideDown(500)
             $(list.getEl()).slideUp(500)
             $(donut.getEl()).slideUp(500)
         })
         $("#category_id_2").click(()=>{
             chooseCate = 2
-            mychart = chartUpdata(mychart, IndDataset, chooseCate, backgroundColor, borderColor )
+            mychart = chartUpdata(mychart, IndDataset, chooseCate )
             $(chart.getEl()).slideDown(500)
             $(list.getEl()).slideUp(500)
             $(donut.getEl()).slideUp(500)
         })
 
         $("#salarychart_industry").click(()=> {
-            mychart = chartUpdata(mychart, IndDataset, chooseCate, backgroundColor, borderColor )
+            mychart = chartUpdata(mychart, IndDataset, chooseCate )
         })
 
         $("#salarychart_exp").click(()=> {
-            mychart = chartUpdata(mychart, ExpDataset, chooseCate, backgroundColor, borderColor )
+            mychart = chartUpdata(mychart, ExpDataset, chooseCate )
         })
 
         $("#salarychart_district").click(()=> {
-            mychart = chartUpdata(mychart, DistrictDataset, chooseCate, backgroundColor, borderColor )
+            mychart = chartUpdata(mychart, DistrictDataset, chooseCate )
         })
 
         $(card.getWelfare()).click(()=> {

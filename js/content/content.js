@@ -1,5 +1,5 @@
 class helperCard {
-    constructor(cname, lawcount, welfare, salary, ddp, category, workhour){
+    constructor(cname, lawcount, welfare, salary, ddp, category, qollie){
         this.data = {
             domId: "applicant-helper",
             cname: cname,
@@ -8,7 +8,7 @@ class helperCard {
             salary: salary,
             ddp: ddp,
             category: category,
-            workhour: workhour
+            qollie: qollie
         }
     }
 
@@ -97,9 +97,32 @@ class helperCard {
 
     }
 
+    qollieId() {
+        if (this.data.qollie.data.getCompanyStat.id == ""){
+            return "資料無此公司資料"
+        }
+        return this.data.qollie.data.getCompanyStat.id
+    }
+
+    qollieScore() {
+        if (this.qollieId() == "資料無此公司資料"){
+            return 
+        }
+        var arr  = []
+        var good = this.data.qollie.data.getCompanyStat.good
+        var bad = this.data.qollie.data.getCompanyStat.bad
+        var normal = this.data.qollie.data.getCompanyStat.normal
+        var total = good+bad+normal
+        arr.push(good/total*100)
+        arr.push(bad/total*100)
+        arr.push(normal/total*100)
+        return arr 
+
+    }
+
     getTemplate() {
         const len = this.data.category.length
-        
+        console.log(this.data.qollie)
         var temp = ``
 
         for (let i=0; i<len; i++){
@@ -112,7 +135,8 @@ class helperCard {
             }
             temp = temp + t    
         }
-        
+        var qid = this.qollieId()
+        var qscore = this.qollieScore()
 
         return `
             <div id="${this.data.domId}">
@@ -122,6 +146,12 @@ class helperCard {
                         <div class="card-cantentiner">
                             <div class="card-company">${this.data.cname}</div>
                             <div class="card-law">曾經違反 ${this.data.lawcount.length} 筆勞基法</div>
+                            <div class="card-qollie">天眼通評價
+                                <span>好${qscore[0]}%</span>
+                                <span>壞${qscore[1]}%</span>
+                                <span>普通${qscore[2]}%</span>
+                            </div>
+                            <a href="https://www.qollie.com/companies/${qid}" target="_blank" class="card-qollie">天眼通連結</a>
                             <div class="card-welfare">福利分析在整體福利第${this.data.ddp}分位(前${10-this.data.ddp}0%)</div>
                             <div class="card-welfare">福利摘要分析</div>
                             <span class="card-salary">職務薪水參考：</span>

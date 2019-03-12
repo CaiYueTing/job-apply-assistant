@@ -32,7 +32,6 @@
     },
     "permissions":[
         "tabs",
-        "storage",
-        "http://localhost:8080/*"
+        "storage"
     ]
 }
