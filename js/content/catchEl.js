@@ -7,7 +7,7 @@ function getCname() {
 function getlawcount() {
     company = getCname()
     company = company.replace(/\//g,"")
-    reqStr = `http://localhost/card/law/${company}`
+    reqStr = `https://www.welfaredetector.tk/card/law/${company}`
     return new Promise((resolve,reject)=> {
         lowcount = $.getJSON(reqStr)
         resolve(lowcount)
@@ -17,7 +17,7 @@ function getlawcount() {
 function getWelfare() {
     content = document.getElementsByClassName('content')[2].innerText
     c = content.replace(/[&\/\\#,+()$~%.'":*?<>{}]/g, "")
-    reqStr = `http://localhost/welfare/${c}`
+    reqStr = `https://www.welfaredetector.tk/welfare/${c}`
     return new Promise((resolve, reject)=> {
         data = $.getJSON(reqStr)
         resolve(data)
@@ -50,7 +50,7 @@ function getSalary() {
     }
     
     salary = salary.replace(/\,/g,"")
-    reqStr = `http://localhost/card/salary/${salary}`
+    reqStr = `https://www.welfaredetector.tk/card/salary/${salary}`
 
     return new Promise((resolve, reject)=> {
         data = $.getJSON(reqStr)
@@ -60,7 +60,7 @@ function getSalary() {
 
 function postWelfare() {
     content = document.getElementsByClassName('content')[2].innerText
-    url = `http://localhost/card/welfare`
+    url = `https://www.welfaredetector.tk/card/welfare`
     return new Promise((resolve,reject)=>{
         data = $.post(url, { wdata : content })
         resolve(data)
@@ -70,7 +70,7 @@ function postWelfare() {
 function getJobcategory() {
     dlc = document.getElementsByClassName("cate")[0].innerText
     
-    url = `http://localhost/card/category`
+    url = `https://www.welfaredetector.tk/card/category`
     return new Promise((resolve, reject)=> {
         data = $.post(url, { cdata : dlc })
         resolve(data)

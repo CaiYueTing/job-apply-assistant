@@ -114,9 +114,9 @@ class helperCard {
         var normal = this.data.qollie.data.getCompanyStat.normal
         var total = good+bad+normal
         if (total != 0){
-            arr.push(good/total*100)
-            arr.push(bad/total*100)
-            arr.push(normal/total*100)
+            arr.push((good/total*100).toFixed(1))
+            arr.push((bad/total*100).toFixed(1))
+            arr.push((normal/total*100).toFixed(1))
         }
         return arr 
 
@@ -129,13 +129,13 @@ class helperCard {
 
         for (let i=0; i<len; i++){
             let id = "category_id_"+i
-            let t = `<span id="${id}" class="category_list">{{data}}、</span>`
+            let t = `<span id="${id}" class="category_list">{{data}}</span>`
             let category = this.data.category[i]
             t = t.replace("{{data}}", category.category)
-            if (i == len-1){
-                t = t.replace("、","")
-            }
             temp = temp + t    
+            if (i != len-1){
+                temp = temp + `<span>、</span>`
+            }
         }
         var qid = this.qollieId()
         var qscore = this.qollieScore()
@@ -150,9 +150,9 @@ class helperCard {
             qolliestring = `<span>資料不足</span>`
         }
         if (qid != "資料無此公司資料") {
-            qollielink = `<a href="https://www.qollie.com/companies/${qid}" target="_blank" class="card-qollie">天眼通連結</a>`
+            qollielink = `<a href="https://www.qollie.com/companies/${qid}" style="color:white" target="_blank" class="card-qollie">`
         }else {
-            qollielink = `<a href="https://www.qollie.com" target="_blank" class="card-qollie">天眼通連結</a>`
+            qollielink = `<a href="https://www.qollie.com" style="color:white" target="_blank" class="card-qollie">`
         }
 
 
@@ -164,10 +164,10 @@ class helperCard {
                         <div class="card-cantentiner">
                             <div class="card-company">${this.data.cname}</div>
                             <div class="card-law">曾經違反 ${this.data.lawcount.length} 筆勞基法</div>
-                            <div class="card-qollie">天眼通評價：
+                            ${qollielink}天眼通評價：
                                 ${qolliestring}
-                            </div>
-                            ${qollielink}
+                            </a>
+                            
                             <div class="card-welfare">福利分析在整體福利第${this.data.ddp}分位(前${10-this.data.ddp}0%)</div>
                             <div class="card-welfare">福利摘要分析</div>
                             <span class="card-salary">職務薪水參考：</span>

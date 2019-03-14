@@ -37,23 +37,41 @@
     cursor: pointer;
 }
 
+.card-law:hover {
+    text-decoration: underline;
+}
+
 .card-welfare {
     cursor: pointer;
 }
 
+.card-welfare:hover {
+    text-decoration: underline;
+}
+
+.category_list {
+    cursor: pointer;
+}
+
+.category_list:hover {
+    text-decoration: underline;
+}
+
 a .card-qollie {
+    color: #fff;
     cursor: pointer;
     text-decoration: none;
 }
 
 #lawlist {
     width: 1024px;
+    height: 512px;
     z-index: 99999;
     background-color: #ccc;
     color: #666666;
     font-weight: 600;
     position: fixed;
-    padding: 10px;
+    padding: 10px 0px;
     top: 50%;
     /* right: 100%; */
     left: 50%;
@@ -61,7 +79,23 @@ a .card-qollie {
     border-radius: 15px;
     box-shadow: 0px 3px 15px rgba(0, 0, 0, 0.6);
     /* transition: 0.8s; */
-    display: none
+    display: none;
+    overflow-y: scroll;
+}
+
+
+#lawlist::-webkit-scrollbar {
+    width: 2px;
+}
+#lawlist::-webkit-scrollbar-track {
+    -webkit-border-radius: 10px;
+    border-radius: 10px;
+    margin:80px 0 5px 0;
+}
+#lawlist::-webkit-scrollbar-thumb {
+    -webkit-border-radius: 4px;
+    border-radius: 4px;
+    background: rgb(219,219,219);
 }
 
 
@@ -78,7 +112,7 @@ a .card-qollie {
 }
 
 .style_hr {   
-    border:solid 0.2px #666666;
+    border:solid 0.5px #666666;
     height: 0.2px;
 }
 
@@ -126,10 +160,6 @@ a .card-qollie {
     border-radius: 15px;
     box-shadow: 0px 3px 15px rgba(0, 0, 0, 0.6);
     display: none
-}
-
-.category_list {
-    cursor: pointer;
 }
 
 .salary_chart {

@@ -68,7 +68,7 @@ class lawlist {
                 <div class="lawlist_text">違法法律資訊</div>
             </div>
             <hr class="style_hr">
-            <table div class="law_item">
+            <table class="law_item">
                 <tr>
                     <th class="lawlist_location">主管機關</th>
                     <th class="lawlist_publicdate">公告日期</th>
