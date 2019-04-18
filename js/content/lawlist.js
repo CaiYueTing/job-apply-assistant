@@ -38,13 +38,13 @@ class lawlist {
 
         for (let i=0;i<this.data.law.length;i++){
             var id = "law_list_"+i
-            var location = this.data.law[i].location
-            var publicdate = this.data.law[i].publicdate
-            var dealdate = this.data.law[i].dealdate
-            var govnumber = this.data.law[i].govnumber
-            var law = this.data.law[i].law
-            var description = this.data.law[i].description
-            var ps = this.data.law[i].ps
+            var location = this.data.law[i].Location
+            var publicdate = this.data.law[i].Publicdate
+            var dealdate = this.data.law[i].Dealdate
+            var govnumber = this.data.law[i].Govnumber
+            var law = this.data.law[i].Law
+            var description = this.data.law[i].Description
+            var ps = this.data.law[i].Ps
             law = law.replace(/\;/g, "<br>")
             description = description.replace(/\;/g, "<br>")
             var current_html = 

@@ -7,7 +7,7 @@ function getCname() {
 function getlawcount() {
     company = getCname()
     company = company.replace(/\//g,"")
-    reqStr = `https://www.welfaredetector.tk/card/law/${company}`
+    reqStr = `https://a9xzaomzf2.execute-api.ap-northeast-2.amazonaws.com/development/card/law/${company}`
     return new Promise((resolve,reject)=> {
         lowcount = $.getJSON(reqStr)
         resolve(lowcount)
@@ -17,7 +17,7 @@ function getlawcount() {
 function getWelfare() {
     content = document.getElementsByClassName('content')[2].innerText
     c = content.replace(/[&\/\\#,+()$~%.'":*?<>{}]/g, "")
-    reqStr = `https://www.welfaredetector.tk/welfare/${c}`
+    reqStr = `https://a9xzaomzf2.execute-api.ap-northeast-2.amazonaws.com/development/welfare/${c}`
     return new Promise((resolve, reject)=> {
         data = $.getJSON(reqStr)
         resolve(data)
@@ -50,7 +50,7 @@ function getSalary() {
     }
     
     salary = salary.replace(/\,/g,"")
-    reqStr = `https://www.welfaredetector.tk/card/salary/${salary}`
+    reqStr = `https://a9xzaomzf2.execute-api.ap-northeast-2.amazonaws.com/development/card/salary/${salary}`
 
     return new Promise((resolve, reject)=> {
         data = $.getJSON(reqStr)
@@ -60,7 +60,7 @@ function getSalary() {
 
 function postWelfare() {
     content = document.getElementsByClassName('content')[2].innerText
-    url = `https://www.welfaredetector.tk/card/welfare`
+    url = `https://a9xzaomzf2.execute-api.ap-northeast-2.amazonaws.com/development/card/welfare`
     return new Promise((resolve,reject)=>{
         data = $.post(url, { wdata : content })
         resolve(data)
@@ -70,7 +70,7 @@ function postWelfare() {
 function getJobcategory() {
     dlc = document.getElementsByClassName("cate")[0].innerText
     
-    url = `https://www.welfaredetector.tk/card/category`
+    url = `https://a9xzaomzf2.execute-api.ap-northeast-2.amazonaws.com/development/card/category`
     return new Promise((resolve, reject)=> {
         data = $.post(url, { cdata : dlc })
         resolve(data)

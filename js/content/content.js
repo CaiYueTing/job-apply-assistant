@@ -131,7 +131,7 @@ class helperCard {
             let id = "category_id_"+i
             let t = `<span id="${id}" class="category_list">{{data}}</span>`
             let category = this.data.category[i]
-            t = t.replace("{{data}}", category.category)
+            t = t.replace("{{data}}", category.CategoryName)
             temp = temp + t    
             if (i != len-1){
                 temp = temp + `<span>、</span>`
