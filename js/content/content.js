@@ -19,7 +19,10 @@ class helperCard {
     createCard() {
         const template = this.getTemplate()
         const el = $(template)
+        const small = this.hideTemplate()
+        const sel = $(small)
         $("body").prepend(el)
+        $("body").prepend(sel)
         // this.getLawItem()
     }
 
@@ -46,55 +49,63 @@ class helperCard {
     }
 
     listener() {
+        // -------mouse lisen function ---------------- 
+        // const el = this.getEl()
         
-        const el = this.getEl()
+        // let start = false
+        // let elStartPoint = {
+        //     x: 0,
+        //     y: 0
+        // }
+        // let pStartPoint = {
+        //     x: 0,
+        //     y: 0
+        // }
         
-        let start = false
-        let elStartPoint = {
-            x: 0,
-            y: 0
-        }
-        let pStartPoint = {
-            x: 0,
-            y: 0
-        }
-        
-        el.mousedown(function(e) {
-            elStartPoint.x = el.offset().left
-            elStartPoint.y = el.offset().top
-            pStartPoint.x = e.pageX
-            pStartPoint.y = e.pageY
-            start = true
-        })
+        // el.mousedown(function(e) {
+        //     elStartPoint.x = el.offset().left
+        //     elStartPoint.y = el.offset().top
+        //     pStartPoint.x = e.pageX
+        //     pStartPoint.y = e.pageY
+        //     start = true
+        // })
 
-        $(window).mouseup(function() {
-            start = false
-        }).mousemove(function(e) {
-            if (!start) {
-                return
-            }
+        // $(window).mouseup(function() {
+        //     start = false
+        // }).mousemove(function(e) {
+        //     if (!start) {
+        //         return
+        //     }
 
-            let offsetX = e.pageX - pStartPoint.x 
-            let offsetY = e.pageY - pStartPoint.y - $(window).scrollTop()
-            el.css({
-                transform: 'none',
-                transition: 'unset',
-                right: 'unset',
-                left: elStartPoint.x + offsetX,
-                top: elStartPoint.y + offsetY
-            })
-        })
+        //     let offsetX = e.pageX - pStartPoint.x 
+        //     let offsetY = e.pageY - pStartPoint.y - $(window).scrollTop()
+        //     el.css({
+        //         transform: 'none',
+        //         transition: 'unset',
+        //         right: 'unset',
+        //         left: elStartPoint.x + offsetX,
+        //         top: elStartPoint.y + offsetY
+        //     })
+        // })
 
-        el.find(".card-cantentiner").mousemove(function(e) {
-            e.stopPropagation()
-        })
-
+        // el.find(".card-cantentiner").mousemove(function(e) {
+        //     e.stopPropagation()
+        // })
+// -------mouse lisen function ----------------
         if (this.data.lawcount != null && this.data.lawcount.length > 0){
             $(".card-law").css({
                 color: '#B20000'
             })
         }
 
+        $("#card-hideinformation").click(function () {
+            $("#applicant-helper").css("right", "-60%")
+            $(".small-card").css("right", "0%")
+        });
+        $(".small-card").click(function () {
+            $("#applicant-helper").css("right", "0%")
+            $(".small-card").css("right", "-10%")
+        });
     }
 
     qollieId() {
@@ -120,6 +131,14 @@ class helperCard {
         }
         return arr 
 
+    }
+    hideTemplate() {
+        return `
+            <div class="small-card">
+                <div><</div>
+                <div class="small-card-name">Jobhelper</div>
+            </div>
+        `
     }
 
     getTemplate() {
@@ -158,7 +177,9 @@ class helperCard {
 
         return `
             <div id="${this.data.domId}">
+                
                 <div class="card-container">
+                    <div id="card-hideinformation">>></div>
                     <div class="card-title">職位資訊</div>
                     <hr>
                         <div class="card-cantentiner">
