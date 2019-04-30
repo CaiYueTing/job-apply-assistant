@@ -1,8 +1,6 @@
 {
     "manifest_version": 2,
     "version": "1.1.2",
-    "icons" :{
-    },
     "description": "協助求職者更認識公司的背景",
     "browser_action":{
         "default_icon": "./JH128300.png",
@@ -34,7 +32,10 @@
         }
     ],
     "background": {
-        "scripts": ["./js/background/background.js"]
+        "scripts": [
+            "./js/lib/jquery-3.3.1.min.js",
+            "./js/background/background.js"
+        ]
     },
     "permissions":[
         "tabs",

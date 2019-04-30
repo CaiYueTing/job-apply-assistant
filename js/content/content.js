@@ -1,5 +1,5 @@
 class helperCard {
-    constructor(cname, lawcount, welfare, salary, ddp, category, qollie){
+    constructor(cname, lawcount, welfare, salary, ddp, category, qollie) {
         this.data = {
             domId: "applicant-helper",
             cname: cname,
@@ -35,11 +35,11 @@ class helperCard {
     getEl() {
         return $(`#${this.data.domId}`)
     }
-    
+
     getLaw() {
         return $(`.card-law`)
     }
-    
+
     getChart() {
         return $(`.card-salary`)
     }
@@ -51,7 +51,7 @@ class helperCard {
     listener() {
         // -------mouse lisen function ---------------- 
         // const el = this.getEl()
-        
+
         // let start = false
         // let elStartPoint = {
         //     x: 0,
@@ -61,7 +61,7 @@ class helperCard {
         //     x: 0,
         //     y: 0
         // }
-        
+
         // el.mousedown(function(e) {
         //     elStartPoint.x = el.offset().left
         //     elStartPoint.y = el.offset().top
@@ -91,8 +91,8 @@ class helperCard {
         // el.find(".card-cantentiner").mousemove(function(e) {
         //     e.stopPropagation()
         // })
-// -------mouse lisen function ----------------
-        if (this.data.lawcount != null && this.data.lawcount.length > 0){
+        // -------mouse lisen function ----------------
+        if (this.data.lawcount != null && this.data.lawcount.length > 0) {
             $(".card-law").css({
                 color: '#B20000'
             })
@@ -109,27 +109,27 @@ class helperCard {
     }
 
     qollieId() {
-        if (this.data.qollie.data.getCompanyStat.id == ""){
+        if (this.data.qollie.data.getCompanyStat.id == "") {
             return "資料無此公司資料"
         }
         return this.data.qollie.data.getCompanyStat.id
     }
 
     qollieScore() {
-        var arr  = []
-        if (this.qollieId() == "資料無此公司資料"){
+        var arr = []
+        if (this.qollieId() == "資料無此公司資料") {
             return arr
         }
         var good = this.data.qollie.data.getCompanyStat.good
         var bad = this.data.qollie.data.getCompanyStat.bad
         var normal = this.data.qollie.data.getCompanyStat.normal
-        var total = good+bad+normal
-        if (total != 0){
-            arr.push((good/total*100).toFixed(1))
-            arr.push((bad/total*100).toFixed(1))
-            arr.push((normal/total*100).toFixed(1))
+        var total = good + bad + normal
+        if (total != 0) {
+            arr.push((good / total * 100).toFixed(1))
+            arr.push((bad / total * 100).toFixed(1))
+            arr.push((normal / total * 100).toFixed(1))
         }
-        return arr 
+        return arr
 
     }
     hideTemplate() {
@@ -143,16 +143,16 @@ class helperCard {
 
     getTemplate() {
         const len = this.data.category.length
-        console.log(this.data.qollie)
+        // console.log(this.data.qollie)
         var temp = ``
 
-        for (let i=0; i<len; i++){
-            let id = "category_id_"+i
+        for (let i = 0; i < len; i++) {
+            let id = "category_id_" + i
             let t = `<span id="${id}" class="category_list">{{data}}</span>`
             let category = this.data.category[i]
             t = t.replace("{{data}}", category.category)
-            temp = temp + t    
-            if (i != len-1){
+            temp = temp + t
+            if (i != len - 1) {
                 temp = temp + `<span>、</span>`
             }
         }
@@ -165,12 +165,12 @@ class helperCard {
                 <span>好${qscore[0]}%</span>
                 <span>壞${qscore[1]}%</span>
                 <span>普通${qscore[2]}%</span>`
-        }else {
+        } else {
             qolliestring = `<span>資料不足</span>`
         }
         if (qid != "資料無此公司資料") {
             qollielink = `<a href="https://www.qollie.com/companies/${qid}" style="color:white" target="_blank" class="card-qollie">`
-        }else {
+        } else {
             qollielink = `<a href="https://www.qollie.com" style="color:white" target="_blank" class="card-qollie">`
         }
 
@@ -189,7 +189,7 @@ class helperCard {
                                 ${qolliestring}
                             </a>
                             
-                            <div class="card-welfare">福利分析在整體福利第${this.data.ddp}分位(前${10-this.data.ddp}0%)</div>
+                            <div class="card-welfare">福利分析在整體福利第${this.data.ddp}分位(前${10 - this.data.ddp}0%)</div>
                             <div class="card-welfare">福利摘要分析</div>
                             <span class="card-salary">職務薪水參考：</span>
                             ${temp}
@@ -203,6 +203,7 @@ class helperCard {
     getFailTemp() {
         return `<div id="${this.data.domId}">
         <div class="card-container">
+            <div id="card-hideinformation">>></div>
             <div class="card-title">職位資訊</div>
             <hr>
                 <div class="card-cantentiner">
