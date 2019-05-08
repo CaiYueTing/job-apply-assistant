@@ -9,17 +9,27 @@ company = getCname()
 function getlawcount() {
     company = getCname()
     company = company.replace(/\//g, "")
-    reqStr = `https://www.welfaredetector.tk/card/law/${company}`
+    reqStr = requrl + `/card/law/${company}`
     return new Promise((resolve, reject) => {
         lowcount = $.getJSON(reqStr)
         resolve(lowcount)
     })
 }
 
+function getQollie() {
+    company = getCname()
+    company = company.replace(/\//g, "")
+    reqStr = requrl + `/card/qol/${company}`
+    return new Promise((resolve, reject) => {
+        qol = $.getJSON(reqStr)
+        resolve(qol)
+    })
+}
+
 function getWelfare() {
     content = document.getElementsByClassName('content')[2].innerText
     c = content.replace(/[&\/\\#,+()$~%.'":*?<>{}]/g, "")
-    reqStr = `https://www.welfaredetector.tk/welfare/${c}`
+    reqStr = requrl + `/welfare/${c}`
     return new Promise((resolve, reject) => {
         data = $.getJSON(reqStr)
         resolve(data)
@@ -52,7 +62,7 @@ function getSalary() {
     }
 
     salary = salary.replace(/\,/g, "")
-    reqStr = `https://www.welfaredetector.tk/card/salary/${salary}`
+    reqStr = requrl + `/card/salary/${salary}`
 
     return new Promise((resolve, reject) => {
         data = $.getJSON(reqStr)
@@ -62,7 +72,7 @@ function getSalary() {
 
 function postWelfare() {
     content = document.getElementsByClassName('content')[2].innerText
-    url = `https://www.welfaredetector.tk/card/welfare`
+    url = requrl + `/card/welfare`
     return new Promise((resolve, reject) => {
         data = $.post(url, { wdata: content })
         resolve(data)
@@ -72,7 +82,7 @@ function postWelfare() {
 function getJobcategory() {
     dlc = document.getElementsByClassName("cate")[0].innerText
 
-    url = `https://www.welfaredetector.tk/card/category`
+    url = requrl + `/card/category`
     return new Promise((resolve, reject) => {
         data = $.post(url, { cdata: dlc })
         resolve(data)
@@ -262,10 +272,10 @@ function initialDonutChart(ctx, backgroundColor, donutObj) {
 
 // welfaresetting = getWelfareSetting()
 
-Promise.all([getlawcount(), postWelfare(), getSalary(), getJobcategory()]).then(
+Promise.all([getlawcount(), postWelfare(), getSalary(), getJobcategory(), getQollie()]).then(
     function (para) {
         records = para[0].records
-        qollie = para[0].qollie
+        qollie = para[4].qollie
         welfare = para[1].message
         salary = para[2].salary
         dd = para[1].dd
