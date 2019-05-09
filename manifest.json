@@ -19,12 +19,12 @@
             "js":[
                 "./js/lib/jquery-3.3.1.min.js",
                 "./js/lib/Chart.min.js",
+                "./js/content/config.js",
                 "./js/content/content.js",
                 "./js/content/lawlist.js",
                 "./js/content/catchEl.js",
                 "./js/content/salary.js",
                 "./js/content/donut.js"
-                
             ],
             "css":[
                 "./css/helper.css"

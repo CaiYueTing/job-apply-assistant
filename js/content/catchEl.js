@@ -1,6 +1,8 @@
+const requrl = root.ec2
+
 function getCname() {
-    var el = document.getElementsByClassName('company')[0]
-    var cname = el.getElementsByClassName('cn')[0]
+    var el = document.getElementsByClassName("company")[0]
+    var cname = el.getElementsByClassName("cn")[0]
     return cname.innerText
 }
 
@@ -27,7 +29,7 @@ function getQollie() {
 }
 
 function getWelfare() {
-    content = document.getElementsByClassName('content')[2].innerText
+    content = document.getElementsByClassName("content")[2].innerText
     c = content.replace(/[&\/\\#,+()$~%.'":*?<>{}]/g, "")
     reqStr = requrl + `/welfare/${c}`
     return new Promise((resolve, reject) => {
@@ -37,7 +39,7 @@ function getWelfare() {
 }
 
 function getSalary() {
-    s = document.getElementsByClassName('salary')[0].innerText
+    s = document.getElementsByClassName("salary")[0].innerText
     rangeMonth = /\d+\,\d+\~\d+\,\d+/
     rangeHour = /\d+\~\d+/
     staticMonth = /\d+\,\d+/
@@ -71,7 +73,7 @@ function getSalary() {
 }
 
 function postWelfare() {
-    content = document.getElementsByClassName('content')[2].innerText
+    content = document.getElementsByClassName("content")[2].innerText
     url = requrl + `/card/welfare`
     return new Promise((resolve, reject) => {
         data = $.post(url, { wdata: content })
@@ -195,7 +197,7 @@ function getWelfareSetting() {
 
 function testchart(ctx, backgroundColor, borderColor, option) {
     return new Chart(ctx, {
-        type: 'horizontalBar',
+        type: "horizontalBar",
         data: {
             labels: ["最高薪資", "最低薪資", "中位數薪資", "平均薪資"],
             datasets: [
@@ -208,7 +210,7 @@ function testchart(ctx, backgroundColor, borderColor, option) {
 
 function initialSalaryChart(ctx, backgroundColor, borderColor, option) {
     return new Chart(ctx, {
-        type: 'horizontalBar',
+        type: "horizontalBar",
         data: {
             labels: [0, 1, 2, 3],
             datasets: [
@@ -241,7 +243,7 @@ function initialSalaryChart(ctx, backgroundColor, borderColor, option) {
 
 function initialDonutChart(ctx, backgroundColor, donutObj) {
     return new Chart(ctx, {
-        type: 'doughnut',
+        type: "doughnut",
         data: {
             labels: ["經濟類", "休假類", "設施類", "娛樂類", "個人喜好類"],
             datasets: [
@@ -272,10 +274,10 @@ function initialDonutChart(ctx, backgroundColor, donutObj) {
 
 // welfaresetting = getWelfareSetting()
 
-Promise.all([getlawcount(), postWelfare(), getSalary(), getJobcategory(), getQollie()]).then(
+Promise.all([getlawcount(), postWelfare(), getSalary(), getJobcategory()]).then(
     function (para) {
         records = para[0].records
-        qollie = para[4].qollie
+        qollie = para[0].qollie
         welfare = para[1].message
         salary = para[2].salary
         dd = para[1].dd
@@ -325,10 +327,10 @@ Promise.all([getlawcount(), postWelfare(), getSalary(), getJobcategory(), getQol
         }
 
 
-        var dtx = document.querySelector(`#${donutel}myChart`).getContext('2d')
+        var dtx = document.querySelector(`#${donutel}myChart`).getContext("2d")
         var donutchart = initialDonutChart(dtx, backgroundColor, donutObj)
 
-        var ctx = document.querySelector(`#${el}myChart`).getContext('2d')
+        var ctx = document.querySelector(`#${el}myChart`).getContext("2d")
         var mychart = initialSalaryChart(ctx, backgroundColor, borderColor, option)
 
 
