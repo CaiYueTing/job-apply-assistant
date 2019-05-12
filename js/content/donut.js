@@ -49,7 +49,7 @@ class Donut {
         var t = this.getListItem(this.time)
         var i = this.getListItem(this.infra)
         var en = this.getListItem(this.entertain)
-        var p = this.getListItem(this.person)
+        // var p = this.getListItem(this.person)
 
         s = `
             <div id="${this.domId}">
@@ -60,7 +60,7 @@ class Donut {
                         <br><span class="class-time">休假工時類：${t}</span>
                         <br><span class="class-infra">設施類：${i}</span>
                         <br><span class="class-entertain">娛樂類：${en}</span>
-                        <br><span class="class-person">個人喜好類：${p}</span>
+                        
                     </span>
                     <canvas id="${this.domId}myChart" class="donut_chart">
                 </div>

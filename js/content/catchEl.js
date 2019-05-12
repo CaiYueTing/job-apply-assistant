@@ -8,8 +8,26 @@ function getCname() {
 
 company = getCname()
 
+async function storagelaw(company) {
+    result = []
+    await chrome.storage.sync.get(company, function (el) {
+        console.log("stroagelaw ", el.company)
+        result = el.company
+    })
+
+    return result
+}
+
+
+
 function getlawcount() {
     company = getCname()
+    // chrome.storage.sync.clear(function () {
+    //     var error = chrome.runtime.lastError
+    //     if (error) {
+    //         console.error(error)
+    //     }
+    // })
     company = company.replace(/\//g, "")
     reqStr = requrl + `/card/law/${company}`
     return new Promise((resolve, reject) => {
@@ -245,7 +263,7 @@ function initialDonutChart(ctx, backgroundColor, donutObj) {
     return new Chart(ctx, {
         type: "doughnut",
         data: {
-            labels: ["經濟類", "休假類", "設施類", "娛樂類", "個人喜好類"],
+            labels: ["經濟類", "休假類", "設施類", "娛樂類"],
             datasets: [
                 {
                     data: [
@@ -253,7 +271,7 @@ function initialDonutChart(ctx, backgroundColor, donutObj) {
                         donutObj.entertain.length,
                         donutObj.infra.length,
                         donutObj.time.length,
-                        donutObj.person.length
+
                     ],
                     backgroundColor: backgroundColor
                 }
@@ -297,9 +315,9 @@ Promise.all([getlawcount(), postWelfare(), getSalary(), getJobcategory()]).then(
         if (donutObj.infra == null) {
             donutObj.infra = []
         }
-        if (donutObj.person == null) {
-            donutObj.person = []
-        }
+        // if (donutObj.person == null) {
+        //     donutObj.person = []
+        // }
         card = card(company, records, welfare, salary, result, category, qollie)
         list = makelist(records)
         chart = makechart(category)
