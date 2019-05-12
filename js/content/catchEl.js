@@ -1,4 +1,4 @@
-const requrl = root.ec2
+const requrl = root.localhost
 
 function getCname() {
     var el = document.getElementsByClassName("company")[0]
@@ -8,17 +8,50 @@ function getCname() {
 
 company = getCname()
 
-async function storagelaw(company) {
-    result = []
-    await chrome.storage.sync.get(company, function (el) {
-        console.log("stroagelaw ", el.company)
-        result = el.company
+function saveCompanyData(name, data) {
+    chrome.storage.local.set({ [name]: data }, function () {
+        console.log("save:", data)
     })
+}
+chrome.storage.onChanged.addListener(function (changes, namespace) {
+    for (var key in changes) {
+        var storageChange = changes[key];
+        console.log('Storage key "%s" in namespace "%s" changed. ' +
+            'Old value was "%s", new value is "%s".',
+            key,
+            namespace,
+            storageChange.oldValue,
+            storageChange.newValue);
+    }
+});
 
-    return result
+function getCompanyData(name) {
+    chrome.storage.local.get([name], function (el) {
+        if (el[name]) {
+            console.log("storage data:", el[name])
+        } else {
+            console.log("no data")
+            ExecuteCardRequest()
+        }
+    })
 }
 
+function deleteData(name){
+    chrome.storage.local.remove([name], function(){
+        console.log("delete data:", name)
+    })
+}
 
+function clearAlldata(){
+    chrome.storage.local.clear()
+}
+var error = chrome.runtime.lastError
+if (error) {
+    clearAlldata()
+}
+
+// deleteData(company)
+getCompanyData(company)
 
 function getlawcount() {
     company = getCname()
@@ -288,135 +321,163 @@ function initialDonutChart(ctx, backgroundColor, donutObj) {
     })
 }
 
+function st(records, qollie, welfare, salary, dd, donutObj, category) {
+    this.records = records
+    this.qollie = qollie
+    this.welfare = welfare
+    this.salary = salary
+    this.dd = dd
+    this.donutObj = donutObj
+    this.category = category
+}
 
+
+function ExecuteCard(records, qollie, welfare, salary, dd, donutObj, category) {
+
+}
 
 // welfaresetting = getWelfareSetting()
-
-Promise.all([getlawcount(), postWelfare(), getSalary(), getJobcategory()]).then(
-    function (para) {
-        records = para[0].records
-        qollie = para[0].qollie
-        welfare = para[1].message
-        salary = para[2].salary
-        dd = para[1].dd
-        donutObj = para[1].r
-        result = checkdivid(dd, welfare)
-        category = para[3].message
-
-        if (donutObj.economic == null) {
-            donutObj.economic = []
+function ExecuteCardRequest(){
+    Promise.all([getlawcount(), postWelfare(), getSalary(), getJobcategory(), getQollie()]).then(
+        function (para) {
+            records = para[0].records
+            qollie = para[4].qollie
+            welfare = para[1].message
+            salary = para[2].salary
+            dd = para[1].dd
+            donutObj = para[1].r
+            result = checkdivid(dd, welfare)
+            category = para[3].message
+    
+            storeData = new st(records, qollie, welfare, salary, dd, donutObj, category)
+            // console.log(storeData)
+            // storeData = {
+            //     "records": records,
+            //     "qollie": qollie,
+            //     "welfare": welfare,
+            //     "salary": salary,
+            //     "dd": dd,
+            //     "dountObj": dountObj,
+            //     "category": category
+            // }
+    
+            saveCompanyData(company, storeData)
+    
+            if (donutObj.economic == null) {
+                donutObj.economic = []
+            }
+            if (donutObj.time == null) {
+                donutObj.time = []
+            }
+            if (donutObj.entertain == null) {
+                donutObj.entertain = []
+            }
+            if (donutObj.infra == null) {
+                donutObj.infra = []
+            }
+            // if (donutObj.person == null) {
+            //     donutObj.person = []
+            // }
+            card = card(company, records, welfare, salary, result, category, qollie)
+            list = makelist(records)
+            chart = makechart(category)
+            donut = makedonut(donutObj)
+            donutel = donut.getElName()
+            el = chart.getElName()
+    
+            const backgroundColor = chart.getBackgroundColor()
+            const borderColor = chart.getBorderColor()
+            const option = chart.getOptionSetting()
+            var IndDataset = []
+            var ExpDataset = []
+            var DistrictDataset = []
+            var cateId = []
+            var chooseCate = 0
+            for (let i = 0; i < category.length; i++) {
+                let ind = chart.getIndustryDataset(i)
+                let exp = chart.getExpDataset(i)
+                let dis = chart.getDistrictDataset(i)
+                let id = "catagory_id_" + i
+                IndDataset.push(ind)
+                ExpDataset.push(exp)
+                DistrictDataset.push(dis)
+                cateId.push(id)
+            }
+    
+    
+            var dtx = document.querySelector(`#${donutel}myChart`).getContext("2d")
+            var donutchart = initialDonutChart(dtx, backgroundColor, donutObj)
+    
+            var ctx = document.querySelector(`#${el}myChart`).getContext("2d")
+            var mychart = initialSalaryChart(ctx, backgroundColor, borderColor, option)
+    
+    
+            //operation logic
+            $("#category_id_0").click(() => {
+                chooseCate = 0
+                mychart = chartUpdata(mychart, IndDataset, chooseCate)
+                $(chart.getEl()).slideDown(500)
+                $(list.getEl()).slideUp(500)
+                $(donut.getEl()).slideUp(500)
+            })
+            $("#category_id_1").click(() => {
+                chooseCate = 1
+                mychart = chartUpdata(mychart, IndDataset, chooseCate)
+                $(chart.getEl()).slideDown(500)
+                $(list.getEl()).slideUp(500)
+                $(donut.getEl()).slideUp(500)
+            })
+            $("#category_id_2").click(() => {
+                chooseCate = 2
+                mychart = chartUpdata(mychart, IndDataset, chooseCate)
+                $(chart.getEl()).slideDown(500)
+                $(list.getEl()).slideUp(500)
+                $(donut.getEl()).slideUp(500)
+            })
+    
+            $("#salarychart_industry").click(() => {
+                mychart = chartUpdata(mychart, IndDataset, chooseCate)
+            })
+    
+            $("#salarychart_exp").click(() => {
+                mychart = chartUpdata(mychart, ExpDataset, chooseCate)
+            })
+    
+            $("#salarychart_district").click(() => {
+                mychart = chartUpdata(mychart, DistrictDataset, chooseCate)
+            })
+    
+            $(card.getWelfare()).click(() => {
+                $(chart.getEl()).slideUp(500)
+                $(list.getEl()).slideUp(500)
+                $(donut.getEl()).slideDown(500)
+            })
+    
+            $(card.getLaw()).click(() => {
+                $(chart.getEl()).slideUp(500)
+                $(donut.getEl()).slideUp(500)
+                $(list.getEl()).slideDown(500)
+            })
+            $(list.getCloseEl()).click(() => {
+                $(list.getEl()).slideUp(500)
+            })
+    
+            $(chart.getClose()).click(() => {
+                $(chart.getEl()).slideUp(500)
+            })
+    
+            $(donut.getClose()).click(() => {
+                $(donut.getEl()).slideUp(500)
+            })
+    
+            console.log("ok")
         }
-        if (donutObj.time == null) {
-            donutObj.time = []
+    ).catch(
+        function () {
+            card = new helperCard()
+            card.failCard()
+            card.listener()
+            console.log("fail")
         }
-        if (donutObj.entertain == null) {
-            donutObj.entertain = []
-        }
-        if (donutObj.infra == null) {
-            donutObj.infra = []
-        }
-        // if (donutObj.person == null) {
-        //     donutObj.person = []
-        // }
-        card = card(company, records, welfare, salary, result, category, qollie)
-        list = makelist(records)
-        chart = makechart(category)
-        donut = makedonut(donutObj)
-        donutel = donut.getElName()
-        el = chart.getElName()
-
-        const backgroundColor = chart.getBackgroundColor()
-        const borderColor = chart.getBorderColor()
-        const option = chart.getOptionSetting()
-        var IndDataset = []
-        var ExpDataset = []
-        var DistrictDataset = []
-        var cateId = []
-        var chooseCate = 0
-        for (let i = 0; i < category.length; i++) {
-            let ind = chart.getIndustryDataset(i)
-            let exp = chart.getExpDataset(i)
-            let dis = chart.getDistrictDataset(i)
-            let id = "catagory_id_" + i
-            IndDataset.push(ind)
-            ExpDataset.push(exp)
-            DistrictDataset.push(dis)
-            cateId.push(id)
-        }
-
-
-        var dtx = document.querySelector(`#${donutel}myChart`).getContext("2d")
-        var donutchart = initialDonutChart(dtx, backgroundColor, donutObj)
-
-        var ctx = document.querySelector(`#${el}myChart`).getContext("2d")
-        var mychart = initialSalaryChart(ctx, backgroundColor, borderColor, option)
-
-
-        //operation logic
-        $("#category_id_0").click(() => {
-            chooseCate = 0
-            mychart = chartUpdata(mychart, IndDataset, chooseCate)
-            $(chart.getEl()).slideDown(500)
-            $(list.getEl()).slideUp(500)
-            $(donut.getEl()).slideUp(500)
-        })
-        $("#category_id_1").click(() => {
-            chooseCate = 1
-            mychart = chartUpdata(mychart, IndDataset, chooseCate)
-            $(chart.getEl()).slideDown(500)
-            $(list.getEl()).slideUp(500)
-            $(donut.getEl()).slideUp(500)
-        })
-        $("#category_id_2").click(() => {
-            chooseCate = 2
-            mychart = chartUpdata(mychart, IndDataset, chooseCate)
-            $(chart.getEl()).slideDown(500)
-            $(list.getEl()).slideUp(500)
-            $(donut.getEl()).slideUp(500)
-        })
-
-        $("#salarychart_industry").click(() => {
-            mychart = chartUpdata(mychart, IndDataset, chooseCate)
-        })
-
-        $("#salarychart_exp").click(() => {
-            mychart = chartUpdata(mychart, ExpDataset, chooseCate)
-        })
-
-        $("#salarychart_district").click(() => {
-            mychart = chartUpdata(mychart, DistrictDataset, chooseCate)
-        })
-
-        $(card.getWelfare()).click(() => {
-            $(chart.getEl()).slideUp(500)
-            $(list.getEl()).slideUp(500)
-            $(donut.getEl()).slideDown(500)
-        })
-
-        $(card.getLaw()).click(() => {
-            $(chart.getEl()).slideUp(500)
-            $(donut.getEl()).slideUp(500)
-            $(list.getEl()).slideDown(500)
-        })
-        $(list.getCloseEl()).click(() => {
-            $(list.getEl()).slideUp(500)
-        })
-
-        $(chart.getClose()).click(() => {
-            $(chart.getEl()).slideUp(500)
-        })
-
-        $(donut.getClose()).click(() => {
-            $(donut.getEl()).slideUp(500)
-        })
-
-        console.log("ok")
-    }
-).catch(
-    function () {
-        card = new helperCard()
-        card.failCard()
-        card.listener()
-        console.log("fail")
-    }
-)
+    )
+}
