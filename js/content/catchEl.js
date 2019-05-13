@@ -10,7 +10,7 @@ company = getCname()
 
 function saveCompanyData(name, data) {
     chrome.storage.local.set({ [name]: data }, function () {
-        console.log("save:", data)
+        // console.log("save:", data)
     })
 }
 
@@ -20,16 +20,16 @@ function saveCounter(name) {
         if (el.jobCounter){
             c = el.jobCounter + 1
         }
-        console.log("jobcounter:", c)
+        // console.log("jobcounter:", c)
         chrome.storage.local.set({ "jobCounter": c })
         chrome.storage.local.getBytesInUse([name], function (memory) {
             chrome.storage.local.get(["chromememory"], function (totalmemory) {
-                console.log("origin memory :", memory)
+                // console.log("origin memory :", memory)
                 var t = memory
                 if (totalmemory.chromememory){
                     t = totalmemory.chromememory + memory
                 }
-                console.log("total memory :", t)
+                // console.log("total memory :", t)
                 chrome.storage.local.set({ "chromememory": t })
             })
         })

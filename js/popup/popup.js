@@ -1,19 +1,41 @@
-function recordcache(){
-    chrome.storage.local.get(["jobCounter"], function(el){
+var ctx = document.getElementById('storagechart').getContext('2d');
+var data = {
+    datasets: [{
+        data: [5242880, 0],
+        backgroundColor: [
+            'rgba(54, 162, 235, 0.6)',
+            'rgba(255, 99, 132, 0.6)',
+            'rgba(255, 206, 86, 0.6)',
+            'rgba(75, 192, 192, 0.6)',
+            'rgba(153, 102, 255, 0.6)',
+            'rgba(255, 159, 64, 0.6)',
+            'rgba(90, 100, 255, 0.6)'
+        ]
+    }],
+    labels: [
+        'Total memory',
+        'Used memory'
+    ]
+};
+var memorychart = initialMemoryChart(ctx, data)
+
+function recordcache() {
+    chrome.storage.local.get(["jobCounter"], function (el) {
         var cachecount = document.getElementById("cachecount")
-        var c = 0 
-        if (el.jobCounter){
+        var c = 0
+        if (el.jobCounter) {
             c = el.jobCounter
         }
-        cachecount.innerText = c 
+        cachecount.innerText = c
     })
-    chrome.storage.local.get(["chromememory"], function(el){
+    chrome.storage.local.get(["chromememory"], function (el) {
         var cachebyte = document.getElementById("cachebyte")
         var c = 0
-        if (el.chromememory){
+        if (el.chromememory) {
             c = el.chromememory
         }
-        cachebyte.innerText = c 
+        cachebyte.innerText = c
+        memorychart = updateChart(memorychart, c)
     })
 }
 
@@ -21,114 +43,27 @@ function clearAlldata() {
     chrome.storage.local.clear()
 }
 
-$("#clearcache").click(()=>{
+function initialMemoryChart(ctx, data) {
+    return new Chart(ctx, {
+        type: 'doughnut',
+        data: data
+    })
+}
+
+function updateChart(Chart, usedmemory) {
+    Chart.data.datasets[0].data[1] = usedmemory
+    Chart.update()
+    console.log("update function")
+    return Chart
+}
+
+recordcache()
+
+$("#clearcache").click(() => {
     clearAlldata()
     var cachecount = document.getElementById("cachecount")
     var cachebyte = document.getElementById("cachebyte")
     cachecount.innerText = 0
     cachebyte.innerText = 0
+    memorychart = updateChart(memorychart, 0)
 })
-recordcache()
-// $("#range_slider_money").mouseup(()=>{
-//     m = document.getElementById("range_slider_money").value
-//     $(".moneyscore").text(m)
-//     saveScore("money", m)
-// })
-
-// $("#range_slider_money").mousedown(()=>{
-//     setInterval(()=>{
-//         m = document.getElementById("range_slider_money").value
-//         $(".moneyscore").text(m)
-//     })
-// })
-
-// $("#range_slider_time").mouseup(()=>{
-//     m = document.getElementById("range_slider_time").value
-//     $(".timescore").text(m)
-//     saveScore("time", m)
-// })
-
-// $("#range_slider_time").mousedown(()=>{
-//     setInterval(()=>{
-//         m = document.getElementById("range_slider_time").value
-//         $(".timescore").text(m)
-//     })
-// })
-
-// $("#range_slider_infra").mouseup(()=>{
-//     m = document.getElementById("range_slider_infra").value
-//     $(".infrascore").text(m)
-//     saveScore("infra", m)
-// })
-
-// $("#range_slider_infra").mousedown(()=>{
-//     setInterval(()=>{
-//         m = document.getElementById("range_slider_infra").value
-//         $(".infrascore").text(m)
-//     })
-// })
-
-
-// $("#range_slider_entertain").mouseup(()=>{
-//     m = document.getElementById("range_slider_entertain").value
-//     $(".entertainscore").text(m)
-//     saveScore("entertain", m)
-// })
-
-// $("#range_slider_entertain").mousedown(()=>{
-//     setInterval(()=>{
-//         m = document.getElementById("range_slider_entertain").value
-//         $(".entertainscore").text(m)
-//     })
-// })
-
-
-// $("#range_slider_grow").mouseup(()=>{
-//     m = document.getElementById("range_slider_grow").value
-//     $(".growscore").text(m)
-//     saveScore("grow", m)
-// })
-
-// $("#range_slider_grow").mousedown(()=>{
-//     setInterval(()=>{
-//         m = document.getElementById("range_slider_grow").value
-//         $(".growscore").text(m)
-//     })
-// })
-
-
-// function initial() {
-//     const m = "money"
-//     const t = "time"
-//     const i = "infra"
-//     const e = "entertain"
-//     const g = "grow"
-    
-//     initialScore(m)
-//     initialScore(t)
-//     initialScore(i)
-//     initialScore(e)
-//     initialScore(g)
-// }
-
-// function initialScore(m) {
-//     const c = "." + m + "score"
-//     const i = "range_slider_"+ m
-//     chrome.storage.sync.get(m, function(el){
-//         $(c).text(el[m])
-//         document.getElementById(i).value = el[m]
-//     })
-// }
-
-// initial()
-
-
-// function saveScore(item, val) {
-//     chrome.storage.sync.set({[item]: val}, function(){
-//         chrome.storage.sync.get(item, function(el){
-//             console.log(el)
-//         })
-//     })
-// }
-
-
