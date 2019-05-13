@@ -34,7 +34,14 @@ function recordcache() {
         if (el.chromememory) {
             c = el.chromememory
         }
-        cachebyte.innerText = c
+
+        var memory = new Number(c / 1048576)
+
+        cachebyte.innerText = memory.toFixed(4)
+        n = c / 5242880
+        var num = new Number(n)
+        var percentage = document.getElementById("percentage")
+        percentage.innerText = num.toFixed(3)
         memorychart = updateChart(memorychart, c)
     })
 }
@@ -53,11 +60,36 @@ function initialMemoryChart(ctx, data) {
 function updateChart(Chart, usedmemory) {
     Chart.data.datasets[0].data[1] = usedmemory
     Chart.update()
-    console.log("update function")
     return Chart
 }
 
 recordcache()
+
+function numani(start, end, el) {
+    let innerstart = start * 1000
+    let innerend = end * 1000
+
+
+    if (innerstart >= innerend) {
+        let speed = 10
+        let cost = 1
+        console.log(innerstart)
+        if (innerstart < 100) { cost = 1 }
+        if (innerstart < 1000) { cost = 10 }
+        if (innerstart < 10000) { cost = 100 }
+        if (innerstart <= 100000) { cost = 1000 }
+        var interval = setInterval(() => {
+            if (innerstart == innerend) {
+                clearInterval(interval)
+            }
+
+            el.innerText = innerstart / 1000
+            innerstart = innerstart - cost
+        }, speed)
+    }
+    if (innerstart <= innerend) {
+    }
+}
 
 $("#clearcache").click(() => {
     clearAlldata()
@@ -65,5 +97,11 @@ $("#clearcache").click(() => {
     var cachebyte = document.getElementById("cachebyte")
     cachecount.innerText = 0
     cachebyte.innerText = 0
+
+    var percentage = document.getElementById("percentage")
+    var num = new Number(percentage.innerText)
+    var snum = String(num.toFixed(3))
+    percentage.innerText = 0.000
     memorychart = updateChart(memorychart, 0)
+    // numani(Number(snum), 0, percentage)
 })
