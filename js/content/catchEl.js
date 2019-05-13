@@ -14,6 +14,28 @@ function saveCompanyData(name, data) {
     })
 }
 
+function saveCounter(name) {
+    chrome.storage.local.get(["jobCounter"], function (el) {
+        var c = 1 
+        if (el.jobCounter){
+            c = el.jobCounter + 1
+        }
+        console.log("jobcounter:", c)
+        chrome.storage.local.set({ "jobCounter": c })
+        chrome.storage.local.getBytesInUse([name], function (memory) {
+            chrome.storage.local.get(["chromememory"], function (totalmemory) {
+                console.log("origin memory :", memory)
+                var t = memory
+                if (totalmemory.chromememory){
+                    t = totalmemory.chromememory + memory
+                }
+                console.log("total memory :", t)
+                chrome.storage.local.set({ "chromememory": t })
+            })
+        })
+    })
+}
+
 function getlawcount() {
     company = getCname()
     company = company.replace(/\//g, "")
@@ -370,6 +392,7 @@ function ExecuteCardRequest() {
             storeData = new st(records, qollie, welfare, salary, dd, donutObj, category)
             // console.log(storeData)
             saveCompanyData(company, storeData)
+            saveCounter(company)
             ExecuteCard(records, qollie, welfare, salary, dd, donutObj, category)
         }
     ).catch(
@@ -419,7 +442,7 @@ if (error) {
 }
 // deleteData(company)
 getCompanyData(company)
-
+// clearAlldata()
 // chrome.storage.onChanged.addListener(function (changes, namespace) {
 //     for (var key in changes) {
 //         var storageChange = changes[key];

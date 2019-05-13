@@ -1,3 +1,23 @@
+function recordcache(){
+    chrome.storage.local.get(["jobCounter"], function(el){
+        var cachecount = document.getElementById("cachecount")
+        var c = 0 
+        if (el.jobCounter){
+            c = el.jobCounter
+        }
+        cachecount.innerText = c 
+    })
+    chrome.storage.local.get(["chromememory"], function(el){
+        var cachebyte = document.getElementById("cachebyte")
+        var c = 0
+        if (el.chromememory){
+            c = el.chromememory
+        }
+        cachebyte.innerText = c 
+    })
+}
+
+recordcache()
 // $("#range_slider_money").mouseup(()=>{
 //     m = document.getElementById("range_slider_money").value
 //     $(".moneyscore").text(m)
