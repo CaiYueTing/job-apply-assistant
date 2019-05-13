@@ -30,7 +30,7 @@ class Donut {
     }
 
     getListItem(arr) {
-        s = "無"
+        let s = "無"
         if (arr.length != 0){
             s = ""
             for (let i=0;i<arr.length;i++){
@@ -50,8 +50,8 @@ class Donut {
         var i = this.getListItem(this.infra)
         var en = this.getListItem(this.entertain)
         // var p = this.getListItem(this.person)
-
-        s = `
+        
+        const s = `
             <div id="${this.domId}">
                 <div id="donutborder">
                     <span id="${this.domId}_close">X</span>

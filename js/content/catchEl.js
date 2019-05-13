@@ -13,54 +13,9 @@ function saveCompanyData(name, data) {
         console.log("save:", data)
     })
 }
-chrome.storage.onChanged.addListener(function (changes, namespace) {
-    for (var key in changes) {
-        var storageChange = changes[key];
-        console.log('Storage key "%s" in namespace "%s" changed. ' +
-            'Old value was "%s", new value is "%s".',
-            key,
-            namespace,
-            storageChange.oldValue,
-            storageChange.newValue);
-    }
-});
-
-function getCompanyData(name) {
-    chrome.storage.local.get([name], function (el) {
-        if (el[name]) {
-            console.log("storage data:", el[name])
-        } else {
-            console.log("no data")
-            ExecuteCardRequest()
-        }
-    })
-}
-
-function deleteData(name){
-    chrome.storage.local.remove([name], function(){
-        console.log("delete data:", name)
-    })
-}
-
-function clearAlldata(){
-    chrome.storage.local.clear()
-}
-var error = chrome.runtime.lastError
-if (error) {
-    clearAlldata()
-}
-
-// deleteData(company)
-getCompanyData(company)
 
 function getlawcount() {
     company = getCname()
-    // chrome.storage.sync.clear(function () {
-    //     var error = chrome.runtime.lastError
-    //     if (error) {
-    //         console.error(error)
-    //     }
-    // })
     company = company.replace(/\//g, "")
     reqStr = requrl + `/card/law/${company}`
     return new Promise((resolve, reject) => {
@@ -143,36 +98,6 @@ function getJobcategory() {
 
 }
 
-// function getQollieUrl(company) {
-//     var url = "https://www.qollie.com/graphql"
-//     var input = { kind: "company", keyword: company, page: 1, limit: 10 }
-//     var query = `fragment commonFields on Company {
-//         _id
-//     } 
-//     query search ($kind: String $keyword: String $page: Int $limit: Int) {
-//         searchCompanies(query:{ kind: $kind keyword: $keyword limit: $limit page: $page }) {
-//             ...commonFields
-//         }
-//     }
-// `
-//     return new Promise((resolve, reject) => {
-//         data = $.ajax({
-//             type: "POST",
-//             url: url,
-//             headers: {
-//                 'Content-Type': 'application/json',
-//                 'X-Content-Type-Options': 'nosniff'
-//             },
-//             data: JSON.stringify({ query, variables: input }),
-//             success: function (response) {
-//                 return response
-//             }
-//         });
-//         resolve(data)
-//     })
-// }
-
-
 function checkdivid(arr, welfare) {
     result = 0
     for (let i = 0; i < arr.length; i++) {
@@ -209,23 +134,6 @@ function makedonut(obj) {
 }
 
 function chartUpdata(chart, dataset, i) {
-    // chart.data.datasets = []
-    // let d = dataset[i]
-    // a = d.average
-    // r = d.right
-    // l = d.left
-    // m = d.middle
-    // for (let j=0;j<d.labels.length;j++) {
-    //     let = obj = {
-    //         label: d.labels[j],
-    //         data: [r[j],l[j],m[j],a[j]],
-    //         backgroundColor: backgroundColor,
-    //         borderColor:borderColor
-    //     }
-    //     chart.data.datasets.push(obj)
-    // }
-
-    // console.log(chart.data)
     chart.data.labels = dataset[i].labels
     chart.data.datasets[0].data = dataset[i].right
     chart.data.datasets[1].data = dataset[i].left
@@ -321,23 +229,133 @@ function initialDonutChart(ctx, backgroundColor, donutObj) {
     })
 }
 
-function st(records, qollie, welfare, salary, dd, donutObj, category) {
-    this.records = records
-    this.qollie = qollie
-    this.welfare = welfare
-    this.salary = salary
-    this.dd = dd
-    this.donutObj = donutObj
-    this.category = category
+class st {
+    constructor(records, qollie, welfare, salary, dd, donutObj, category) {
+        this.records = records;
+        this.qollie = qollie;
+        this.welfare = welfare;
+        this.salary = salary;
+        this.dd = dd;
+        this.donutObj = donutObj;
+        this.category = category;
+    }
 }
 
 
 function ExecuteCard(records, qollie, welfare, salary, dd, donutObj, category) {
+    result = checkdivid(dd, welfare)
+    if (donutObj.economic == null) {
+        donutObj.economic = []
+    }
+    if (donutObj.time == null) {
+        donutObj.time = []
+    }
+    if (donutObj.entertain == null) {
+        donutObj.entertain = []
+    }
+    if (donutObj.infra == null) {
+        donutObj.infra = []
+    }
+    // if (donutObj.person == null) {
+    //     donutObj.person = []
+    // }
+    card = card(company, records, welfare, salary, result, category, qollie)
+    list = makelist(records)
+    chart = makechart(category)
+    donut = makedonut(donutObj)
+    donutel = donut.getElName()
+    el = chart.getElName()
 
+    const backgroundColor = chart.getBackgroundColor()
+    const borderColor = chart.getBorderColor()
+    const option = chart.getOptionSetting()
+    var IndDataset = []
+    var ExpDataset = []
+    var DistrictDataset = []
+    var cateId = []
+    var chooseCate = 0
+    for (let i = 0; i < category.length; i++) {
+        let ind = chart.getIndustryDataset(i)
+        let exp = chart.getExpDataset(i)
+        let dis = chart.getDistrictDataset(i)
+        let id = "catagory_id_" + i
+        IndDataset.push(ind)
+        ExpDataset.push(exp)
+        DistrictDataset.push(dis)
+        cateId.push(id)
+    }
+
+
+    var dtx = document.querySelector(`#${donutel}myChart`).getContext("2d")
+    var donutchart = initialDonutChart(dtx, backgroundColor, donutObj)
+
+    var ctx = document.querySelector(`#${el}myChart`).getContext("2d")
+    var mychart = initialSalaryChart(ctx, backgroundColor, borderColor, option)
+
+
+    //operation logic
+    $("#category_id_0").click(() => {
+        chooseCate = 0
+        mychart = chartUpdata(mychart, IndDataset, chooseCate)
+        $(chart.getEl()).slideDown(500)
+        $(list.getEl()).slideUp(500)
+        $(donut.getEl()).slideUp(500)
+    })
+    $("#category_id_1").click(() => {
+        chooseCate = 1
+        mychart = chartUpdata(mychart, IndDataset, chooseCate)
+        $(chart.getEl()).slideDown(500)
+        $(list.getEl()).slideUp(500)
+        $(donut.getEl()).slideUp(500)
+    })
+    $("#category_id_2").click(() => {
+        chooseCate = 2
+        mychart = chartUpdata(mychart, IndDataset, chooseCate)
+        $(chart.getEl()).slideDown(500)
+        $(list.getEl()).slideUp(500)
+        $(donut.getEl()).slideUp(500)
+    })
+
+    $("#salarychart_industry").click(() => {
+        mychart = chartUpdata(mychart, IndDataset, chooseCate)
+    })
+
+    $("#salarychart_exp").click(() => {
+        mychart = chartUpdata(mychart, ExpDataset, chooseCate)
+    })
+
+    $("#salarychart_district").click(() => {
+        mychart = chartUpdata(mychart, DistrictDataset, chooseCate)
+    })
+
+    $(card.getWelfare()).click(() => {
+        $(chart.getEl()).slideUp(500)
+        $(list.getEl()).slideUp(500)
+        $(donut.getEl()).slideDown(500)
+    })
+
+    $(card.getLaw()).click(() => {
+        $(chart.getEl()).slideUp(500)
+        $(donut.getEl()).slideUp(500)
+        $(list.getEl()).slideDown(500)
+    })
+    $(list.getCloseEl()).click(() => {
+        $(list.getEl()).slideUp(500)
+    })
+
+    $(chart.getClose()).click(() => {
+        $(chart.getEl()).slideUp(500)
+    })
+
+    $(donut.getClose()).click(() => {
+        $(donut.getEl()).slideUp(500)
+    })
+
+    console.log("ok")
 }
 
 // welfaresetting = getWelfareSetting()
-function ExecuteCardRequest(){
+function ExecuteCardRequest() {
     Promise.all([getlawcount(), postWelfare(), getSalary(), getJobcategory(), getQollie()]).then(
         function (para) {
             records = para[0].records
@@ -348,129 +366,11 @@ function ExecuteCardRequest(){
             donutObj = para[1].r
             result = checkdivid(dd, welfare)
             category = para[3].message
-    
+
             storeData = new st(records, qollie, welfare, salary, dd, donutObj, category)
             // console.log(storeData)
-            // storeData = {
-            //     "records": records,
-            //     "qollie": qollie,
-            //     "welfare": welfare,
-            //     "salary": salary,
-            //     "dd": dd,
-            //     "dountObj": dountObj,
-            //     "category": category
-            // }
-    
             saveCompanyData(company, storeData)
-    
-            if (donutObj.economic == null) {
-                donutObj.economic = []
-            }
-            if (donutObj.time == null) {
-                donutObj.time = []
-            }
-            if (donutObj.entertain == null) {
-                donutObj.entertain = []
-            }
-            if (donutObj.infra == null) {
-                donutObj.infra = []
-            }
-            // if (donutObj.person == null) {
-            //     donutObj.person = []
-            // }
-            card = card(company, records, welfare, salary, result, category, qollie)
-            list = makelist(records)
-            chart = makechart(category)
-            donut = makedonut(donutObj)
-            donutel = donut.getElName()
-            el = chart.getElName()
-    
-            const backgroundColor = chart.getBackgroundColor()
-            const borderColor = chart.getBorderColor()
-            const option = chart.getOptionSetting()
-            var IndDataset = []
-            var ExpDataset = []
-            var DistrictDataset = []
-            var cateId = []
-            var chooseCate = 0
-            for (let i = 0; i < category.length; i++) {
-                let ind = chart.getIndustryDataset(i)
-                let exp = chart.getExpDataset(i)
-                let dis = chart.getDistrictDataset(i)
-                let id = "catagory_id_" + i
-                IndDataset.push(ind)
-                ExpDataset.push(exp)
-                DistrictDataset.push(dis)
-                cateId.push(id)
-            }
-    
-    
-            var dtx = document.querySelector(`#${donutel}myChart`).getContext("2d")
-            var donutchart = initialDonutChart(dtx, backgroundColor, donutObj)
-    
-            var ctx = document.querySelector(`#${el}myChart`).getContext("2d")
-            var mychart = initialSalaryChart(ctx, backgroundColor, borderColor, option)
-    
-    
-            //operation logic
-            $("#category_id_0").click(() => {
-                chooseCate = 0
-                mychart = chartUpdata(mychart, IndDataset, chooseCate)
-                $(chart.getEl()).slideDown(500)
-                $(list.getEl()).slideUp(500)
-                $(donut.getEl()).slideUp(500)
-            })
-            $("#category_id_1").click(() => {
-                chooseCate = 1
-                mychart = chartUpdata(mychart, IndDataset, chooseCate)
-                $(chart.getEl()).slideDown(500)
-                $(list.getEl()).slideUp(500)
-                $(donut.getEl()).slideUp(500)
-            })
-            $("#category_id_2").click(() => {
-                chooseCate = 2
-                mychart = chartUpdata(mychart, IndDataset, chooseCate)
-                $(chart.getEl()).slideDown(500)
-                $(list.getEl()).slideUp(500)
-                $(donut.getEl()).slideUp(500)
-            })
-    
-            $("#salarychart_industry").click(() => {
-                mychart = chartUpdata(mychart, IndDataset, chooseCate)
-            })
-    
-            $("#salarychart_exp").click(() => {
-                mychart = chartUpdata(mychart, ExpDataset, chooseCate)
-            })
-    
-            $("#salarychart_district").click(() => {
-                mychart = chartUpdata(mychart, DistrictDataset, chooseCate)
-            })
-    
-            $(card.getWelfare()).click(() => {
-                $(chart.getEl()).slideUp(500)
-                $(list.getEl()).slideUp(500)
-                $(donut.getEl()).slideDown(500)
-            })
-    
-            $(card.getLaw()).click(() => {
-                $(chart.getEl()).slideUp(500)
-                $(donut.getEl()).slideUp(500)
-                $(list.getEl()).slideDown(500)
-            })
-            $(list.getCloseEl()).click(() => {
-                $(list.getEl()).slideUp(500)
-            })
-    
-            $(chart.getClose()).click(() => {
-                $(chart.getEl()).slideUp(500)
-            })
-    
-            $(donut.getClose()).click(() => {
-                $(donut.getEl()).slideUp(500)
-            })
-    
-            console.log("ok")
+            ExecuteCard(records, qollie, welfare, salary, dd, donutObj, category)
         }
     ).catch(
         function () {
@@ -481,3 +381,53 @@ function ExecuteCardRequest(){
         }
     )
 }
+
+function getCompanyData(name) {
+    chrome.storage.local.get([name], function (el) {
+        if (el[name]) {
+            console.log(el[name])
+            records = el[name].records
+            qollie = el[name].qollie
+            welfare = el[name].welfare
+            salary = el[name].salary
+            dd = el[name].dd
+            donutObj = el[name].donutObj
+            category = el[name].category
+            // console.log(records, qollie, welfare, salary, dd, donutObj, category)
+            ExecuteCard(records, qollie, welfare, salary, dd, donutObj, category)
+        } else {
+            console.log("no data")
+            ExecuteCardRequest()
+        }
+    })
+}
+
+function deleteData(name) {
+    chrome.storage.local.remove([name], function () {
+        console.log("delete data:", name)
+    })
+}
+
+function clearAlldata() {
+    chrome.storage.local.clear()
+}
+
+
+var error = chrome.runtime.lastError
+if (error) {
+    clearAlldata()
+}
+// deleteData(company)
+getCompanyData(company)
+
+// chrome.storage.onChanged.addListener(function (changes, namespace) {
+//     for (var key in changes) {
+//         var storageChange = changes[key];
+//         console.log('Storage key "%s" in namespace "%s" changed. ' +
+//             'Old value was "%s", new value is "%s".',
+//             key,
+//             namespace,
+//             storageChange.oldValue,
+//             storageChange.newValue);
+//     }
+// });
