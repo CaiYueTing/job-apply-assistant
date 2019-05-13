@@ -17,6 +17,17 @@ function recordcache(){
     })
 }
 
+function clearAlldata() {
+    chrome.storage.local.clear()
+}
+
+$("#clearcache").click(()=>{
+    clearAlldata()
+    var cachecount = document.getElementById("cachecount")
+    var cachebyte = document.getElementById("cachebyte")
+    cachecount.innerText = 0
+    cachebyte.innerText = 0
+})
 recordcache()
 // $("#range_slider_money").mouseup(()=>{
 //     m = document.getElementById("range_slider_money").value
