@@ -18,25 +18,13 @@ function saveCategory(category, data) {
     chrome.storage.local.set({ [category]: data })
 }
 
-function saveCounter(name) {
+function saveCompanyCounter() {
     chrome.storage.local.get(["jobCounter"], function (el) {
         var c = 1
         if (el.jobCounter) {
             c = el.jobCounter + 1
         }
-        // console.log("jobcounter:", c)
         chrome.storage.local.set({ "jobCounter": c })
-        chrome.storage.local.getBytesInUse([name], function (memory) {
-            chrome.storage.local.get(["chromememory"], function (totalmemory) {
-                // console.log("origin memory :", memory)
-                var t = memory
-                if (totalmemory.chromememory) {
-                    t = totalmemory.chromememory + memory
-                }
-                // console.log("total memory :", t)
-                chrome.storage.local.set({ "chromememory": t })
-            })
-        })
     })
 }
 
@@ -264,14 +252,13 @@ function initialDonutChart(ctx, backgroundColor, donutObj) {
 }
 
 class st {
-    constructor(records, qollie, welfare, salary, dd, donutObj, category) {
+    constructor(records, qollie, welfare, salary, dd, donutObj) {
         this.records = records;
         this.qollie = qollie;
         this.welfare = welfare;
         this.salary = salary;
         this.dd = dd;
         this.donutObj = donutObj;
-        this.category = category;
     }
 }
 
@@ -388,27 +375,22 @@ function ExecuteCard(records, qollie, welfare, salary, dd, donutObj, category) {
     console.log("ok")
 }
 
-// welfaresetting = getWelfareSetting()
 function ExecuteCardRequest() {
     Promise.all([getlawcount(), postWelfare(), getSalary(), getJobcategory(), getQollie()]).then(
         function (para) {
-            records = para[0].records
-            qollie = para[4].qollie
-            welfare = para[1].message
-            salary = para[2].salary
-            dd = para[1].dd
-            donutObj = para[1].r
-            result = checkdivid(dd, welfare)
-            category = para[3].message
-
-            storeData = new st(records, qollie, welfare, salary, dd, donutObj, category)
-            // storeCate = new category(category)
-            // console.log(storeData)
+            var records = para[0].records
+            var qollie = para[4].qollie
+            var welfare = para[1].message
+            var salary = para[2].salary
+            var dd = para[1].dd
+            var donutObj = para[1].r
+            var category = para[3].message
+            var storeData = new st(records, qollie, welfare, salary, dd, donutObj)
             saveCompanyData(company, storeData)
             for (let i = 0; i < category.length; i++) {
                 saveCategory(category[i].category, category[i].target)
             }
-            saveCounter(company)
+            saveCompanyCounter(company)
             ExecuteCard(records, qollie, welfare, salary, dd, donutObj, category)
         }
     ).catch(
@@ -470,26 +452,24 @@ class ClassCategoryData {
 function getCompanyData(name, categoryName) {
     chrome.storage.local.get([name], function (el) {
         if (el[name]) {
-            // console.log(el[name])
             var records = el[name].records
             var qollie = el[name].qollie
             var welfare = el[name].welfare
             var salary = el[name].salary
             var dd = el[name].dd
             var donutObj = el[name].donutObj
-            var testcate = el[name].category
-            console.log(testcate)
 
-            // arr = getCategoryContent(categoryName).then(data => { return data })
-            // console.log(arr)
             Promise.all([getCategoryContent(categoryName)]).then(
                 function (para) {
                     arr = para[0]
+                    console.log(arr)
                     if (arr == -1) {
                         Promise.all([getJobcategory()]).then(
                             function (el) {
                                 var newCate = el[0].message
-                                console.log(newCate)
+                                for (let i = 0; i < newCate.length; i++) {
+                                    saveCategory(newCate[i].category, newCate[i].target)
+                                }
                                 ExecuteCard(records, qollie, welfare, salary, dd, donutObj, newCate)
                             }
                         )
@@ -524,22 +504,81 @@ function clearAlldata() {
     chrome.storage.local.clear()
 }
 
+function getItemsMemory(arr) {
+    return new Promise(function (resolve, reject) {
+        let r = []
+        for (let i = 0; i < arr.length; i++) {
+            getItemMemory(arr[i]).then(function (value) {
+                r.push(value)
+            })
+        }
+        resolve(r)
+    })
+}
+
+function getItemMemory(item) {
+    return new Promise(function (resolve, reject) {
+        chrome.storage.local.getBytesInUse(item, function (value) {
+            resolve(value)
+        })
+    })
+}
 
 var error = chrome.runtime.lastError
 if (error) {
     clearAlldata()
 }
+
 // deleteData(company)
 getCompanyData(company, categoryName)
 // clearAlldata()
-// chrome.storage.onChanged.addListener(function (changes, namespace) {
-//     for (var key in changes) {
-//         var storageChange = changes[key];
-//         console.log('Storage key "%s" in namespace "%s" changed. ' +
-//             'Old value was "%s", new value is "%s".',
-//             key,
-//             namespace,
-//             storageChange.oldValue,
-//             storageChange.newValue);
-//     }
-// });
+let busyflag = 0
+let queue = []
+chrome.storage.onChanged.addListener(function (changes, namespace) {
+    busyflag = 1
+    for (var key in changes) {
+        var storageChange = changes[key];
+        console.log('Storage key "%s" in namespace "%s" changed. ' +
+            'Old value was "%s", new value is "%s".',
+            key,
+            namespace,
+            storageChange.oldValue,
+            storageChange.newValue);
+        if (key != "chromememory") {
+            chrome.storage.local.getBytesInUse(key, function (value) {
+                queue.push(value)
+            })
+        }
+    }
+})
+let addcount = 0
+
+
+
+function saveChromeMemory(value) {
+    chrome.storage.local.get(["chromememory"], function (totalmemory) {
+
+        console.log(totalmemory)
+        t = totalmemory.chromememory + value
+        console.log(t)
+
+        chrome.storage.local.set({ "chromememory": (totalmemory.chromememory + value) }, function () {
+            addcount++
+            console.log(addcount)
+        })
+    })
+}
+
+var busy = setInterval(function () {
+    const reducer = (a, b) => a + b
+    if (queue.length != 0) {
+        console.log(queue)
+        let value = queue.reduce(reducer)
+        saveChromeMemory(value)
+        queue = []
+    }
+}, 2000)
+
+if (busyflag == 1) {
+    clearInterval(busy)
+}
