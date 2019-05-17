@@ -14,10 +14,14 @@ function saveCompanyData(name, data) {
     })
 }
 
+function saveCategory(category, data) {
+    chrome.storage.local.set({ [category]: data })
+}
+
 function saveCounter(name) {
     chrome.storage.local.get(["jobCounter"], function (el) {
-        var c = 1 
-        if (el.jobCounter){
+        var c = 1
+        if (el.jobCounter) {
             c = el.jobCounter + 1
         }
         // console.log("jobcounter:", c)
@@ -26,7 +30,7 @@ function saveCounter(name) {
             chrome.storage.local.get(["chromememory"], function (totalmemory) {
                 // console.log("origin memory :", memory)
                 var t = memory
-                if (totalmemory.chromememory){
+                if (totalmemory.chromememory) {
                     t = totalmemory.chromememory + memory
                 }
                 // console.log("total memory :", t)
@@ -108,6 +112,14 @@ function postWelfare() {
         resolve(data)
     })
 }
+
+function getCategoryName() {
+    dlc = document.getElementsByClassName("cate")[0].innerText
+    dlc = dlc.split("、")
+    return dlc
+}
+
+categoryName = getCategoryName()
 
 function getJobcategory() {
     dlc = document.getElementsByClassName("cate")[0].innerText
@@ -390,8 +402,12 @@ function ExecuteCardRequest() {
             category = para[3].message
 
             storeData = new st(records, qollie, welfare, salary, dd, donutObj, category)
+            // storeCate = new category(category)
             // console.log(storeData)
             saveCompanyData(company, storeData)
+            for (let i = 0; i < category.length; i++) {
+                saveCategory(category[i].category, category[i].target)
+            }
             saveCounter(company)
             ExecuteCard(records, qollie, welfare, salary, dd, donutObj, category)
         }
@@ -405,19 +421,92 @@ function ExecuteCardRequest() {
     )
 }
 
-function getCompanyData(name) {
+function getCategoryContent(arrCategory) {
+    let result = 0
+    const length = arrCategory.length
+
+    return new Promise(function (resolve, reject) {
+        chrome.storage.local.get(arrCategory, function (item) {
+            for (let i = 0; i < length; i++) {
+                if (item[arrCategory[i]]) {
+                    result++
+                }
+            }
+            if (result === length) {
+                resolve(item)
+            } else {
+                resolve(-1)
+            }
+        })
+    })
+
+    // for (let i = 0; i < arrCategory.length; i++) {
+    //     getCateData(arrCategory[i]).then((item) => {
+    //         console.log(item)
+    //     })
+    // }
+
+}
+
+function getCateData(category) {
+    return new Promise((res, rej) => {
+        chrome.storage.local.get([category], function (data) {
+            if (!data[category]) {
+                console.log(data[category])
+                res(data[category])
+            } else {
+                rej(chrome.runtime.lastError)
+            }
+        })
+    })
+}
+
+class ClassCategoryData {
+    constructor(name, data) {
+        this.category = name
+        this.target = data
+    }
+}
+function getCompanyData(name, categoryName) {
     chrome.storage.local.get([name], function (el) {
         if (el[name]) {
-            console.log(el[name])
-            records = el[name].records
-            qollie = el[name].qollie
-            welfare = el[name].welfare
-            salary = el[name].salary
-            dd = el[name].dd
-            donutObj = el[name].donutObj
-            category = el[name].category
-            // console.log(records, qollie, welfare, salary, dd, donutObj, category)
-            ExecuteCard(records, qollie, welfare, salary, dd, donutObj, category)
+            // console.log(el[name])
+            var records = el[name].records
+            var qollie = el[name].qollie
+            var welfare = el[name].welfare
+            var salary = el[name].salary
+            var dd = el[name].dd
+            var donutObj = el[name].donutObj
+            var testcate = el[name].category
+            console.log(testcate)
+
+            // arr = getCategoryContent(categoryName).then(data => { return data })
+            // console.log(arr)
+            Promise.all([getCategoryContent(categoryName)]).then(
+                function (para) {
+                    arr = para[0]
+                    if (arr == -1) {
+                        Promise.all([getJobcategory()]).then(
+                            function (el) {
+                                var newCate = el[0].message
+                                console.log(newCate)
+                                ExecuteCard(records, qollie, welfare, salary, dd, donutObj, newCate)
+                            }
+                        )
+                    } else {
+                        chrome.storage.local.get(categoryName, function (item) {
+                            var categories = []
+                            var length = categoryName.length
+                            for (let i = 0; i < length; i++) {
+                                var c = new ClassCategoryData(categoryName[i], item[categoryName[i]])
+                                categories.push(c)
+                            }
+                            ExecuteCard(records, qollie, welfare, salary, dd, donutObj, categories)
+                        })
+                    }
+                }
+            )
+
         } else {
             console.log("no data")
             ExecuteCardRequest()
@@ -441,7 +530,7 @@ if (error) {
     clearAlldata()
 }
 // deleteData(company)
-getCompanyData(company)
+getCompanyData(company, categoryName)
 // clearAlldata()
 // chrome.storage.onChanged.addListener(function (changes, namespace) {
 //     for (var key in changes) {
