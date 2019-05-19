@@ -1,32 +1,23 @@
 const requrl = root.localhost
 
+//DOM operation 
 function getCname() {
     var el = document.getElementsByClassName("company")[0]
     var cname = el.getElementsByClassName("cn")[0]
     return cname.innerText
 }
 
+function getCategoryName() {
+    dlc = document.getElementsByClassName("cate")[0].innerText
+    dlc = dlc.split("、")
+    return dlc
+}
+
 company = getCname()
+categoryName = getCategoryName()
 
-function saveCompanyData(name, data) {
-    chrome.storage.local.set({ [name]: data }, function () {
-    })
-}
 
-function saveCategory(category, data) {
-    chrome.storage.local.set({ [category]: data })
-}
-
-function saveCompanyCounter() {
-    chrome.storage.local.get(["jobCounter"], function (el) {
-        var c = 1
-        if (el.jobCounter) {
-            c = el.jobCounter + 1
-        }
-        chrome.storage.local.set({ "jobCounter": c })
-    })
-}
-
+// Call API
 function getlawcount() {
     company = getCname()
     company = company.replace(/\//g, "")
@@ -44,16 +35,6 @@ function getQollie() {
     return new Promise((resolve, reject) => {
         qol = $.getJSON(reqStr)
         resolve(qol)
-    })
-}
-
-function getWelfare() {
-    content = document.getElementsByClassName("content")[2].innerText
-    c = content.replace(/[&\/\\#,+()$~%.'":*?<>{}]/g, "")
-    reqStr = requrl + `/welfare/${c}`
-    return new Promise((resolve, reject) => {
-        data = $.getJSON(reqStr)
-        resolve(data)
     })
 }
 
@@ -100,17 +81,8 @@ function postWelfare() {
     })
 }
 
-function getCategoryName() {
-    dlc = document.getElementsByClassName("cate")[0].innerText
-    dlc = dlc.split("、")
-    return dlc
-}
-
-categoryName = getCategoryName()
-
 function getJobcategory() {
     dlc = document.getElementsByClassName("cate")[0].innerText
-
     url = requrl + `/card/category`
     return new Promise((resolve, reject) => {
         data = $.post(url, { cdata: dlc })
@@ -119,16 +91,7 @@ function getJobcategory() {
 
 }
 
-function checkdivid(arr, welfare) {
-    result = 0
-    for (let i = 0; i < arr.length; i++) {
-        if (arr[i] <= welfare) {
-            result = i + 1
-        }
-    }
-    return result
-}
-
+// Card element
 function card(company, records, welfare, salary, result, category, qollie) {
     card = new helperCard(company, records, welfare, salary, result, category, qollie)
     card.init()
@@ -154,6 +117,7 @@ function makedonut(obj) {
     return d
 }
 
+// Chart.js Operation
 function chartUpdata(chart, dataset, i) {
     chart.data.labels = dataset[i].labels
     chart.data.datasets[0].data = dataset[i].right
@@ -162,30 +126,6 @@ function chartUpdata(chart, dataset, i) {
     chart.data.datasets[3].data = dataset[i].average
     chart.update()
     return chart
-}
-
-function getWelfareSetting() {
-    const memory = ["money", "time", "infra", "entertain", "grow"]
-    let result = []
-    for (let i = 0; i < memory.length; i++) {
-        chrome.storage.sync.get(memory[i], function (el) {
-            result.push(el)
-        })
-    }
-    return result
-}
-
-function testchart(ctx, backgroundColor, borderColor, option) {
-    return new Chart(ctx, {
-        type: "horizontalBar",
-        data: {
-            labels: ["最高薪資", "最低薪資", "中位數薪資", "平均薪資"],
-            datasets: [
-
-            ]
-        },
-        options: option
-    })
 }
 
 function initialSalaryChart(ctx, backgroundColor, borderColor, option) {
@@ -250,17 +190,16 @@ function initialDonutChart(ctx, backgroundColor, donutObj) {
     })
 }
 
-class st {
-    constructor(records, qollie, welfare, salary, dd, donutObj) {
-        this.records = records;
-        this.qollie = qollie;
-        this.welfare = welfare;
-        this.salary = salary;
-        this.dd = dd;
-        this.donutObj = donutObj;
+//  Card Operation
+function checkdivid(arr, welfare) {
+    result = 0
+    for (let i = 0; i < arr.length; i++) {
+        if (arr[i] <= welfare) {
+            result = i + 1
+        }
     }
+    return result
 }
-
 
 function ExecuteCard(records, qollie, welfare, salary, dd, donutObj, category) {
     result = checkdivid(dd, welfare)
@@ -374,6 +313,24 @@ function ExecuteCard(records, qollie, welfare, salary, dd, donutObj, category) {
     console.log("ok")
 }
 
+class st {
+    constructor(records, qollie, welfare, salary, dd, donutObj) {
+        this.records = records;
+        this.qollie = qollie;
+        this.welfare = welfare;
+        this.salary = salary;
+        this.dd = dd;
+        this.donutObj = donutObj;
+    }
+}
+class ClassCategoryData {
+    constructor(name, data) {
+        this.category = name
+        this.target = data
+    }
+}
+
+// Generate Card with memory operation
 function ExecuteCardRequest() {
     Promise.all([getlawcount(), postWelfare(), getSalary(), getJobcategory(), getQollie()]).then(
         function (para) {
@@ -421,12 +378,6 @@ function getCategoryContent(arrCategory) {
     })
 }
 
-class ClassCategoryData {
-    constructor(name, data) {
-        this.category = name
-        this.target = data
-    }
-}
 function getCompanyData(name, categoryName) {
     chrome.storage.local.get([name], function (el) {
         if (el[name]) {
@@ -469,6 +420,26 @@ function getCompanyData(name, categoryName) {
             console.log("no data")
             ExecuteCardRequest()
         }
+    })
+}
+
+//Memory opeartion
+function saveCompanyData(name, data) {
+    chrome.storage.local.set({ [name]: data }, function () {
+    })
+}
+
+function saveCategory(category, data) {
+    chrome.storage.local.set({ [category]: data })
+}
+
+function saveCompanyCounter() {
+    chrome.storage.local.get(["jobCounter"], function (el) {
+        var c = 1
+        if (el.jobCounter) {
+            c = el.jobCounter + 1
+        }
+        chrome.storage.local.set({ "jobCounter": c })
     })
 }
 
