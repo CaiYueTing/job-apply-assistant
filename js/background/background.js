@@ -72,6 +72,6 @@
 //     }
 // })
 
-chrome.runtime.onInstalled.addListener(function(){
-    chrome.storage.local.set({"chromememory": 0})
-})
+// chrome.runtime.onInstalled.addListener(function(){
+//     chrome.storage.local.set({"chromememory": 0})
+// })

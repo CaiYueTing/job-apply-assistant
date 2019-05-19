@@ -10,7 +10,6 @@ company = getCname()
 
 function saveCompanyData(name, data) {
     chrome.storage.local.set({ [name]: data }, function () {
-        // console.log("save:", data)
     })
 }
 
@@ -406,7 +405,6 @@ function ExecuteCardRequest() {
 function getCategoryContent(arrCategory) {
     let result = 0
     const length = arrCategory.length
-
     return new Promise(function (resolve, reject) {
         chrome.storage.local.get(arrCategory, function (item) {
             for (let i = 0; i < length; i++) {
@@ -418,26 +416,6 @@ function getCategoryContent(arrCategory) {
                 resolve(item)
             } else {
                 resolve(-1)
-            }
-        })
-    })
-
-    // for (let i = 0; i < arrCategory.length; i++) {
-    //     getCateData(arrCategory[i]).then((item) => {
-    //         console.log(item)
-    //     })
-    // }
-
-}
-
-function getCateData(category) {
-    return new Promise((res, rej) => {
-        chrome.storage.local.get([category], function (data) {
-            if (!data[category]) {
-                console.log(data[category])
-                res(data[category])
-            } else {
-                rej(chrome.runtime.lastError)
             }
         })
     })
@@ -462,7 +440,7 @@ function getCompanyData(name, categoryName) {
             Promise.all([getCategoryContent(categoryName)]).then(
                 function (para) {
                     arr = para[0]
-                    console.log(arr)
+                    // console.log(arr)
                     if (arr == -1) {
                         Promise.all([getJobcategory()]).then(
                             function (el) {
@@ -529,21 +507,20 @@ if (error) {
     clearAlldata()
 }
 
-// deleteData(company)
 getCompanyData(company, categoryName)
-// clearAlldata()
+
 let busyflag = 0
 let queue = []
 chrome.storage.onChanged.addListener(function (changes, namespace) {
     busyflag = 1
     for (var key in changes) {
-        var storageChange = changes[key];
-        console.log('Storage key "%s" in namespace "%s" changed. ' +
-            'Old value was "%s", new value is "%s".',
-            key,
-            namespace,
-            storageChange.oldValue,
-            storageChange.newValue);
+        // var storageChange = changes[key];
+        // console.log('Storage key "%s" in namespace "%s" changed. ' +
+        //     'Old value was "%s", new value is "%s".',
+        //     key,
+        //     namespace,
+        //     storageChange.oldValue,
+        //     storageChange.newValue);
         if (key != "chromememory") {
             chrome.storage.local.getBytesInUse(key, function (value) {
                 queue.push(value)
@@ -551,20 +528,21 @@ chrome.storage.onChanged.addListener(function (changes, namespace) {
         }
     }
 })
-let addcount = 0
-
-
 
 function saveChromeMemory(value) {
     chrome.storage.local.get(["chromememory"], function (totalmemory) {
-
-        console.log(totalmemory)
-        t = totalmemory.chromememory + value
-        console.log(t)
-
-        chrome.storage.local.set({ "chromememory": (totalmemory.chromememory + value) }, function () {
-            addcount++
-            console.log(addcount)
+        let t = value
+        // console.log(totalmemory)
+        if (totalmemory.chromememory) {
+            t = totalmemory.chromememory + value
+        }
+        // console.log(t)
+        chrome.storage.local.set({ "chromememory": t }, function () {
+            chrome.storage.local.get(["chromememory"], function(check){
+                if (check.chromememory == t) {
+                    queue = []
+                }
+            })
         })
     })
 }
@@ -572,10 +550,10 @@ function saveChromeMemory(value) {
 var busy = setInterval(function () {
     const reducer = (a, b) => a + b
     if (queue.length != 0) {
-        console.log(queue)
+        // console.log(queue)
         let value = queue.reduce(reducer)
         saveChromeMemory(value)
-        queue = []
+        // queue = []
     }
 }, 2000)
 
