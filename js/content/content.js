@@ -130,6 +130,27 @@ class helperCard {
         return arr
 
     }
+
+    lawfilter () {
+        const arrLaw = this.lawcount
+        let sex = []
+        let safe = []
+        let labor = []
+        arrLaw.forEach((element, index) => {
+            if (element.law.includes("性別工作") || element.law.includes("性平")) {
+                sex.push(index)
+            }
+            if (element.law.includes("職業安全") || element.law.includes("職安")) {
+                safe.push(index)
+            }
+            if (element.law.includes("勞動基準") || element.law.includes("勞基")) {
+                labor.push(index)
+            }
+        });
+        console.log(this.lawcount.length, sex.length, safe.length, labor.length)
+        return [sex.length, safe.length, labor.length, this.lawcount.length-sex.length-safe.length-labor.length] 
+    }
+
     hideTemplate() {
         return `
             <div class="small-card">
@@ -172,7 +193,14 @@ class helperCard {
             qollielink = `<a href="https://www.qollie.com" style="color:white" target="_blank" class="card-qollie">`
         }
 
-
+        var fileter = this.lawfilter()
+        var cardlaw = `<div class="card-law">曾經違反 ${fileter[2]} 筆勞基法 ${fileter[0]} 筆性平法 ${fileter[1]} 筆職安法 共${this.lawcount.length}筆勞工相關違法記錄</div>`
+        if (fileter[3] != 0) {
+            cardlaw = `<div class="card-law">曾經違反 ${fileter[2]} 筆勞基法 ${fileter[0]} 筆性平法 ${fileter[1]} 筆職安法 ${fileter[3]}筆其它相關安全法 共${this.lawcount.length}筆勞工相關違法記錄</div>`
+        }
+        if (this.lawcount.length == 0) {
+            cardlaw = `<div class="card-law">目前無相關違反記錄</div>`
+        }
         return `
             <div id="${this.domId}">
                 
@@ -182,7 +210,7 @@ class helperCard {
                     <hr>
                         <div class="card-cantentiner">
                             <div class="card-company">${this.cname}</div>
-                            <div class="card-law">曾經違反 ${this.lawcount.length} 筆勞基法</div>
+                            ${cardlaw}
                             ${qollielink}天眼通評價：
                                 ${qolliestring}
                             </a>
