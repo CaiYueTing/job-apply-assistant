@@ -1,4 +1,4 @@
-const requrl = root.localhost
+const requrl = root.ec2
 
 //DOM operation 
 function getCname() {
@@ -170,10 +170,9 @@ function initialDonutChart(ctx, backgroundColor, donutObj) {
                 {
                     data: [
                         donutObj.economic.length,
-                        donutObj.entertain.length,
-                        donutObj.infra.length,
                         donutObj.time.length,
-
+                        donutObj.infra.length,
+                        donutObj.entertain.length
                     ],
                     backgroundColor: backgroundColor
                 }
