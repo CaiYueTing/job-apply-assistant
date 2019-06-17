@@ -132,7 +132,10 @@ class helperCard {
     }
 
     lawfilter() {
-        const arrLaw = this.lawcount
+        let arrLaw = this.lawcount
+        if (arrLaw == null) {
+            arrLaw = []
+        }
         let sex = []
         let safe = []
         let labor = []
@@ -147,8 +150,8 @@ class helperCard {
                 labor.push(index)
             }
         });
-        console.log(this.lawcount.length, sex.length, safe.length, labor.length)
-        return [sex.length, safe.length, labor.length, this.lawcount.length - sex.length - safe.length - labor.length]
+        console.log(arrLaw.length, sex.length, safe.length, labor.length)
+        return [sex.length, safe.length, labor.length, arrLaw.length - sex.length - safe.length - labor.length]
     }
 
     hideTemplate() {
@@ -194,11 +197,12 @@ class helperCard {
         }
 
         var fileter = this.lawfilter()
-        var cardlaw = `<div class="card-law">曾經違反 ${fileter[2]} 筆勞基法 ${fileter[0]} 筆性平法 ${fileter[1]} 筆職安法 共${this.lawcount.length}筆勞工相關違法記錄</div>`
+        var tatal = fileter[0]+fileter[1]+fileter[2]+fileter[3]
+        var cardlaw = `<div class="card-law">曾經違反 ${fileter[2]} 筆勞基法 ${fileter[0]} 筆性平法 ${fileter[1]} 筆職安法 共${tatal}筆勞工相關違法記錄</div>`
         if (fileter[3] != 0) {
-            cardlaw = `<div class="card-law">曾經違反 ${fileter[2]} 筆勞基法 ${fileter[0]} 筆性平法 ${fileter[1]} 筆職安法 ${fileter[3]}筆其它相關安全法 共${this.lawcount.length}筆勞工相關違法記錄</div>`
+            cardlaw = `<div class="card-law">曾經違反 ${fileter[2]} 筆勞基法 ${fileter[0]} 筆性平法 ${fileter[1]} 筆職安法 ${fileter[3]}筆其它相關安全法 共${tatal}筆勞工相關違法記錄</div>`
         }
-        if (this.lawcount.length == 0) {
+        if (tatal == 0) {
             cardlaw = `<div class="card-law">目前無相關違反記錄</div>`
         }
         return `
