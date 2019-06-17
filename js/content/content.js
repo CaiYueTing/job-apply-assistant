@@ -131,7 +131,7 @@ class helperCard {
 
     }
 
-    lawfilter () {
+    lawfilter() {
         const arrLaw = this.lawcount
         let sex = []
         let safe = []
@@ -148,7 +148,7 @@ class helperCard {
             }
         });
         console.log(this.lawcount.length, sex.length, safe.length, labor.length)
-        return [sex.length, safe.length, labor.length, this.lawcount.length-sex.length-safe.length-labor.length] 
+        return [sex.length, safe.length, labor.length, this.lawcount.length - sex.length - safe.length - labor.length]
     }
 
     hideTemplate() {
@@ -233,7 +233,7 @@ class helperCard {
             <div class="card-title">職位資訊</div>
             <hr>
                 <div class="card-cantentiner">
-                    抱歉，伺服器沒有反應!
+                    伺服器更新中，請稍後！！
                 </div>
             </div>
         </div>
