@@ -58,7 +58,7 @@ class lawlist {
             </tr>
         `
 
-        var lawrecord = lawrecord
+        var lawrecord = this.data.law
         if (lawrecord == null) {
             lawrecord = []
         }
