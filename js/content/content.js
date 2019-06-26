@@ -1,15 +1,13 @@
 class helperCard {
     constructor(cname, lawcount, welfare, salary, ddp, category, qollie) {
-        this.data = {
-            domId: "applicant-helper",
-            cname: cname,
-            lawcount: lawcount,
-            welfare: welfare,
-            salary: salary,
-            ddp: ddp,
-            category: category,
-            qollie: qollie
-        }
+        this.domId = "applicant-helper"
+        this.cname = cname
+        this.lawcount = lawcount
+        this.welfare = welfare
+        this.salary = salary
+        this.ddp = ddp
+        this.category = category
+        this.qollie = qollie
     }
 
     init() {
@@ -33,7 +31,7 @@ class helperCard {
     }
 
     getEl() {
-        return $(`#${this.data.domId}`)
+        return $(`#${this.domId}`)
     }
 
     getLaw() {
@@ -92,7 +90,7 @@ class helperCard {
         //     e.stopPropagation()
         // })
         // -------mouse lisen function ----------------
-        if (this.data.lawcount != null && this.data.lawcount.length > 0) {
+        if (this.lawcount != null && this.lawcount.length > 0) {
             $(".card-law").css({
                 color: '#B20000'
             })
@@ -109,10 +107,10 @@ class helperCard {
     }
 
     qollieId() {
-        if (this.data.qollie.data.getCompanyStat.id == "") {
+        if (this.qollie.data.getCompanyStat.id == "") {
             return "資料無此公司資料"
         }
-        return this.data.qollie.data.getCompanyStat.id
+        return this.qollie.data.getCompanyStat.id
     }
 
     qollieScore() {
@@ -120,9 +118,9 @@ class helperCard {
         if (this.qollieId() == "資料無此公司資料") {
             return arr
         }
-        var good = this.data.qollie.data.getCompanyStat.good
-        var bad = this.data.qollie.data.getCompanyStat.bad
-        var normal = this.data.qollie.data.getCompanyStat.normal
+        var good = this.qollie.data.getCompanyStat.good
+        var bad = this.qollie.data.getCompanyStat.bad
+        var normal = this.qollie.data.getCompanyStat.normal
         var total = good + bad + normal
         if (total != 0) {
             arr.push((good / total * 100).toFixed(1))
@@ -132,6 +130,30 @@ class helperCard {
         return arr
 
     }
+
+    lawfilter() {
+        let arrLaw = this.lawcount
+        if (arrLaw == null) {
+            arrLaw = []
+        }
+        let sex = []
+        let safe = []
+        let labor = []
+        arrLaw.forEach((element, index) => {
+            if (element.law.includes("性別工作") || element.law.includes("性平")) {
+                sex.push(index)
+            }
+            if (element.law.includes("職業安全") || element.law.includes("職安")) {
+                safe.push(index)
+            }
+            if (element.law.includes("勞動基準") || element.law.includes("勞基")) {
+                labor.push(index)
+            }
+        });
+        console.log(arrLaw.length, sex.length, safe.length, labor.length)
+        return [sex.length, safe.length, labor.length, arrLaw.length - sex.length - safe.length - labor.length]
+    }
+
     hideTemplate() {
         return `
             <div class="small-card">
@@ -142,14 +164,14 @@ class helperCard {
     }
 
     getTemplate() {
-        const len = this.data.category.length
-        // console.log(this.data.qollie)
+        const len = this.category.length
+        // console.log(this.qollie)
         var temp = ``
 
         for (let i = 0; i < len; i++) {
             let id = "category_id_" + i
             let t = `<span id="${id}" class="category_list">{{data}}</span>`
-            let category = this.data.category[i]
+            let category = this.category[i]
             t = t.replace("{{data}}", category.category)
             temp = temp + t
             if (i != len - 1) {
@@ -174,22 +196,30 @@ class helperCard {
             qollielink = `<a href="https://www.qollie.com" style="color:white" target="_blank" class="card-qollie">`
         }
 
-
+        var fileter = this.lawfilter()
+        var tatal = fileter[0]+fileter[1]+fileter[2]+fileter[3]
+        var cardlaw = `<div class="card-law">曾經違反 ${fileter[2]} 筆勞基法 ${fileter[0]} 筆性平法 ${fileter[1]} 筆職安法 共${tatal}筆勞工相關違法記錄</div>`
+        if (fileter[3] != 0) {
+            cardlaw = `<div class="card-law">曾經違反 ${fileter[2]} 筆勞基法 ${fileter[0]} 筆性平法 ${fileter[1]} 筆職安法 ${fileter[3]}筆其它相關安全法 共${tatal}筆勞工相關違法記錄</div>`
+        }
+        if (tatal == 0) {
+            cardlaw = `<div class="card-law">目前無相關違反記錄</div>`
+        }
         return `
-            <div id="${this.data.domId}">
+            <div id="${this.domId}">
                 
                 <div class="card-container">
                     <div id="card-hideinformation">>></div>
                     <div class="card-title">職位資訊</div>
                     <hr>
                         <div class="card-cantentiner">
-                            <div class="card-company">${this.data.cname}</div>
-                            <div class="card-law">曾經違反 ${this.data.lawcount.length} 筆勞基法</div>
+                            <div class="card-company">${this.cname}</div>
+                            ${cardlaw}
                             ${qollielink}天眼通評價：
                                 ${qolliestring}
                             </a>
                             
-                            <div class="card-welfare">福利分析在整體福利第${this.data.ddp}分位(前${10 - this.data.ddp}0%)</div>
+                            <div class="card-welfare">福利分析在整體福利第${this.ddp}分位(前${10 - this.ddp}0%)</div>
                             <div class="card-welfare">福利摘要分析</div>
                             <span class="card-salary">職務薪水參考：</span>
                             ${temp}
@@ -201,13 +231,13 @@ class helperCard {
     }
 
     getFailTemp() {
-        return `<div id="${this.data.domId}">
+        return `<div id="${this.domId}">
         <div class="card-container">
             <div id="card-hideinformation">>></div>
             <div class="card-title">職位資訊</div>
             <hr>
                 <div class="card-cantentiner">
-                    抱歉，伺服器沒有反應!
+                    伺服器更新中，請稍後！！
                 </div>
             </div>
         </div>

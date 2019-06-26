@@ -156,7 +156,7 @@ class Salarychart {
     }
 
     getAtTarget(index) {
-        if (index > this.len){
+        if (index >= this.data.len){
             return 
         }
         return this.data.category[index]

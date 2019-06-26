@@ -58,15 +58,20 @@ class lawlist {
             </tr>
         `
 
-        for (let i=0;i<this.data.law.length;i++){
+        var lawrecord = this.data.law
+        if (lawrecord == null) {
+            lawrecord = []
+        }
+
+        for (let i=0;i<lawrecord.length;i++){
             var id = "law_list_"+i
-            var location = this.data.law[i].location
-            var publicdate = this.data.law[i].publicdate
-            var dealdate = this.data.law[i].dealdate
-            var govnumber = this.data.law[i].govnumber
-            var law = this.data.law[i].law
-            var description = this.data.law[i].description
-            var ps = this.data.law[i].ps
+            var location = lawrecord[i].location
+            var publicdate = lawrecord[i].publicdate
+            var dealdate = lawrecord[i].dealdate
+            var govnumber = lawrecord[i].govnumber
+            var law = lawrecord[i].law
+            var description = lawrecord[i].description
+            var ps = lawrecord[i].ps
             law = law.replace(/\;/g, "<br>")
             description = description.replace(/\;/g, "<br>")
             var current_html = 

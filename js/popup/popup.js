@@ -28,21 +28,16 @@ function recordcache() {
         }
         cachecount.innerText = c
     })
-    chrome.storage.local.get(["chromememory"], function (el) {
+
+    chrome.storage.local.getBytesInUse(null, function(value){
         var cachebyte = document.getElementById("cachebyte")
-        var c = 0
-        if (el.chromememory) {
-            c = el.chromememory
-        }
-
-        var memory = new Number(c / 1048576)
-
-        cachebyte.innerText = memory.toFixed(4)
-        n = c / 5242880
+        var memory = new Number(value / 1048576)
+        var n = value /5242880
         var num = new Number(n)
+        cachebyte.innerText = memory.toFixed(4)
         var percentage = document.getElementById("percentage")
         percentage.innerText = num.toFixed(3)
-        memorychart = updateChart(memorychart, c)
+        memorychart = updateChart(memorychart, value)
     })
 }
 

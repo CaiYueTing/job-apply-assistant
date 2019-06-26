@@ -1,6 +1,6 @@
 class Donut {
     constructor(obj){
-        this.domId = "donutchart",
+        this.domId = "donutchart"
         this.economic = obj.economic
         this.entertain = obj.entertain
         this.infra = obj.infra
