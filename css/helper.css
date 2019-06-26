@@ -12,7 +12,7 @@
     position: fixed;
     text-align: center;
     padding: 10px;
-    border-radius: 15px;
+    /* border-radius: 15px; */
     box-shadow: 0px 3px 15px rgba(0, 0, 0, 0.6);
     transition: 600ms;
     right: 0%;
@@ -24,7 +24,18 @@
     cursor: move;
 }
 
+#card-hideinformation {
+    display: inline-block;
+    position: absolute;
+    left: 25px;
+    font-weight: 300;
+    font-size: 25px;
+    top: 17px;
+    cursor: pointer;
+}
+
 .card-title {
+    display: inline-block;
     font-size: 22px;
     padding: 10px
 }
@@ -63,11 +74,38 @@ a .card-qollie {
     text-decoration: none;
 }
 
+.small-card {
+    position: fixed;
+    width: 10px;
+    right: -10%;
+    top: 60%;
+    /* margin-left: 2px; */
+    font-size: 15px;
+    font-weight: 300;
+    background-color: antiquewhite;
+    color: silver;
+    padding: 10px;
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px;
+    transition: 0.3s;
+}
+
+
+.small-card-name {
+    font-size: 15px;
+    font-weight: 300;
+    display: inline-block;
+    -webkit-writing-mode: vertical-lr;
+    writing-mode: vertical-lr;
+}
+
+
+
 #lawlist {
     width: 1024px;
     height: 512px;
     z-index: 99999;
-    background-color: #ccc;
+    background-color: #f3f3f3;
     color: #666666;
     font-weight: 600;
     position: fixed;
@@ -76,13 +114,12 @@ a .card-qollie {
     /* right: 100%; */
     left: 50%;
     transform: translateX(-50%) translateY(-50%);
-    border-radius: 15px;
+    /* border-radius: 15px; */
     box-shadow: 0px 3px 15px rgba(0, 0, 0, 0.6);
-    /* transition: 0.8s; */
     display: none;
     overflow-y: scroll;
+    letter-spacing: 1px;
 }
-
 
 #lawlist::-webkit-scrollbar {
     width: 2px;
@@ -111,15 +148,33 @@ a .card-qollie {
     padding-left: 400px;
 }
 
+
+.lawlist_header {
+    margin-top: 10px;
+}
+
 .style_hr {   
     border:solid 0.5px #666666;
     height: 0.2px;
+    /* margin-top: 10px;
+    margin-bottom: 15px; */
+}
+
+.law_item {
+    margin-top: -10px;
+    margin-left: 20px;
+    margin-right: 20px;
+    border-collapse: separate;
+    border-spacing: 10px;
+    text-align: left;
+}
+
+.law_title {
+    margin-bottom: 10px;
 }
 
 .lawlist_location {
     width: 80px;
-    /* padding-left: 20px; */
-    /* padding-right: 20px; */
 }
 
 .lawlist_publicdate {
@@ -135,7 +190,7 @@ a .card-qollie {
 }
 
 .lawlist_law {
-    width: 180px;
+    width: 200px;
 }
 
 .lawlist_description {
@@ -151,13 +206,13 @@ a .card-qollie {
     height: 512px;
     /* background-color: #000; */
     z-index: 99999;
-    background-color: #ccc;
+    background-color: #f3f3f3;
     position: fixed;
     top: 50%;
     left: 50%;
     /* right: 100%; */
     transform: translateX(-50%) translateY(-50%);
-    border-radius: 15px;
+    /* border-radius: 15px; */
     box-shadow: 0px 3px 15px rgba(0, 0, 0, 0.6);
     display: none
 }
@@ -193,7 +248,7 @@ a .card-qollie {
 #salarychart_industry:hover {
     transition: 0.3s;
     background-color: rgba(54, 162, 235,1);
-    color: #ccc;
+    color: #f3f3f3;
 }
 
 #salarychart_exp {
@@ -212,7 +267,7 @@ a .card-qollie {
 #salarychart_exp:hover {
     transition: 0.3s;
     background-color: rgb(146, 182, 206);
-    color: #ccc;
+    color: #f3f3f3;
 }
 
 #salarychart_district {
@@ -231,7 +286,7 @@ a .card-qollie {
 #salarychart_district:hover {
     transition: 0.3s;
     background-color: rgba(54, 162, 235,1);
-    color: #ccc;
+    color: #f3f3f3;
 }
 
 #donutchart {
@@ -239,13 +294,13 @@ a .card-qollie {
     height: 512px;
     /* background-color: #000; */
     z-index: 99999;
-    background-color: #ccc;
+    background-color: #f3f3f3;
     position: fixed;
     top: 50%;
     left: 50%;
     /* right: 100%; */
     transform: translateX(-50%) translateY(-50%);
-    border-radius: 15px;
+    /* border-radius: 15px; */
     box-shadow: 0px 3px 15px rgba(0, 0, 0, 0.6);
     display: none;
 }

@@ -1,6 +1,6 @@
 class Donut {
     constructor(obj){
-        this.domId = "donutchart",
+        this.domId = "donutchart"
         this.economic = obj.economic
         this.entertain = obj.entertain
         this.infra = obj.infra
@@ -30,7 +30,7 @@ class Donut {
     }
 
     getListItem(arr) {
-        s = "無"
+        let s = "無"
         if (arr.length != 0){
             s = ""
             for (let i=0;i<arr.length;i++){
@@ -49,9 +49,9 @@ class Donut {
         var t = this.getListItem(this.time)
         var i = this.getListItem(this.infra)
         var en = this.getListItem(this.entertain)
-        var p = this.getListItem(this.person)
-
-        s = `
+        // var p = this.getListItem(this.person)
+        
+        const s = `
             <div id="${this.domId}">
                 <div id="donutborder">
                     <span id="${this.domId}_close">X</span>
@@ -60,7 +60,7 @@ class Donut {
                         <br><span class="class-time">休假工時類：${t}</span>
                         <br><span class="class-infra">設施類：${i}</span>
                         <br><span class="class-entertain">娛樂類：${en}</span>
-                        <br><span class="class-person">個人喜好類：${p}</span>
+                        
                     </span>
                     <canvas id="${this.domId}myChart" class="donut_chart">
                 </div>

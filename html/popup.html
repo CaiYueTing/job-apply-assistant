@@ -9,6 +9,15 @@
         <div class="selector_text">made by Ting 若有任何問題或許願可直接來信
             <br>Mail: qazxcv367tasi@gmail.com
         </div>
+        <div class="recordinstorage">已記錄筆數：<span id="cachecount"></span></div>
+        <div class="datainstorage">已記錄資料量：<span id="cachebyte"></span><span> MBs</span></div>
+        <div class="datainstorage">可記錄資料量：<span>5</span><span> MBs</span></div>
+        <button type="submit" id="clearcache" class="clearstorage">一鍵清除</button>
+        <canvas id="storagechart"></canvas>
+        <div class="percentage">
+            <span id="percentage"></span>
+            <span>%</span>
+        </div>
         <!-- <div class="selector_text">選擇福利重要程度</div>
         <br>
         <div class="selector">
@@ -40,6 +49,7 @@
         </div> -->
     </div>
 </body>
+<script type="text/javascript" src="../js/lib/Chart.min.js"></script>
 <script type="text/javascript" src="../js/lib/jquery-3.3.1.min.js"></script>
 <script type="text/javascript" src="../js/popup/popup.js"></script>
 </html>

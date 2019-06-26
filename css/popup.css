@@ -3,8 +3,9 @@
 } */
 
 body, html {
-    background-color: #cccccc;
+    background-color: #f3f3f3;
     color: #333333;
+    font-size: 16px;
 }
 
 .container {
@@ -14,50 +15,57 @@ body, html {
 
 .selector_text {
     font-size: 16px;
-    text-align: center;
+    margin-left: 20px;
     font-weight: 600;
 }
 
-.selector {
-    display: flex; 
-    flex-direction: column;
+.recordinstorage {
+    margin-top: 10px;
+    margin-left: 20px;
+}
+
+.datainstorage {
+    margin-left: 20px;
+}
+
+.clearstorage {
+    margin-top: 10px;
+    margin-bottom: 10px;
+    margin-left: 20px;
+    padding: 10px 20px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+	border: 0px;
+	border-radius: 3px;
+	box-shadow: 0 3px 14px rgba(50,50,93,.1);
+    transition: all 0.1s linear;
+    background-color: #7594e5;
+    color: antiquewhite;
+}
+
+.clearstorage:hover {
+    transform: translateY(-2px);
+	background: #77a6f8;
+	box-shadow: 0 7px 14px rgba(50,50,93,.1), 0 3px 6px rgba(0,0,0,.08);
+}
+
+.clearstorage:active {
+    transform: translateY(0px);
+    background: #7594e5;
+}
+
+#storagechart {
+    margin-bottom: 20px;
+}
+
+.percentage {
+    font-size: 50px;
+    font-weight: 600;
+    position: absolute;
+    top: 60%;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
     justify-content: center;
     align-items: center;
-    /* transform: translateX(-50%) translateY(-50%) */
-}
-
-input[type=range] {
-    -webkit-appearance: none;
-    overflow:hidden;     
-    width:200px;
-    height:20px;
-    outline : none;      
-    background:none;
-}
-
-input[type="range"]::-webkit-slider-thumb{
-    -webkit-appearance: none;
-    position: relative;    
-    width:15px;
-    height:15px;
-    background: rgba(54, 162, 235, 1);
-    border-radius:10px;
-    transition:.2s;        
-}
-
-input[type=range]::-webkit-slider-runnable-track {
-    cursor: pointer;
-    background: rgba(54, 162, 235, 0.6);
-    border-radius: 15px;
-    border: 0px solid #010101;
-}
-
-.class {
-    position: relative;
-    bottom: 5px;
-}
-
-.score {
-    position: relative;
-    bottom: 5px;
 }
