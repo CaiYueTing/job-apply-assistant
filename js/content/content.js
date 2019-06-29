@@ -150,7 +150,7 @@ class helperCard {
                 labor.push(index)
             }
         });
-        console.log(arrLaw.length, sex.length, safe.length, labor.length)
+        // console.log(arrLaw.length, sex.length, safe.length, labor.length)
         return [sex.length, safe.length, labor.length, arrLaw.length - sex.length - safe.length - labor.length]
     }
 

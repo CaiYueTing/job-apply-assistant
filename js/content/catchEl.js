@@ -206,6 +206,17 @@ function checkdivid(arr, welfare) {
     return result
 }
 
+function checktime(update) {
+    var nowtime = new Date()
+    var nowd = nowtime.getDate().toString()
+    var nowm = nowtime.getMonth().toString()
+    var comparedate = nowm + nowd
+    if (update == comparedate) {
+        return true
+    }
+    return false
+}
+
 function ExecuteCard(records, qollie, welfare, salary, dd, donutObj, category) {
     result = checkdivid(dd, welfare)
     if (donutObj.economic == null) {
@@ -315,7 +326,7 @@ function ExecuteCard(records, qollie, welfare, salary, dd, donutObj, category) {
         $(donut.getEl()).slideUp(500)
     })
 
-    console.log("ok")
+    // console.log("ok")
 }
 
 class st {
@@ -346,6 +357,12 @@ function ExecuteCardRequest() {
             var dd = para[1].dd
             var donutObj = para[1].r
             var category = para[3].message
+            // if (para[1].update) {
+            //     console.log(checktime(para[1].update))
+            // }else{
+            //     console.log("no time data")
+            // }
+            
             var storeData = new st(records, qollie, welfare, salary, dd, donutObj)
             saveCompanyData(company, storeData)
             for (let i = 0; i < category.length; i++) {
@@ -359,7 +376,7 @@ function ExecuteCardRequest() {
             card = new helperCard()
             card.failCard()
             card.listener()
-            console.log("fail")
+            // console.log("fail")
         }
     )
 }
@@ -422,7 +439,7 @@ function getCompanyData(name, categoryName) {
             )
 
         } else {
-            console.log("no data")
+            // console.log("no data")
             ExecuteCardRequest()
         }
     })
@@ -514,7 +531,7 @@ function saveChromeMemory(value) {
         }
         // console.log(t)
         chrome.storage.local.set({ "chromememory": t }, function () {
-            chrome.storage.local.get(["chromememory"], function(check){
+            chrome.storage.local.get(["chromememory"], function (check) {
                 if (check.chromememory == t) {
                     queue = []
                 }
