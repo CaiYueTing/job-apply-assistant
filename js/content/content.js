@@ -140,13 +140,13 @@ class helperCard {
         let safe = []
         let labor = []
         arrLaw.forEach((element, index) => {
-            if (element.law.includes("性別工作") || element.law.includes("性平")) {
+            if (element.Law.includes("性別工作") || element.Law.includes("性平")) {
                 sex.push(index)
             }
-            if (element.law.includes("職業安全") || element.law.includes("職安")) {
+            if (element.Law.includes("職業安全") || element.Law.includes("職安")) {
                 safe.push(index)
             }
-            if (element.law.includes("勞動基準") || element.law.includes("勞基")) {
+            if (element.Law.includes("勞動基準") || element.Law.includes("勞基")) {
                 labor.push(index)
             }
         });

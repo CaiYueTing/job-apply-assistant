@@ -82,7 +82,7 @@ class Salarychart {
     }
     
     getIndustryDataset(index) {
-        const  industry  =  this.getAtTarget(index).target.industry
+        const  industry  =  this.getAtTarget(index).target.Industry
         let labels = ["資料不足"]
         let right = [0] 
         let left = [0]
@@ -107,7 +107,7 @@ class Salarychart {
     }
     
     getExpDataset(index) {
-        const  exp  =  this.getAtTarget(index).target.exp
+        const  exp  =  this.getAtTarget(index).target.Exp
         let labels = ["資料不足"]
         let right = [0] 
         let left = [0]
@@ -132,7 +132,7 @@ class Salarychart {
     }
 
     getDistrictDataset(index) {
-        const  district  =  this.getAtTarget(index).target.district
+        const  district  =  this.getAtTarget(index).target.District
         let labels = ["資料不足"]
         let right = [0] 
         let left = [0]
@@ -165,7 +165,7 @@ class Salarychart {
     initiallabel(tjson) {
         let result = []
         for (let i=0;i<tjson.length;i++) {
-            result.push(tjson[i].description)
+            result.push(tjson[i].Description)
         }
         return result
     }
@@ -173,28 +173,28 @@ class Salarychart {
     initialright(tjson) {
         let result = []
         for (let i=0;i<tjson.length;i++) {
-            result.push(tjson[i].right)
+            result.push(tjson[i].Rightnum)
         }
         return result
     }
     initialleft(tjson) {
         let result = []
         for (let i=0;i<tjson.length;i++) {
-            result.push(tjson[i].left)
+            result.push(tjson[i].Leftnum)
         }
         return result
     }
     initialmiddle(tjson) {
         let result = []
         for (let i=0;i<tjson.length;i++) {
-            result.push(tjson[i].middle)
+            result.push(tjson[i].Middlevalue)
         }
         return result
     }
     initialaverage(tjson) {
         let result = []
         for (let i=0;i<tjson.length;i++) {
-            result.push(tjson[i].average)
+            result.push(tjson[i].Average)
         }
         return result
     }

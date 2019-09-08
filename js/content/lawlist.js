@@ -65,13 +65,13 @@ class lawlist {
 
         for (let i=0;i<lawrecord.length;i++){
             var id = "law_list_"+i
-            var location = lawrecord[i].location
-            var publicdate = lawrecord[i].publicdate
-            var dealdate = lawrecord[i].dealdate
-            var govnumber = lawrecord[i].govnumber
-            var law = lawrecord[i].law
-            var description = lawrecord[i].description
-            var ps = lawrecord[i].ps
+            var location = lawrecord[i].Location
+            var publicdate = lawrecord[i].Publicdate
+            var dealdate = lawrecord[i].Dealdate
+            var govnumber = lawrecord[i].Govnumber
+            var law = lawrecord[i].Law
+            var description = lawrecord[i].Description
+            var ps = lawrecord[i].Ps
             law = law.replace(/\;/g, "<br>")
             description = description.replace(/\;/g, "<br>")
             var current_html = 

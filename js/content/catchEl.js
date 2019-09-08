@@ -1,4 +1,4 @@
-const requrl = root.ec2
+const requrl = root.gateway
 
 function GA() {
     var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
@@ -365,11 +365,14 @@ function ExecuteCardRequest() {
             
             var storeData = new st(records, qollie, welfare, salary, dd, donutObj)
             saveCompanyData(company, storeData)
+            var categories = []
             for (let i = 0; i < category.length; i++) {
-                saveCategory(category[i].category, category[i].target)
+                var c = new ClassCategoryData(category[i].CategoryName, category[i].Target)
+                saveCategory(category[i].CategoryName, category[i].Target)
+                categories.push(c)
             }
             saveCompanyCounter(company)
-            ExecuteCard(records, qollie, welfare, salary, dd, donutObj, category)
+            ExecuteCard(records, qollie, welfare, salary, dd, donutObj, categories)
         }
     ).catch(
         function () {
@@ -409,19 +412,21 @@ function getCompanyData(name, categoryName) {
             var salary = el[name].salary
             var dd = el[name].dd
             var donutObj = el[name].donutObj
-
             Promise.all([getCategoryContent(categoryName)]).then(
                 function (para) {
                     arr = para[0]
-                    // console.log(arr)
+                    console.log(arr)
                     if (arr == -1) {
                         Promise.all([getJobcategory()]).then(
                             function (el) {
                                 var newCate = el[0].message
+                                var categories = []
                                 for (let i = 0; i < newCate.length; i++) {
-                                    saveCategory(newCate[i].category, newCate[i].target)
+                                    var c = new ClassCategoryData(newCate[i].CategoryName, newCate[i].Target)
+                                    saveCategory(newCate[i].CategoryName, newCate[i].Target)
+                                    categories.push(c)
                                 }
-                                ExecuteCard(records, qollie, welfare, salary, dd, donutObj, newCate)
+                                ExecuteCard(records, qollie, welfare, salary, dd, donutObj, categories)
                             }
                         )
                     } else {
