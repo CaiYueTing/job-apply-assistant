@@ -236,7 +236,7 @@ class helperCard {
             <div id="card-hideinformation">>></div>
             <div class="card-title">職位資訊</div>
             <hr>
-                <div class="card-cantentiner">
+                <div class="card-cantentiner" style="color:#fff">
                     這兩週將資料庫與伺服器轉移中，
                     若有問題可以更新套件或重新安裝即可！
                 </div>
