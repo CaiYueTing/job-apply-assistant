@@ -54,7 +54,11 @@ function getQollie() {
 }
 
 function getSalary() {
-    s = document.getElementsByClassName("monthly-salary-remark")[0].innerText
+    s = document.getElementsByClassName("monthly-salary-remark")
+    if (s.length == 0) {
+        s = document.getElementsByClassName("monthly-salary")
+    }
+    s = s[0].innerText
     rangeMonth = /\d+\,\d+\~\d+\,\d+/
     rangeHour = /\d+\~\d+/
     staticMonth = /\d+\,\d+/
