@@ -1,5 +1,7 @@
+const local = chrome.storage.local
+
 function clearAlldata() {
-    chrome.storage.local.clear()
+    local.clear()
 }
 
 function isEmpty(obj) {
@@ -10,33 +12,41 @@ function isEmpty(obj) {
     return true;
 }
 
+
 let date = new Date()
 let month = date.getMonth()
 let day = date.getDate()
 
 async function setLocalDate() {
-    await chrome.storage.local.set({ 'localmonth': month })
-    await chrome.storage.local.set({ 'localday': day })
+    await local.set({ 'localmonth': month })
+    await local.set({ 'localday': day })
 }
 
-async function checkLocalDate() {
-    localday = await chrome.storage.local.get('localday', function (el) {
+
+
+async function getLocalMonth() {
+    await local.get('localday', function (el) {
         return el.localday
     })
-
-    localmonth = await chrome.storage.local.get('localmonth', function (el) {
-        return el.localmonth
-    })
-
-    console.log(localday, localmonth)
-
-    let clearFlag = (localmonth - month) < 0 || 
-        (localmonth == 11 && month != localmonth) ||
-        (localday == undefined || localmonth == undefined)
-    if (clearFlag) {
-        clearAlldata()
-        setLocalDate()
-    }
 }
 
-checkLocalDate()
+async function getLocalDay() {
+    await local.get('localmonth', function (el) {
+        return el.localmonth
+    })
+}
+
+local.get('localday', function (el) {
+    let localday = el.localday
+    local.get('localmonth', function (el) {
+        let localmonth = el.localmonth
+        let clearFlag = (localmonth - month) < 0 ||
+            (localmonth == 11 && month != localmonth) ||
+            (localday == undefined || localmonth == undefined)
+        console.log(localday, localmonth, clearFlag)
+        if (clearFlag) {
+            clearAlldata()
+            setLocalDate()
+        }
+    })
+})
