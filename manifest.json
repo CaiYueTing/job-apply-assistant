@@ -28,7 +28,8 @@
             ],
             "css":[
                 "./css/helper.css"
-            ]
+            ],
+            "run_at": "document_idle"
         }
     ],
     "background": {
@@ -40,6 +41,7 @@
     "content_security_policy": "script-src 'self' https://ssl.google-analytics.com; object-src 'self'",
     "permissions":[
         "tabs",
-        "storage"
+        "storage",
+        "https://bsvkhvaex7.execute-api.ap-northeast-2.amazonaws.com/staging/*"
     ]
 }

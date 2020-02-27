@@ -1,4 +1,4 @@
-const requrl = root.gateway
+const requrl = root.localhost
 
 function GA() {
     var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
@@ -8,14 +8,23 @@ function GA() {
 GA()
 //DOM operation 
 function getCname() {
-    var el = document.getElementsByClassName("company")[0]
-    var cname = el.getElementsByClassName("cn")[0]
-    return cname.innerText
+    var title = document.title
+    ts = title.split('｜')
+    return ts[1]
 }
 
 function getCategoryName() {
-    dlc = document.getElementsByClassName("cate")[0].innerText
-    dlc = dlc.split("、")
+
+    var job_description_table = document.getElementsByClassName("job-description-table__data")
+    categories = job_description_table[0]
+    category = categories.getElementsByTagName('u')
+    let dlc = ''
+    for (let i = 0; i < category.length; i++) {
+        dlc += category[i].innerText
+        if (i != category.length - 1) {
+            dlc += '、'
+        }
+    }
     return dlc
 }
 
@@ -27,9 +36,9 @@ categoryName = getCategoryName()
 function getlawcount() {
     company = getCname()
     company = company.replace(/\//g, "")
-    reqStr = requrl + `/card/law/${company}`
+    reqStr = requrl + `/card/law`
     return new Promise((resolve, reject) => {
-        lowcount = $.getJSON(reqStr)
+        lowcount = $.post(reqStr, { company : company })
         resolve(lowcount)
     })
 }
@@ -37,15 +46,15 @@ function getlawcount() {
 function getQollie() {
     company = getCname()
     company = company.replace(/\//g, "")
-    reqStr = requrl + `/card/qol/${company}`
+    reqStr = requrl + `/card/qol`
     return new Promise((resolve, reject) => {
-        qol = $.getJSON(reqStr)
+        qol = $.post(reqStr, { company : company })
         resolve(qol)
     })
 }
 
 function getSalary() {
-    s = document.getElementsByClassName("salary")[0].innerText
+    s = document.getElementsByClassName("monthly-salary-remark")[0].innerText
     rangeMonth = /\d+\,\d+\~\d+\,\d+/
     rangeHour = /\d+\~\d+/
     staticMonth = /\d+\,\d+/
@@ -70,16 +79,16 @@ function getSalary() {
     }
 
     salary = salary.replace(/\,/g, "")
-    reqStr = requrl + `/card/salary/${salary}`
+    reqStr = requrl + `/card/salary`
 
     return new Promise((resolve, reject) => {
-        data = $.getJSON(reqStr)
+        data = $.post(reqStr, { salary: salary })
         resolve(data)
     })
 }
 
 function postWelfare() {
-    content = document.getElementsByClassName("content")[2].innerText
+    content = document.getElementsByClassName("benefits-description")[0].innerText
     url = requrl + `/card/welfare`
     return new Promise((resolve, reject) => {
         data = $.post(url, { wdata: content })
@@ -88,7 +97,7 @@ function postWelfare() {
 }
 
 function getJobcategory() {
-    dlc = document.getElementsByClassName("cate")[0].innerText
+    dlc = getCategoryName()
     url = requrl + `/card/category`
     return new Promise((resolve, reject) => {
         data = $.post(url, { cdata: dlc })
@@ -362,7 +371,7 @@ function ExecuteCardRequest() {
             // }else{
             //     console.log("no time data")
             // }
-            
+
             var storeData = new st(records, qollie, welfare, salary, dd, donutObj)
             saveCompanyData(company, storeData)
             var categories = []
@@ -415,7 +424,7 @@ function getCompanyData(name, categoryName) {
             Promise.all([getCategoryContent(categoryName)]).then(
                 function (para) {
                     arr = para[0]
-                    console.log(arr)
+                    // console.log(arr)
                     if (arr == -1) {
                         Promise.all([getJobcategory()]).then(
                             function (el) {
