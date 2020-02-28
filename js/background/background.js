@@ -4,15 +4,6 @@ function clearAlldata() {
     local.clear()
 }
 
-function isEmpty(obj) {
-    for (var key in obj) {
-        if (obj.hasOwnProperty(key))
-            return false;
-    }
-    return true;
-}
-
-
 let date = new Date()
 let month = date.getMonth()
 let day = date.getDate()

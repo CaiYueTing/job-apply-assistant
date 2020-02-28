@@ -15,8 +15,8 @@ function getCname() {
 
 function getCategoryName() {
 
-    var job_description_table = document.getElementsByClassName("job-description-table__data")
-    categories = job_description_table[0]
+    let job_description_table = document.getElementsByClassName("job-description-table__data")
+    let categories = job_description_table[0]
     category = categories.getElementsByTagName('u')
     let dlc = ''
     for (let i = 0; i < category.length; i++) {

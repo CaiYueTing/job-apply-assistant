@@ -34,6 +34,10 @@
     cursor: pointer;
 }
 
+.card-css {
+    padding: 5px
+}
+
 .card-title {
     display: inline-block;
     font-size: 22px;
@@ -41,7 +45,7 @@
 }
 
 .card-cantentiner {
-    padding-top: 10px;
+    /* padding-top: 10px; */
 }
 
 .card-law {
@@ -76,7 +80,7 @@ a .card-qollie {
 
 .small-card {
     position: fixed;
-    width: 10px;
+    width: 40px;
     right: -10%;
     top: 60%;
     z-index: 999;
@@ -100,6 +104,9 @@ a .card-qollie {
     writing-mode: vertical-lr;
 }
 
+.arrow-extend {
+    padding-left: 3px;
+}
 
 
 #lawlist {

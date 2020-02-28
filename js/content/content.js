@@ -157,7 +157,7 @@ class helperCard {
     hideTemplate() {
         return `
             <div class="small-card">
-                <div><</div>
+                <div class="arrow-extend"><</div>
                 <div class="small-card-name">Jobhelper</div>
             </div>
         `
@@ -170,7 +170,7 @@ class helperCard {
 
         for (let i = 0; i < len; i++) {
             let id = "category_id_" + i
-            let t = `<span id="${id}" class="category_list">{{data}}</span>`
+            let t = `<span id="${id}" class="category_list card-css">{{data}}</span>`
             let category = this.category[i]
             t = t.replace("{{data}}", category.category)
             temp = temp + t
@@ -184,26 +184,28 @@ class helperCard {
         var qollielink = ``
         if (qscore.length > 0) {
             qolliestring = `
+            <span class="card-css" >
                 <span>好${qscore[0]}%</span>
                 <span>壞${qscore[1]}%</span>
-                <span>普通${qscore[2]}%</span>`
+                <span>普通${qscore[2]}%</span>
+            </span>`
         } else {
             qolliestring = `<span>資料不足</span>`
         }
         if (qid != "資料無此公司資料") {
-            qollielink = `<a href="https://www.qollie.com/companies/${qid}" style="color:white" target="_blank" class="card-qollie">`
+            qollielink = `<a href="https://www.qollie.com/companies/${qid}" style="color:white" target="_blank" class="card-qollie card-css">`
         } else {
-            qollielink = `<a href="https://www.qollie.com" style="color:white" target="_blank" class="card-qollie">`
+            qollielink = `<a href="https://www.qollie.com" style="color:white" target="_blank" class="card-qollie card-css">`
         }
 
         var fileter = this.lawfilter()
         var tatal = fileter[0]+fileter[1]+fileter[2]+fileter[3]
-        var cardlaw = `<div class="card-law">曾經違反 ${fileter[2]} 筆勞基法 ${fileter[0]} 筆性平法 ${fileter[1]} 筆職安法 共${tatal}筆勞工相關違法記錄</div>`
+        var cardlaw = `<div class="card-law card-css">曾經違反 ${fileter[2]} 筆勞基法 ${fileter[0]} 筆性平法 ${fileter[1]} 筆職安法 共${tatal}筆勞工相關違法記錄</div>`
         if (fileter[3] != 0) {
-            cardlaw = `<div class="card-law">曾經違反 ${fileter[2]} 筆勞基法 ${fileter[0]} 筆性平法 ${fileter[1]} 筆職安法 ${fileter[3]}筆其它相關安全法 共${tatal}筆勞工相關違法記錄</div>`
+            cardlaw = `<div class="card-law card-css">曾經違反 ${fileter[2]} 筆勞基法 ${fileter[0]} 筆性平法 ${fileter[1]} 筆職安法 ${fileter[3]}筆其它相關安全法 共${tatal}筆勞工相關違法記錄</div>`
         }
         if (tatal == 0) {
-            cardlaw = `<div class="card-law">目前無相關違反記錄</div>`
+            cardlaw = `<div class="card-law card-css">目前無相關違反記錄</div>`
         }
         return `
             <div id="${this.domId}">
@@ -213,15 +215,15 @@ class helperCard {
                     <div class="card-title">職位資訊</div>
                     <hr>
                         <div class="card-cantentiner">
-                            <div class="card-company">${this.cname}</div>
+                            <div class="card-company card-css">${this.cname}</div>
                             ${cardlaw}
                             ${qollielink}天眼通評價：
                                 ${qolliestring}
                             </a>
                             
-                            <div class="card-welfare">福利分析在整體福利第${this.ddp}分位(前${10 - this.ddp}0%)</div>
-                            <div class="card-welfare">福利摘要分析</div>
-                            <span class="card-salary">職務薪水參考：</span>
+                            <div class="card-welfare card-css">福利分析在整體福利第${this.ddp}分位(前${10 - this.ddp}0%)</div>
+                            <div class="card-welfare card-css">福利摘要分析</div>
+                            <span class="card-salary card-css">職務薪水參考：</span>
                             ${temp}
                         </div>
                     </div>
@@ -237,8 +239,8 @@ class helperCard {
             <div class="card-title">職位資訊</div>
             <hr>
                 <div class="card-cantentiner" style="color:#fff">
-                    這兩週將資料庫與伺服器轉移中，
                     若有問題可以更新套件或重新安裝即可！
+                    若發現有其它問題，可以連絡qazxcv367tasi@gmail.com
                 </div>
             </div>
         </div>
