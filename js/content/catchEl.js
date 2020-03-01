@@ -417,6 +417,7 @@ function getCategoryContent(arrCategory) {
 }
 
 function getCompanyData(name, categoryName) {
+    autoClear()
     chrome.storage.local.get([name], function (el) {
         if (el[name]) {
             var records = el[name].records

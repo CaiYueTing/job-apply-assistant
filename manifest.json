@@ -23,6 +23,7 @@
                 "./js/content/config.js",
                 "./js/content/content.js",
                 "./js/content/lawlist.js",
+                "./js/content/dataControl.js",
                 "./js/content/catchEl.js",
                 "./js/content/salary.js"
             ],
