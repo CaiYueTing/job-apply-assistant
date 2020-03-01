@@ -47,8 +47,10 @@ function getQollie() {
     company = getCname()
     company = company.replace(/\//g, "")
     reqStr = requrl + `/card/qol`
+    var formdata = new FormData()
+    formdata.append('company', company)
     return new Promise((resolve, reject) => {
-        qol = $.post(reqStr, { company : company })
+        qol = $.post(reqStr, { company: company })
         resolve(qol)
     })
 }
@@ -231,6 +233,7 @@ function checktime(update) {
 }
 
 function ExecuteCard(records, qollie, welfare, salary, dd, donutObj, category) {
+    autoClear()
     result = checkdivid(dd, welfare)
     if (donutObj.economic == null) {
         donutObj.economic = []
@@ -417,7 +420,6 @@ function getCategoryContent(arrCategory) {
 }
 
 function getCompanyData(name, categoryName) {
-    autoClear()
     chrome.storage.local.get([name], function (el) {
         if (el[name]) {
             var records = el[name].records

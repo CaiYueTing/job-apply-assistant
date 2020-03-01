@@ -240,7 +240,9 @@ class helperCard {
             <hr>
                 <div class="card-cantentiner" style="color:#fff">
                     若有問題可以更新套件或重新安裝即可！
-                    若發現有其它問題，可以連絡qazxcv367tasi@gmail.com
+                    近期因104及chrome的更新，在做對應之功能，
+                    若有超過一個禮拜皆未能成功，或發現有其它問題，
+                    麻煩連絡qazxcv367tasi@gmail.com，謝謝
                 </div>
             </div>
         </div>
